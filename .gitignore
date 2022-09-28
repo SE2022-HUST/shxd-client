@@ -1,6 +1,10 @@
 __pycache__/
-upload/*
+upload/
 virtual_env/
+v_env/
+dist/
+build/
+output/
 
 /.vscode
 output/
