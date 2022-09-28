@@ -24,6 +24,4 @@ Produced By: SHXD Team@HUST
 
 ### 依赖项 / Dependencies
 
-- Flask
-- Flask_cors
-- pywebview
+在命令行中输入 `pip install -r requirements.txt`
