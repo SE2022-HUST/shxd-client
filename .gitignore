@@ -1,3 +1,6 @@
 __pycache__/*
 upload/*
-virtual_env/*
+v_env/*
+dist/*
+build/*
+output/*
