@@ -24,17 +24,29 @@
 ### 项目结构 / Folder Structure
 
 **根目录**
+
  ├─config               Webpack配置文件
+ 
  ├─core                 CV模型
+ 
  ├─gui                  Webpack打包生成的网页
+ 
  ├─src                  React网页源码
+ 
  ├─static               静态资源
+ 
  ├─.balbelrc            babel配置文件
+ 
  ├─main.py              程序入口
+ 
  ├─main.spec            pyinstaller配置
+ 
  ├─package.json         npm配置
+ 
  ├─requirements.txt     pip配置
+ 
  └─tsconfig.json        Typescript配置
+ 
 
 ---
 
