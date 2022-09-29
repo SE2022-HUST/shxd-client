@@ -1,13 +1,33 @@
+# editor config
+/.vscode
+
+# Python
+# env&cache
 __pycache__/
-upload/
-virtual_env/
 v_env/
+upload/
+# pyinstaller
 dist/
 build/
-output/
-
-/.vscode
+# model cache
 output/
 images/
 dataset/
 debug/
+
+# Node
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+# production
+gui/*
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

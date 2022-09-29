@@ -57,9 +57,9 @@ if __name__ == '__main__':
     t.start()
 
     webview.create_window('Video Processor', 
-    url='gui/index.html',
-    resizable=False,
-    width=600,
-    height=300
+		url='gui/index.html',
+		resizable=False,
+		width=600,
+		height=300
     )
     webview.start(http_server=True)
