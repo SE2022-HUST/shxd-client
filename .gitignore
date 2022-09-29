@@ -4,7 +4,7 @@
 # Python
 # env&cache
 __pycache__/
-v_env/
+venv/
 upload/
 # pyinstaller
 dist/

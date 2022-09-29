@@ -1,6 +1,6 @@
 {
-  "name": "webpack",
-  "version": "1.0.0",
+  "name": "shxd-client-ui",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "start": "webpack server --open --config ./config/webpack.dev.config.js",
     "build": "webpack --config ./config/webpack.prod.config.js"
   },
-  "author": "",
+  "author": "shxd@hust",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.19.3",
