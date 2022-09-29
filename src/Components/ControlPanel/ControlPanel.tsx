@@ -27,11 +27,18 @@ function ControlPanel(props: IProps) {
             <span className='Button'>
                 <Button variant='contained' onClick={openHandler}>打开</Button>
             </span>
-            <Tooltip title="请在上传前先打开一个文件">
-                <span className='Button'>
-                    <LoadingButton className='Button' variant='contained' onClick={uploadHandler} disabled={file === undefined} loading={loadingStatus}>上传</LoadingButton>
-                </span>
-            </Tooltip>
+            {
+                file === undefined ?
+                    <Tooltip title="请在上传前先打开一个文件" hidden={file !== undefined}>
+                        <span className='Button'>
+                            <LoadingButton className='Button' variant='contained' onClick={uploadHandler} disabled loading={loadingStatus}>上传</LoadingButton>
+                        </span>
+                    </Tooltip>
+                :
+                    <span className='Button'>
+                        <LoadingButton className='Button' variant='contained' onClick={uploadHandler} loading={loadingStatus}>上传</LoadingButton>
+                    </span>
+            }
             <span className='DelButton'>
                 <IconButton aria-label='delete' color='primary' onClick={clearHandler}>
                     <Delete/>

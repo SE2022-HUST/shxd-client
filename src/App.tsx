@@ -7,10 +7,15 @@ import uploadFunc from './Apis/Upload';
 import { uploadAddr } from './Apis/Constants';
 import AlertBar from './Components/AlertBar/AlertBar';
 
+interface IStatus {
+  status: number,
+  text?: string
+}
+
 function App() {
   const [file, setFile] = useState<File>();
   const [loading, setLoading] = useState<boolean>(false);
-  const [toastStatus, setToastStatus] = useState<number>(0);
+  const [toastStatus, setToastStatus] = useState<IStatus>({status: 0});
   const inputRef = useRef<HTMLInputElement>(null);
 
   const uploadHandler = () => {
@@ -21,12 +26,16 @@ function App() {
       setFile(undefined);
       if(result) {
         // window.alert("上传成功");
-        setToastStatus(1);
+        setToastStatus({status: 1});
       }
       else {
         // window.alert("上传失败")
-        setToastStatus(2);
+        setToastStatus({status: 1, text:"服务器没有接收到文件"});
       }
+    }).catch(error => {
+      setLoading(false);
+      setToastStatus({status: 2, text: "服务器没有开启"});
+      console.log(error);
     });
   }
   const openHandler = () => {
