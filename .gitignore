@@ -33,3 +33,8 @@ gui/index.html
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+tempCodeRunnerFile*.py
+
+*.mov
+*.avi
+*.mp4
