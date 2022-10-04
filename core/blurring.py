@@ -39,6 +39,7 @@ def blurring_rects(img, bbox_and_sigmas, effect_type=1, param=30, game=False, nu
             if sigma % 2 == 0:
                 sigma += 1
             # print(f'ROI {x}, {y}, {w}, {h}, sigma = {sigma}')
+            print('sigma:   ', sigma)
             RoI = img[y:y+h, x:x+w].astype(float)
             blur = cv2.GaussianBlur(RoI, (sigma, sigma), 0)
             new_img[y:y+h, x:x+w] = blur
