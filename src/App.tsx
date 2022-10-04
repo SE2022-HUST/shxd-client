@@ -7,10 +7,7 @@ import uploadFunc from './Apis/Upload';
 import { uploadAddr } from './Apis/Constants';
 import AlertBar from './Components/AlertBar/AlertBar';
 
-interface IStatus {
-  status: number,
-  text?: string
-}
+import { IStatus } from './Types/Props';
 
 function App() {
   const [file, setFile] = useState<File>();

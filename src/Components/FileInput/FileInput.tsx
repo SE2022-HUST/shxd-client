@@ -9,13 +9,15 @@ interface IFIProps {
 // 同理不能直接传递stateChange函数，需要传递stateChange的回调函数
 
 const FileInput = React.forwardRef<HTMLInputElement, IFIProps>((props: IFIProps, ref) => {
-    let setFile = props.action;
+    const setFile = props.action;
     return (
         <div className='FileInput'>
-            <input hidden id='file' type='file' name='file' ref={ref} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            <input hidden id='file' type='file' name='file' accept='video/*' ref={ref} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         console.log(e.target.files);
-                        if(e.target != null) {
-                            setFile(e.target.files![0]);
+                        if(e.target !== null) {
+                            if(e.target.files?.length === 1) {
+                                setFile(e.target.files![0]);
+                            }
                             // console.log(e.target.files![0]);
                             // console.log(file);
                             // if(displayRef.current != null)

@@ -4,10 +4,8 @@ import Alert from '@mui/material/Alert';
 import internal from 'stream';
 import { text } from 'stream/consumers';
 
-interface IStatus {
-    status: number,
-    text?: string
-  }
+import {IStatus} from '../../Types/Props'
+
 // 状态：0-正常 无提示 1-上传成功 2-上传失败 
 interface IProps {
     status: IStatus;

@@ -21,7 +21,9 @@ debug/
 /.pnp
 .pnp.js
 # production
-gui/*
+gui/
+gui/index.html
+
 # misc
 .DS_Store
 .env.local

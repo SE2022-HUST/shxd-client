@@ -23,14 +23,10 @@ def index():
 def send_file():
 	file = request.files.get('file')
 	if file is None:
-		# 表示没有发送文件
 		return {
-			'message':"文件上传失败"
+			'message':"No valid file"
 		}
 	file_name = file.filename
-    # print(file_name)
-	# 获取前缀（文件名称）print(os.path.splitext(file_name)[0])
-	# 获取后缀（文件类型）print(os.path.splitext(file_name)[-1])
 	suffix = os.path.splitext(file_name)[-1]#获取文件后缀（扩展名）
 	basePath = os.path.dirname(__file__)  # 当前文件所在路径print(basePath)
 	nowTime = calendar.timegm(time.gmtime())#获取当前时间戳改文件名print(nowTime)
@@ -42,7 +38,7 @@ def send_file():
 
 	return {
 		'code':200,
-		'messsge':"文件上传成功",
+		'messsge':"File received",
 		'fileNameOld':file_name,
 		'fileNameSave':str(nowTime) + str(nowTime) + suffix,
 		'url':url
