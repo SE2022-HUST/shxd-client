@@ -53,6 +53,13 @@ function App() {
           <ControlPanel file={file} loading={loading} openHandler={()=>openHandler()} uploadHandler={()=>uploadHandler()} clearHandler={()=>clearHandler()} />
         </Box>
       </div>
+      <button onClick={() => {
+        const w = window.open('_black') //这里是打开新窗口
+        let url = 'http://www.baidu.com'
+        w!.location.href = url //这样就可以跳转了
+      }}>
+        测试跳转
+      </button>
 
     </div>
   );
