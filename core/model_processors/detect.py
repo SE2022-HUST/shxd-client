@@ -11,9 +11,9 @@ from numpy.core.shape_base import hstack
 import torch
 import cv2
 import numpy as np
-from constant import *
-from mutils import X, classno2name, name2classno
-from mutils import *
+from model_processors.constant import *
+from model_processors.mutils import X, classno2name, name2classno
+from model_processors.mutils import *
 import os
 
 total_model = torch.hub.load((ROOT/ 'yolov5').as_posix(), 'custom', path=ROOT / 'weights/yolov5s.pt', source='local')

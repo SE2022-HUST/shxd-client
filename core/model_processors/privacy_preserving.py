@@ -5,14 +5,14 @@ import sys
 sys.path.append(CUR_PATH.as_posix())
 from sql.messreg import parse_sql
 from pathlib import Path
-from sampler import VideoSampler
-from sampler import frame_to_video
+from model_processors.sampler import VideoSampler
+from model_processors.sampler import frame_to_video
 
-from mutils import *
-from constant import *
-from detect import DetectRes, detect_face_facenet, detect_for_fxevs, draw_bboxes, Tracker, do_tracking
-from cartooner import cartoonize
-from blurring import blurring_rects
+from model_processors.mutils import *
+from model_processors.constant import *
+from model_processors.detect import DetectRes, detect_face_facenet, detect_for_fxevs, draw_bboxes, Tracker, do_tracking
+from model_processors.cartooner import cartoonize
+from model_processors.blurring import blurring_rects
 import os
 import time
 
@@ -364,7 +364,7 @@ def calculate_info_loss(raw_frame, protected_frame, target_class=None, IOU_THRES
     # The more target class are detected, the less intelligibility loses.
     selected = set()
     recognized_cnt = 0
-    from mutils import get_IoU
+    from model_processors.mutils import get_IoU
     for src in raw_frame_res:
         is_detect = False
         for idx, t in enumerate(protected_frame_res):
