@@ -413,6 +413,7 @@ def get_obj(self, frame, frame_id = 0):
     if self.cache and self.target_detect_cache != None and frame_id not in self.target_detect_cache:
         self.target_detect_cache[frame_id] = detect_res
         # print("save detect result at frame", frame_id)
+    return detect_res.get_objects()
 
 
 
