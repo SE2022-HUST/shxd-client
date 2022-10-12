@@ -12,7 +12,7 @@ from model_processors.mutils import *
 from model_processors.constant import *
 from model_processors.detect import DetectRes, detect_face_facenet, detect_for_fxevs, draw_bboxes, Tracker, do_tracking
 from model_processors.cartooner import cartoonize
-from model_processors.blurring import blurring_rects
+from model_processors.blurring import model_rects
 import os
 import time
 
@@ -285,7 +285,7 @@ class Protector:
 
             bbox_and_sigma = np.hstack((protect_bbox[:, 0:4], sigma_values)).astype(np.int32)
             
-            new_img = blurring_rects(new_img, bbox_and_sigma, effect_type=self.effect_type, game=False, enable=False)
+            new_img = model_rects(new_img, bbox_and_sigma, effect_type=self.effect_type, enable=False)
 
         
     
@@ -383,9 +383,40 @@ def calculate_info_loss(raw_frame, protected_frame, target_class=None, IOU_THRES
 
 
 
+def get_obj(self, frame, frame_id = 0):
+
+    if self.cache and self.target_detect_cache != None and frame_id in self.target_detect_cache:
+            detect_res = self.target_detect_cache[frame_id]
+            # print("Use detect cache at frame", frame_id)
+    else:
+        # we need to optimize the detect model, because we are confident that detect once is sufficient.
+        detect_res = detect_for_fxevs(frame)
+        detect_res.append(detect_for_fxevs(frame, 1))
+        detect_res.append(detect_face_facenet(frame))
+    
+    
+    if self.tracking:
+        # print("Before Tracking {} objects are found.".format(detect_res.get_objects().shape[0]))
+        # do tracking
+        ## one problem last: the accumulate error should be aware.
+        # 
+        if frame_id - self.last_frame_id <= self.MAX_FRAME_DIFF:
+            do_tracking(self.last_frame, self.last_det_res, frame, detect_res, self.tracker_type)
+        else:
+            self.last_frame_id = frame_id
+        # print("After Tracking {} objects are found.".format(detect_res.get_objects().shape[0]))
+        self.last_frame = frame
+        self.last_det_res = detect_res
+        
+        
+    # save the detect_res into cache
+    if self.cache and self.target_detect_cache != None and frame_id not in self.target_detect_cache:
+        self.target_detect_cache[frame_id] = detect_res
+        # print("save detect result at frame", frame_id)
+
+
+
 ################## Test code ####################
-
-
 def test_system_tracker(enable_tracking=True):
     pro = Protector(cartoon=True)
     # pro.debug = True
