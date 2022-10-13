@@ -1,6 +1,6 @@
 import React, {useState, useRef} from 'react';
 import { Box } from '@mui/material';
-import './App.css';
+import './Styles/App.css';
 import FileInput from './Components/FileInput/FileInput';
 import ControlPanel from './Components/ControlPanel/ControlPanel';
 import uploadFunc from './Apis/Upload';
