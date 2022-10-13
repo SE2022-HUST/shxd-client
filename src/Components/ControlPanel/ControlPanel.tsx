@@ -44,6 +44,11 @@ function ControlPanel(props: IProps) {
                     <Delete/>
                 </IconButton>
             </span>
+            <span className='Button'>
+                <Button variant='contained' onClick={() => {
+                    (window as any).pywebview.api.fullscreen()
+                }}>全屏</Button>
+            </span>
         </div>
     )
 }

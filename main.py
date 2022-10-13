@@ -1,9 +1,16 @@
 from concurrent.futures import process
 import string
 from threading import Thread
-from server import start_server, app
 import webview
 import os
+
+class Api:
+    def fullscreen(self):
+        webview.windows[0].toggle_fullscreen()
+
+    def ls(self):
+        return os.listdir('.')
+
 
 def get_entrypoint():
     def exists(path: string):
@@ -15,13 +22,12 @@ def get_entrypoint():
     raise Exception('No index.html found')
 
 if __name__ == '__main__':
-    t = Thread(target=start_server, daemon=True)
-    t.start()
 
     webview.create_window('Video Processor', 
 		url='gui/index.html',
 		resizable=False,
 		width=600,
-		height=300
+		height=300,
+        js_api=Api()
     )
-    webview.start(http_server=True)
+    webview.start(http_server=True)  #必须使用server模式打开，否则Webview会报错
