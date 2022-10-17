@@ -17,23 +17,24 @@ function App() {
 
   const uploadHandler = () => {
     console.log(file);
-    setLoading(true);
-    uploadFunc(uploadAddr, file).then(result => {
-      setLoading(false);
-      setFile(undefined);
-      if(result) {
-        // window.alert("上传成功");
-        setToastStatus({status: 1});
-      }
-      else {
-        // window.alert("上传失败")
-        setToastStatus({status: 1, text:"服务器没有接收到文件"});
-      }
-    }).catch(error => {
-      setLoading(false);
-      setToastStatus({status: 2, text: "服务器没有开启"});
-      console.log(error);
-    });
+    // setLoading(true);
+    // uploadFunc(uploadAddr, file).then(result => {
+    //   setLoading(false);
+    //   setFile(undefined);
+    //   if(result) {
+    //     // window.alert("上传成功");
+    //     setToastStatus({status: 1});
+    //   }
+    //   else {
+    //     // window.alert("上传失败")
+    //     setToastStatus({status: 1, text:"服务器没有接收到文件"});
+    //   }
+    // }).catch(error => {
+    //   setLoading(false);
+    //   setToastStatus({status: 2, text: "服务器没有开启"});
+    //   console.log(error);
+    // });
+    console.log((window as any).pywebview.api.send_file(file));
   }
   const openHandler = () => {
     if(inputRef.current != null) {

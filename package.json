@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack server --open --config ./config/webpack.dev.config.js",
-    "start": "npm run build && python -u ./main.py",
+    "dev-server": "webpack server --config ./config/webpack.dev.config.js",
+    "launch-client": "python -u ./main.py --mode debug",
+    "start": "npm-run-all --parallel dev-server launch-client",
     "build": "webpack --config ./config/webpack.prod.config.js"
   },
   "author": "shxd@hust",
@@ -20,6 +21,7 @@
     "css-loader": "^6.7.1",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.6.1",
+    "npm-run-all": "^4.1.5",
     "style-loader": "^3.3.1",
     "typescript": "^4.8.4",
     "webpack": "^5.74.0",
