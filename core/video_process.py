@@ -23,12 +23,7 @@ def videoProcessing_byframe(frame, protect_item, expose_item):
     pro = Protector()
     pro.protect_conditions = [protect_item]
     pro.expose_conditions = [expose_item]
-    # frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
-    print("1")
-    # frame = cv2.imencode(frame, cv2.IMREAD_COLOR)
-    # print("2")
     pro_frame = pro.process_frame(frame)
-    print("3")
     return pro_frame
 
 '''

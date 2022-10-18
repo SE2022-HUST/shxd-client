@@ -58,7 +58,7 @@ function App() {
     <div className="App">
       <AlertBar status={toastStatus} updateStatus={setToastStatus} />
       <div className='MainBar'>
-        <Box component="form">
+        <Box component="form" className='main-bar'>
           <FileInput action={openFileHandler} ref={inputRef} />
           <ControlPanel file={file} loading={loading} openHandler={() => openButtonClickHandler()} uploadHandler={() => uploadHandler()} clearHandler={() => clearHandler()} />
         </Box>
