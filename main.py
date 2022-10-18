@@ -14,7 +14,7 @@ from core.video_process import videoProcessing_byframe
 class Api:
     def fullscreen(self):
         webview.windows[0].toggle_fullscreen()
-
+    
     def send_file(self, data: dict):
         
         # print(data['height'])
@@ -77,7 +77,8 @@ if __name__ == '__main__':
 		# height=300,
         js_api=Api()
     )
+    debug = get_cmd_arg()
     server_on = True
-    if(get_cmd_arg()):
+    if(debug):
         server_on = False
-    webview.start(http_server=server_on, gui="edgechromium")  #必须使用server模式打开，否则Webview会报错
+    webview.start(http_server=True, gui="edgechromium", debug=debug)  #必须使用server模式打开，否则Webview会报错
