@@ -37,7 +37,7 @@ function App() {
     //   console.log(error);
     // });
     const ret = (window as any).pywebview.api.send_file(file);
-    setToastStatus({status: 2, text: ret});
+    ret.then((res: any) => {setToastStatus({status: 2, text: res})})
     setLoading(false);
   }
   const openHandler = () => {
@@ -56,7 +56,7 @@ function App() {
         <Box component="form">
           <FileInput action={(file: File) => setFile(file)} ref={inputRef} />
           <ControlPanel file={file} loading={loading} openHandler={() => openHandler()} uploadHandler={() => uploadHandler()} clearHandler={() => clearHandler()} />
-          <CanvasFrame text="id"></CanvasFrame>
+          {/* <CanvasFrame text="id"></CanvasFrame> */}
         </Box>
       </div>
     </div >
