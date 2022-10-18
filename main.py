@@ -17,23 +17,24 @@ class Api:
 
     def send_file(self, data: dict):
         
-        print(data['height'])
-        print(data['width'])
-        print(data['data'])
+        # print(data['height'])
+        # print(data['width'])
+        # print(data['data'])
         mat = np.array(data['data'])
         # for item1 in data['data']:
         #     temp_data = []
         #     for item2 in data['data'][item1]:
         #         temp_data.append(np.array(item2))
         #     mat.append(np.array(temp_data))
-        print('####mat', mat.shape)
+        print('mat', mat.shape)
         # img = cv2.imread('./test.jpg')
         # print('img', img.shape)
         # # cv2.imshow('fuck', mat)
         # cv2.imwrite('./testss.png', img)
         cv2.imwrite('./sonofbitch.png', mat)
+        ret_frame = mat
         # ret_frame = videoProcessing_byframe(mat, ['license'], ['car'])
-        return mat
+        return ret_frame.tolist()
 
 def get_cmd_arg():
     argv = sys.argv[1:]

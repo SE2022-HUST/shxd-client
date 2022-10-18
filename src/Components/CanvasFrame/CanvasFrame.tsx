@@ -1,22 +1,29 @@
+import styled from '@emotion/styled';
 import Box from '@mui/material/Box/Box';
 import React, { useState, useRef, useEffect } from 'react';
 import { FrameData } from '../../Apis/Types';
-import { dataAlter } from '../../Apis/Utils';
+import { matrixEncode, matrixDecode } from '../../Apis/Utils';
 import VideoPlyaer from './VideoPlayer';
 
 interface IProps {
     videoSrc: string | undefined,
-    uploadFrame: (data: any) => any,
+    uploadFrame: (data: any) => Promise<any>,
 }
 
 function CanvasFrame(props: IProps) {
-    const canvasRef = useRef<HTMLCanvasElement>(null); // 注意ref必须赋初值null 否则报错
+    const originCanvasRef = useRef<HTMLCanvasElement>(null); // 注意ref必须赋初值null 否则报错
+    const processedCanvasRef = useRef<HTMLCanvasElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
-    const [context, setContext] = useState<CanvasRenderingContext2D | null>(null)
+    const [contextBefore, setContextBefore] = useState<CanvasRenderingContext2D | null>(null)
+    const [contextAfter, setContextAfter] = useState<CanvasRenderingContext2D | null>(null)
     useEffect(() => {
-        if (canvasRef.current !== null) {
-            setContext(canvasRef.current.getContext('2d'));
+        if (originCanvasRef.current !== null) {
+            setContextBefore(originCanvasRef.current.getContext('2d'));
         }
+        if (processedCanvasRef.current !== null) {
+            setContextAfter(processedCanvasRef.current.getContext('2d'));
+        }
+
     })
 
     const captureFrame = () => {
@@ -24,34 +31,51 @@ function CanvasFrame(props: IProps) {
             if (videoRef.current.paused || videoRef.current.ended) {
                 return;
             }
-            if (context !== null && videoRef.current !== null && canvasRef.current !== null) {
-                context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
+            if (contextBefore !== null && videoRef.current !== null && originCanvasRef.current !== null) {
+                contextBefore.drawImage(videoRef.current, 0, 0, originCanvasRef.current.width, originCanvasRef.current.height);
             }
             setTimeout(() => { captureFrame() }, 0);
         }
     }
     
-    const divRef = useRef<HTMLDivElement>(null);
+    const canvasStyle = {
+        marginRight: '2rem',
+        marginLeft: '2rem',
+    }
+
+    const testHandler = () => {
+        videoRef.current?.pause();
+        const rawData = contextBefore!.getImageData(0, 0, originCanvasRef.current!.width, originCanvasRef.current!.height);
+        const data: FrameData = {
+            data: matrixEncode(rawData),
+            height: rawData.height,
+            width: rawData.width,
+        }
+        console.log(data.data)
+        props.uploadFrame(data)
+        .then((res) => {
+            // alert(res);
+            const retData = matrixDecode(res);
+            const newData = new ImageData(retData, data.width, data.height);
+            if(contextAfter !== null) {
+                contextAfter.putImageData(newData, 0, 0);
+            }
+            videoRef.current?.play();
+        });
+    }
+    
     return (
-        <Box>
-            <VideoPlyaer src={props.videoSrc} ref={videoRef} frameCatch={captureFrame} />
-            <canvas ref={canvasRef}></canvas>
-            <button onClick={() => {
-                const rawData = context!.getImageData(0, 0, canvasRef.current!.width, canvasRef.current!.height);
-                const data: FrameData = {
-                    data: dataAlter(rawData),
-                    height: rawData.height,
-                    width: rawData.width,
-                }
-                // divRef.current!.innerHTML = JSON.stringify(data);
-                console.log(rawData.data)
-                console.log(data.data)
-                videoRef.current?.pause();
-                const ret = props.uploadFrame(data);
-                divRef.current!.innerHTML = ret;
-            }}>测试</button>
-            <div ref={divRef} style={{ width: "20rem", overflow: 'hidden' }}>test</div>
-        </Box>
+        <div>
+            <Box>
+                <VideoPlyaer src={props.videoSrc} ref={videoRef} frameCatch={captureFrame} />
+                <canvas style={canvasStyle} ref={originCanvasRef}></canvas>
+                <canvas style={canvasStyle} ref={processedCanvasRef}></canvas>
+            </Box>
+            <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+                <button onClick={testHandler}>测试</button>
+
+            </Box>
+        </div>
     )
 }
 

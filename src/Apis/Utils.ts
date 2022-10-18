@@ -19,7 +19,7 @@ export async function uploadFunc(url: string, file: File | undefined) {
     }
 }
 
-export function dataAlter(data: ImageData) {
+export function matrixEncode(data: ImageData) {
     let l = data.data.length;
     let pixel = new Array<number>(3);
     let row = new Array<Array<number>>();
@@ -37,4 +37,17 @@ export function dataAlter(data: ImageData) {
     }
 
     return mat;
+}
+
+export function matrixDecode(mat: Array<Array<Array<number>>>) {
+    let data = new Array<number>();
+    for(let row of mat) {
+        for(let pixel of row) {
+            data.push(pixel[0]);
+            data.push(pixel[1]);
+            data.push(pixel[2]);
+            data.push(255);
+        }
+    }
+    return new Uint8ClampedArray(data);
 }

@@ -7,7 +7,7 @@ interface IProps {
 
 const VideoPlyaer = React.forwardRef<HTMLVideoElement, IProps>((props: IProps, ref) => {
     return (
-        <video ref={ref} src={props.src} onPlay={props.frameCatch} hidden autoPlay style={{display:'none'}} />
+        <video ref={ref} src={props.src} onPlay={props.frameCatch} hidden autoPlay muted style={{display:'none'}} />
     )
 })
 
