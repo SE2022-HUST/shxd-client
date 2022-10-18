@@ -33,7 +33,7 @@ function CanvasFrame(props: IProps) {
                 return;
             }
             if (contextBefore !== null && videoRef.current !== null && originCanvasRef.current !== null) {
-                contextBefore.drawImage(videoRef.current, 0, 0, originCanvasRef.current.width, originCanvasRef.current.height);
+                contextBefore.drawImage(videoRef.current, 0, 0, videoRef.current.videoWidth, videoRef.current.videoHeight);
             }
             setTimeout(() => { captureFrame() }, 0);
         }
@@ -42,11 +42,22 @@ function CanvasFrame(props: IProps) {
     const canvasStyle = {
         marginRight: '2rem',
         marginLeft: '2rem',
+        // width: '1024px',
+        // height: '768px',
     }
 
     const testHandler = () => {
+        if(videoRef.current?.ended === true) {
+            alert("视频已结束！")
+            return;
+        }
+        if(videoRef.current === null) {
+            return;
+        }
         videoRef.current?.pause();
-        const rawData = contextBefore!.getImageData(0, 0, originCanvasRef.current!.width, originCanvasRef.current!.height);
+        const height = videoRef.current.videoHeight;
+        const width = videoRef.current.videoWidth;
+        const rawData = contextBefore!.getImageData(0, 0, width, height);
         const data: FrameData = {
             data: matrixEncode(rawData),
             height: rawData.height,
@@ -69,8 +80,12 @@ function CanvasFrame(props: IProps) {
         <div>
             <Box>
                 <VideoPlyaer src={props.videoSrc} ref={videoRef} frameCatch={captureFrame} />
-                <canvas style={canvasStyle} ref={originCanvasRef}></canvas>
-                <canvas style={canvasStyle} ref={processedCanvasRef}></canvas>
+                <Box>
+                    <canvas hidden width="1920px" height="1080px" style={canvasStyle} ref={originCanvasRef}></canvas>
+                </Box>
+                <Box>
+                    <canvas width="800px" height="450px" style={canvasStyle} ref={processedCanvasRef}></canvas>
+                </Box>
             </Box>
             <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
                 <button onClick={testHandler}>测试</button>

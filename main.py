@@ -21,20 +21,20 @@ class Api:
         # print(data['width'])
         # print(data['data'])
         mat = np.array(data['data'])
-        # for item1 in data['data']:
+        mat = mat.astype(np.uint8)          # for item1 in data['data']:
         #     temp_data = []
         #     for item2 in data['data'][item1]:
         #         temp_data.append(np.array(item2))
         #     mat.append(np.array(temp_data))
-        print('mat', mat.shape)
+        print('mat', mat.dtype)
         # img = cv2.imread('./test.jpg')
         # print('img', img.shape)
         # # cv2.imshow('fuck', mat)
         # cv2.imwrite('./testss.png', img)
         cv2.imwrite('./before.png', mat)
-        img = cv2.imread('./before.png')
+        # img = cv2.imread('./before.png')
         ret_frame = mat
-        ret_frame = videoProcessing_byframe(img, ['license'], ['car'])
+        ret_frame = videoProcessing_byframe(mat, ['license'], ['car'])
         cv2.imwrite('./after.png', ret_frame)
         return ret_frame.tolist()
 
@@ -80,4 +80,4 @@ if __name__ == '__main__':
     server_on = True
     if(get_cmd_arg()):
         server_on = False
-    webview.start(http_server=server_on)  #必须使用server模式打开，否则Webview会报错
+    webview.start(http_server=server_on, gui="edgechromium")  #必须使用server模式打开，否则Webview会报错

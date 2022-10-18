@@ -25,9 +25,9 @@ export function matrixEncode(data: ImageData) {
     let row = new Array<Array<number>>();
     let mat = new Array<Array<Array<number>>>()
     for (let i = 0; i < l; i += 4) {
-        pixel[0] = data.data[i];
-        pixel[1] = data.data[i+1];
-        pixel[2] = data.data[i+2];
+        pixel[0] = data.data[i+2]; //red
+        pixel[1] = data.data[i+1]; //green
+        pixel[2] = data.data[i]; //blue
         row.push(pixel);
         pixel = new Array<number>(3);
         if(row.length >= data.width) {
@@ -43,9 +43,9 @@ export function matrixDecode(mat: Array<Array<Array<number>>>) {
     let data = new Array<number>();
     for(let row of mat) {
         for(let pixel of row) {
-            data.push(pixel[0]);
-            data.push(pixel[1]);
             data.push(pixel[2]);
+            data.push(pixel[1]);
+            data.push(pixel[0]);
             data.push(255);
         }
     }
