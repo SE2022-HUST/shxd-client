@@ -18,6 +18,15 @@ import socket
 from utils import SocketCommunication
 import multiprocessing as mp
 
+
+def videoProcessing_byframe(frame, protect_item, expose_item):
+    pro = Protector()
+    pro.protect_conditions = [protect_item]
+    pro.expose_conditions = [expose_item]
+    frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
+    pro_frame = pro.process_frame(frame)
+    return pro_frame
+
 '''
 def videoProcessing(video_name, protect_item, expose_item, skip_frame_cnt=0, debug=False, inputdir=os.path.abspath('./core/dataset/car/')):
 

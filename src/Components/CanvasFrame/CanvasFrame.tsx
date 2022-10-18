@@ -1,11 +1,12 @@
 import Box from '@mui/material/Box/Box';
 import React, { useState, useRef, useEffect } from 'react';
 import { FrameData } from '../../Apis/Types';
+import { dataAlter } from '../../Apis/Utils';
 import VideoPlyaer from './VideoPlayer';
 
 interface IProps {
     videoSrc: string | undefined,
-    uploadFrame: (data: any) => Promise<any>,
+    uploadFrame: (data: any) => any,
 }
 
 function CanvasFrame(props: IProps) {
@@ -38,17 +39,17 @@ function CanvasFrame(props: IProps) {
             <button onClick={() => {
                 const rawData = context!.getImageData(0, 0, canvasRef.current!.width, canvasRef.current!.height);
                 const data: FrameData = {
-                    data: rawData.data,
+                    data: dataAlter(rawData),
                     height: rawData.height,
                     width: rawData.width,
                 }
-                divRef.current!.innerHTML = JSON.stringify(data);
+                // divRef.current!.innerHTML = JSON.stringify(data);
+                console.log(rawData.data)
+                console.log(data.data)
                 videoRef.current?.pause();
-                props.uploadFrame(data).then((res) => {
-                    videoRef.current?.play();
-                    alert(res);
-                })
-            }}>输出ImgData到Console</button>
+                const ret = props.uploadFrame(data);
+                divRef.current!.innerHTML = ret;
+            }}>测试</button>
             <div ref={divRef} style={{ width: "20rem", overflow: 'hidden' }}>test</div>
         </Box>
     )
