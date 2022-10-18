@@ -9,17 +9,16 @@ interface IProps {
 function CanvasFrame(props: IProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null); // 注意ref必须赋初值null 否则报错
     const videoRef = useRef<HTMLVideoElement>(null);
-    let ctx: any;
+    const [context, setContext] = useState<CanvasRenderingContext2D | null>(null)
     useEffect(() => {
-        if(canvasRef !== null && canvasRef.current !== null) {
-            ctx = canvasRef.current.getContext('2d');
+        if(canvasRef.current !== null) {
+            setContext(canvasRef.current.getContext('2d'));
         }
     })
 
     const captureFrame = () => {
-        const context = ctx as CanvasRenderingContext2D;
-        if(context !== undefined && videoRef.current !== null) {
-            context.drawImage(videoRef.current, 0, 0, canvasRef.current?.width, canvasRef.current?.height);
+        if(context !== null && videoRef.current !== null && canvasRef.current !== null) {
+            context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
         }
     }
 
