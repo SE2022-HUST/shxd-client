@@ -13,20 +13,20 @@ function CanvasFrame(props: IProps) {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [context, setContext] = useState<CanvasRenderingContext2D | null>(null)
     useEffect(() => {
-        if(canvasRef.current !== null) {
+        if (canvasRef.current !== null) {
             setContext(canvasRef.current.getContext('2d'));
         }
     })
 
     const captureFrame = () => {
-        if(videoRef.current !== null) {
-            if(videoRef.current.paused || videoRef.current.ended) {
+        if (videoRef.current !== null) {
+            if (videoRef.current.paused || videoRef.current.ended) {
                 return;
             }
-            if(context !== null && videoRef.current !== null && canvasRef.current !== null) {
+            if (context !== null && videoRef.current !== null && canvasRef.current !== null) {
                 context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
             }
-            setTimeout(()=>{captureFrame()}, 0);
+            setTimeout(() => { captureFrame() }, 0);
         }
     }
     // var img = new Image()
@@ -89,8 +89,8 @@ function CanvasFrame(props: IProps) {
                     videoRef.current?.play();
                     alert(res);
                 })
-                }}>输出ImgData到Console</button>
-            <div ref={divRef} style={{width: "20rem", overflow: 'hidden'}}>test</div>
+            }}>输出ImgData到Console</button>
+            <div ref={divRef} style={{ width: "20rem", overflow: 'hidden' }}>test</div>
         </Box>
     )
 }
