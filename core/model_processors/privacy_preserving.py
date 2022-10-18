@@ -293,7 +293,38 @@ class Protector:
         if self.debug:
             draw_bboxes(new_img, detect_res.get_objects())
         return new_img
+    
+    def get_obj(self, frame, frame_id = 0):
+
+        if self.cache and self.target_detect_cache != None and frame_id in self.target_detect_cache:
+                detect_res = self.target_detect_cache[frame_id]
+                # print("Use detect cache at frame", frame_id)
+        else:
+            # we need to optimize the detect model, because we are confident that detect once is sufficient.
+            detect_res = detect_for_fxevs(frame)
+            detect_res.append(detect_for_fxevs(frame, 1))
+            detect_res.append(detect_face_facenet(frame))
         
+        
+        if self.tracking:
+            # print("Before Tracking {} objects are found.".format(detect_res.get_objects().shape[0]))
+            # do tracking
+            ## one problem last: the accumulate error should be aware.
+            # 
+            if frame_id - self.last_frame_id <= self.MAX_FRAME_DIFF:
+                do_tracking(self.last_frame, self.last_det_res, frame, detect_res, self.tracker_type)
+            else:
+                self.last_frame_id = frame_id
+            # print("After Tracking {} objects are found.".format(detect_res.get_objects().shape[0]))
+            self.last_frame = frame
+            self.last_det_res = detect_res
+            
+            
+        # save the detect_res into cache
+        if self.cache and self.target_detect_cache != None and frame_id not in self.target_detect_cache:
+            self.target_detect_cache[frame_id] = detect_res
+            # print("save detect result at frame", frame_id)
+        return detect_res.get_objects()
 
 
 loss_last_raw_frame = None
@@ -380,40 +411,6 @@ def calculate_info_loss(raw_frame, protected_frame, target_class=None, IOU_THRES
     precision = recognized_cnt / protected_detect_cnt if protected_detect_cnt else 0.
 
     return [raw_detect_cnt, protected_detect_cnt, recognized_cnt, precision, recall]
-
-
-
-def get_obj(self, frame, frame_id = 0):
-
-    if self.cache and self.target_detect_cache != None and frame_id in self.target_detect_cache:
-            detect_res = self.target_detect_cache[frame_id]
-            # print("Use detect cache at frame", frame_id)
-    else:
-        # we need to optimize the detect model, because we are confident that detect once is sufficient.
-        detect_res = detect_for_fxevs(frame)
-        detect_res.append(detect_for_fxevs(frame, 1))
-        detect_res.append(detect_face_facenet(frame))
-    
-    
-    if self.tracking:
-        # print("Before Tracking {} objects are found.".format(detect_res.get_objects().shape[0]))
-        # do tracking
-        ## one problem last: the accumulate error should be aware.
-        # 
-        if frame_id - self.last_frame_id <= self.MAX_FRAME_DIFF:
-            do_tracking(self.last_frame, self.last_det_res, frame, detect_res, self.tracker_type)
-        else:
-            self.last_frame_id = frame_id
-        # print("After Tracking {} objects are found.".format(detect_res.get_objects().shape[0]))
-        self.last_frame = frame
-        self.last_det_res = detect_res
-        
-        
-    # save the detect_res into cache
-    if self.cache and self.target_detect_cache != None and frame_id not in self.target_detect_cache:
-        self.target_detect_cache[frame_id] = detect_res
-        # print("save detect result at frame", frame_id)
-    return detect_res.get_objects()
 
 
 
