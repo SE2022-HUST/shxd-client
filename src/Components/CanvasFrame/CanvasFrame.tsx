@@ -1,9 +1,11 @@
 import Box from '@mui/material/Box/Box';
 import React, { useState, useRef, useEffect } from 'react';
+import { FrameData } from '../../Apis/Types';
 import VideoPlyaer from './VideoPlayer';
 
 interface IProps {
     videoSrc: string | undefined,
+    uploadFrame: (data: any) => Promise<any>,
 }
 
 function CanvasFrame(props: IProps) {
@@ -17,18 +19,14 @@ function CanvasFrame(props: IProps) {
     })
 
     const captureFrame = () => {
-        if(context !== null && videoRef.current !== null && canvasRef.current !== null) {
-            context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
-        }
-    }
-
-    const getVideoFrame = () => {
         if(videoRef.current !== null) {
             if(videoRef.current.paused || videoRef.current.ended) {
                 return;
             }
-            captureFrame();
-            setTimeout(()=>{getVideoFrame()}, 0);
+            if(context !== null && videoRef.current !== null && canvasRef.current !== null) {
+                context.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
+            }
+            setTimeout(()=>{captureFrame()}, 0);
         }
     }
     // var img = new Image()
@@ -73,11 +71,26 @@ function CanvasFrame(props: IProps) {
     //     e.value = JSON.stringify(list);//不知道为啥必须加";"？？
     //     (box as any).append(e)
     // }
-
+    const divRef = useRef<HTMLDivElement>(null);
     return (
         <Box>
-            <VideoPlyaer src={props.videoSrc} ref={videoRef} frameCatch={getVideoFrame} />
+            <VideoPlyaer src={props.videoSrc} ref={videoRef} frameCatch={captureFrame} />
             <canvas ref={canvasRef}></canvas>
+            <button onClick={() => {
+                const rawData = context!.getImageData(0, 0, canvasRef.current!.width, canvasRef.current!.height);
+                const data: FrameData = {
+                    data: rawData.data,
+                    height: rawData.height,
+                    width: rawData.width,
+                }
+                divRef.current!.innerHTML = JSON.stringify(data);
+                videoRef.current?.pause();
+                props.uploadFrame(data).then((res) => {
+                    videoRef.current?.play();
+                    alert(res);
+                })
+                }}>输出ImgData到Console</button>
+            <div ref={divRef} style={{width: "20rem", overflow: 'hidden'}}>test</div>
         </Box>
     )
 }

@@ -11,11 +11,13 @@ class Api:
     def fullscreen(self):
         webview.windows[0].toggle_fullscreen()
 
-    def send_file(self, video):
-        print(video)
-        print(type(video))
-        sleep(3)
-        return True
+    def send_file(self, data: dict):
+        print(data.keys())
+        print(data['data'])
+        print(data['height'])
+        print(data['width'])
+        sleep(1)
+        return data
 
 def get_cmd_arg():
     argv = sys.argv[1:]
@@ -51,9 +53,9 @@ if __name__ == '__main__':
     # t.start()
     webview.create_window('Video Processor', 
 		url=get_entrypoint(),
-		resizable=False,
-		width=600,
-		height=300,
+		# resizable=False,
+		# width=600,
+		# height=300,
         js_api=Api()
     )
     server_on = True

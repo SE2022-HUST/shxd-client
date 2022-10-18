@@ -62,7 +62,7 @@ function App() {
           <FileInput action={openFileHandler} ref={inputRef} />
           <ControlPanel file={file} loading={loading} openHandler={() => openButtonClickHandler()} uploadHandler={() => uploadHandler()} clearHandler={() => clearHandler()} />
         </Box>
-        <CanvasFrame videoSrc={videoSrc} />
+        <CanvasFrame videoSrc={videoSrc} uploadFrame={(data) => (window as any).pywebview.api.send_file(data)} />
       </div>
     </div >
   );
