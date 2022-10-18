@@ -5,19 +5,19 @@ import webview
 import os
 import sys
 import getopt
+import numpy as np
+from core.video_process import videoProcessing_byframe
 # from core.video_process import Video_Processing
+
 
 class Api:
     def fullscreen(self):
         webview.windows[0].toggle_fullscreen()
 
     def send_file(self, data: dict):
-        print(data.keys())
-        print(data['data'])
-        print(data['height'])
-        print(data['width'])
-        sleep(1)
-        return data
+        mat = np.darray(data['data'], shape=(3, data['height'], data['width']))
+        ret_frame = videoProcessing_byframe(mat, ['license'], ['car'])
+        return ret_frame
 
 def get_cmd_arg():
     argv = sys.argv[1:]
