@@ -23,6 +23,7 @@ function CanvasFrame(props: IProps) {
         if (processedCanvasRef.current !== null) {
             setContextAfter(processedCanvasRef.current.getContext('2d'));
         }
+        videoRef.current?.play();
 
     })
 

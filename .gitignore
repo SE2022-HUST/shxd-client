@@ -14,7 +14,6 @@ output/
 images/
 dataset/
 debug/
-core/yolov5
 
 # Node
 # dependencies

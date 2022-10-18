@@ -7,7 +7,7 @@ import sys
 import getopt
 import numpy as np
 import cv2
-# from core.video_process import videoProcessing_byframe
+from core.video_process import videoProcessing_byframe
 # from core.video_process import Video_Processing
 
 
@@ -31,9 +31,11 @@ class Api:
         # print('img', img.shape)
         # # cv2.imshow('fuck', mat)
         # cv2.imwrite('./testss.png', img)
-        cv2.imwrite('./sonofbitch.png', mat)
+        cv2.imwrite('./before.png', mat)
+        img = cv2.imread('./before.png')
         ret_frame = mat
-        # ret_frame = videoProcessing_byframe(mat, ['license'], ['car'])
+        ret_frame = videoProcessing_byframe(img, ['license'], ['car'])
+        cv2.imwrite('./after.png', ret_frame)
         return ret_frame.tolist()
 
 def get_cmd_arg():
