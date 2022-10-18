@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "webpack server --open --config ./config/webpack.dev.config.js",
     "dev-server": "webpack server --config ./config/webpack.dev.config.js",
     "launch-client": "python -u ./main.py --mode debug",
     "start": "npm-run-all --parallel dev-server launch-client",

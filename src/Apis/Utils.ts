@@ -1,4 +1,4 @@
-async function uploadFunc(url: string, file: File | undefined) {
+export async function uploadFunc(url: string, file: File | undefined) {
     if(file === undefined) {
         return false;
     }
@@ -16,5 +16,3 @@ async function uploadFunc(url: string, file: File | undefined) {
         return false;
     }
 }
-
-export default uploadFunc;

@@ -3,18 +3,16 @@ import { Box } from '@mui/material';
 import './Styles/App.css';
 import FileInput from './Components/FileInput/FileInput';
 import ControlPanel from './Components/ControlPanel/ControlPanel';
-import uploadFunc from './Apis/Upload';
-import { uploadAddr } from './Apis/Constants';
 import AlertBar from './Components/AlertBar/AlertBar';
 
 import { IStatus } from './Types/Props';
-
-import CanvasFrame from './Components/CanvasFrame'
+import CanvasFrame from './Components/CanvasFrame/CanvasFrame';
 
 function App() {
   const [file, setFile] = useState<File>();
   const [loading, setLoading] = useState<boolean>(false);
   const [toastStatus, setToastStatus] = useState<IStatus>({ status: 0 });
+  const [videoSrc, setVideoSrc] = useState<string>();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const uploadHandler = () => {
@@ -40,7 +38,7 @@ function App() {
     ret.then((res: any) => {setToastStatus({status: 2, text: res})})
     setLoading(false);
   }
-  const openHandler = () => {
+  const openButtonClickHandler = () => {
     if (inputRef.current != null) {
       inputRef.current.click();
     }
@@ -49,15 +47,22 @@ function App() {
     setFile(undefined);
   }
 
+  const openFileHandler = (file: File) => {
+    setFile(file);
+    const url = URL.createObjectURL(file);
+    setVideoSrc(url);
+    console.log(url);
+  }
+
   return (
     <div className="App">
       <AlertBar status={toastStatus} updateStatus={setToastStatus} />
       <div className='MainBar'>
         <Box component="form">
-          <FileInput action={(file: File) => setFile(file)} ref={inputRef} />
-          <ControlPanel file={file} loading={loading} openHandler={() => openHandler()} uploadHandler={() => uploadHandler()} clearHandler={() => clearHandler()} />
-          {/* <CanvasFrame text="id"></CanvasFrame> */}
+          <FileInput action={openFileHandler} ref={inputRef} />
+          <ControlPanel file={file} loading={loading} openHandler={() => openButtonClickHandler()} uploadHandler={() => uploadHandler()} clearHandler={() => clearHandler()} />
         </Box>
+        <CanvasFrame videoSrc={videoSrc} />
       </div>
     </div >
   );
