@@ -6,7 +6,8 @@ import os
 import sys
 import getopt
 import numpy as np
-from core.video_process import videoProcessing_byframe
+import cv2
+# from core.video_process import videoProcessing_byframe
 # from core.video_process import Video_Processing
 
 
@@ -15,9 +16,24 @@ class Api:
         webview.windows[0].toggle_fullscreen()
 
     def send_file(self, data: dict):
-        mat = np.darray(data['data'], shape=(3, data['height'], data['width']))
-        ret_frame = videoProcessing_byframe(mat, ['license'], ['car'])
-        return ret_frame
+        
+        print(data['height'])
+        print(data['width'])
+        print(data['data'])
+        mat = np.array(data['data'])
+        # for item1 in data['data']:
+        #     temp_data = []
+        #     for item2 in data['data'][item1]:
+        #         temp_data.append(np.array(item2))
+        #     mat.append(np.array(temp_data))
+        print('####mat', mat.shape)
+        # img = cv2.imread('./test.jpg')
+        # print('img', img.shape)
+        # # cv2.imshow('fuck', mat)
+        # cv2.imwrite('./testss.png', img)
+        cv2.imwrite('./sonofbitch.png', mat)
+        # ret_frame = videoProcessing_byframe(mat, ['license'], ['car'])
+        return mat
 
 def get_cmd_arg():
     argv = sys.argv[1:]
