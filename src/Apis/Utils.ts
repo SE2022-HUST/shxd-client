@@ -21,8 +21,3 @@ export function dataAlter(data: ImageData) {
     }
     return [R, G, B];
 }
-
-export function matrixAlter(matrix: [Array<Array<number>>, Array<Array<number>>, Array<Array<number>>], length: number) {
-    for (let i = 0; i < length; i++) {
-    }
-}
