@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, { useState, useRef } from 'react';
 import { Box } from '@mui/material';
 import './Styles/App.css';
 import FileInput from './Components/FileInput/FileInput';
@@ -9,10 +9,12 @@ import AlertBar from './Components/AlertBar/AlertBar';
 
 import { IStatus } from './Types/Props';
 
+import CanvasFrame from './Components/CanvasFrame'
+
 function App() {
   const [file, setFile] = useState<File>();
   const [loading, setLoading] = useState<boolean>(false);
-  const [toastStatus, setToastStatus] = useState<IStatus>({status: 0});
+  const [toastStatus, setToastStatus] = useState<IStatus>({ status: 0 });
   const inputRef = useRef<HTMLInputElement>(null);
 
   const uploadHandler = () => {
@@ -39,7 +41,7 @@ function App() {
     setLoading(false);
   }
   const openHandler = () => {
-    if(inputRef.current != null) {
+    if (inputRef.current != null) {
       inputRef.current.click();
     }
   }
@@ -53,10 +55,11 @@ function App() {
       <div className='MainBar'>
         <Box component="form">
           <FileInput action={(file: File) => setFile(file)} ref={inputRef} />
-          <ControlPanel file={file} loading={loading} openHandler={()=>openHandler()} uploadHandler={()=>uploadHandler()} clearHandler={()=>clearHandler()} />
+          <ControlPanel file={file} loading={loading} openHandler={() => openHandler()} uploadHandler={() => uploadHandler()} clearHandler={() => clearHandler()} />
+          <CanvasFrame text="id"></CanvasFrame>
         </Box>
       </div>
-    </div>
+    </div >
   );
 }
 
