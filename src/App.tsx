@@ -17,7 +17,7 @@ function App() {
 
   const uploadHandler = () => {
     console.log(file);
-    // setLoading(true);
+    setLoading(true);
     // uploadFunc(uploadAddr, file).then(result => {
     //   setLoading(false);
     //   setFile(undefined);
@@ -34,7 +34,9 @@ function App() {
     //   setToastStatus({status: 2, text: "服务器没有开启"});
     //   console.log(error);
     // });
-    console.log((window as any).pywebview.api.send_file(file));
+    const ret = (window as any).pywebview.api.send_file(file);
+    setToastStatus({status: 2, text: ret});
+    setLoading(false);
   }
   const openHandler = () => {
     if(inputRef.current != null) {

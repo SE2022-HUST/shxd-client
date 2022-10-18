@@ -1,10 +1,11 @@
-from concurrent.futures import process
 import string
 from threading import Thread
+from time import sleep
 import webview
 import os
 import sys
 import getopt
+# from core.video_process import Video_Processing
 
 class Api:
     def fullscreen(self):
@@ -13,6 +14,7 @@ class Api:
     def send_file(self, video):
         print(video)
         print(type(video))
+        sleep(3)
         return True
 
 def get_cmd_arg():
@@ -38,6 +40,15 @@ def get_entrypoint():
     raise Exception('No index.html found')
 
 if __name__ == '__main__':
+    # backend = Video_Processing()
+    # model = None
+    # def run_model():
+    #     model = backend.initialize_model()
+    #     if(model != None):
+    #         backend.warm_up_model()
+    #         print("Model Started Success!")
+    # t = Thread(target=run_model, daemon=True)
+    # t.start()
     webview.create_window('Video Processor', 
 		url=get_entrypoint(),
 		resizable=False,
