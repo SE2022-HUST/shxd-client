@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 import { FrameData } from './Types';
 
 export async function uploadFunc(url: string, file: File | undefined) {
@@ -21,7 +19,6 @@ export async function uploadFunc(url: string, file: File | undefined) {
     }
 }
 
->>>>>>> ad084c7b6d26b059150f44813dfad00a9d5fdb49
 export function dataAlter(data: ImageData) {
     let l = data.data.length;
     let R = new Array<Array<number>>();
@@ -32,22 +29,34 @@ export function dataAlter(data: ImageData) {
     let rowBlue = new Array<number>();
     for (let i = 0; i < l; i += 4) {
         rowRed.push(data.data[i]);
-<<<<<<< HEAD
+
         rowGreen.push(data.data[i + 1]);
         rowBlue.push(data.data[i + 2]);
         if (rowRed.length >= data.width) {
-=======
-        rowGreen.push(data.data[i+1]);
-        rowBlue.push(data.data[i+2]);
-        if(rowRed.length >= data.width) {
->>>>>>> ad084c7b6d26b059150f44813dfad00a9d5fdb49
-            R.push(rowRed);
-            rowRed = new Array<number>();
-            G.push(rowGreen);
-            rowGreen = new Array<number>();
-            B.push(rowBlue);
-            rowBlue = new Array<number>();
+
+            rowGreen.push(data.data[i + 1]);
+            rowBlue.push(data.data[i + 2]);
+            if (rowRed.length >= data.width) {
+                R.push(rowRed);
+                rowRed = new Array<number>();
+                G.push(rowGreen);
+                rowGreen = new Array<number>();
+                B.push(rowBlue);
+                rowBlue = new Array<number>();
+            }
+        }
+        return [R, G, B];
+    }
+}
+
+export function matrixAlter(matrix: [Array<Array<number>>, Array<Array<number>>, Array<Array<number>>]) {
+    let data = new Array();
+    let k = 0;
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < matrix[0].length; j++) {
+            data[k] = matrix[i][j];
+            k++;
         }
     }
-    return [R, G, B];
+    return data;
 }
