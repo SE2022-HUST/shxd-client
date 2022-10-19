@@ -19,14 +19,17 @@ function CanvasFrame(props: IProps) {
     const [contextBefore, setContextBefore] = useState<CanvasRenderingContext2D | null>(null)
     const [contextAfter, setContextAfter] = useState<CanvasRenderingContext2D | null>(null)
     useEffect(() => {
+        // originCanvasRef.current.width = videoRef.current.videoWidth;
+        // originCanvasRef.current.height = videoRef.current.videoHeight;
+        // containerCanvasRef.current.width = videoRef.current.videoWidth;
+        // containerCanvasRef.current.height = videoRef.current.videoHeight;
         if (originCanvasRef.current !== null) {
             setContextBefore(originCanvasRef.current.getContext('2d'));
         }
         if (processedCanvasRef.current !== null) {
             setContextAfter(processedCanvasRef.current.getContext('2d'));
         }
-        videoRef.current?.play();
-
+        videoRef.current?.play()
     })
 
     const captureFrame = () => {
@@ -53,7 +56,7 @@ function CanvasFrame(props: IProps) {
             alert("视频已结束！")
             return;
         }
-        if(videoRef.current === null) {
+        if(videoRef.current.src === "" || videoRef.current === null) {
             return;
         }
         videoRef.current?.pause();
@@ -91,8 +94,8 @@ function CanvasFrame(props: IProps) {
             <Box className='canvas-frame'>
                 <VideoPlyaer src={props.videoSrc} ref={videoRef} frameCatch={captureFrame} />
                 <Box className='hidden-container'>
-                    <canvas hidden width="1920px" height="1080px" style={canvasStyle} ref={originCanvasRef}></canvas>
-                    <canvas hidden width="1920px" height="1080px" style={canvasStyle} ref={containerCanvasRef}></canvas>
+                    <canvas hidden width="1280px" height="720px" style={canvasStyle} ref={originCanvasRef}></canvas>
+                    <canvas hidden width="1280px" height="720px" style={canvasStyle} ref={containerCanvasRef}></canvas>
                 </Box>
                 <Box className='quickview-container'>
                     <canvas id='canvas-quickview-container' width="800px" height="450px" style={canvasStyle} ref={processedCanvasRef}></canvas>
