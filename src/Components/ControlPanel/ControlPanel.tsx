@@ -27,7 +27,7 @@ function ControlPanel(props: IProps) {
             <span className='Button'>
                 <Button variant='contained' onClick={openHandler}>打开</Button>
             </span>
-            {
+            {/* {
                 file === undefined ?
                     <Tooltip title="请在上传前先打开一个文件" hidden={file !== undefined}>
                         <span className='Button'>
@@ -38,17 +38,17 @@ function ControlPanel(props: IProps) {
                     <span className='Button'>
                         <LoadingButton className='Button' variant='contained' onClick={uploadHandler} loading={loadingStatus}>上传</LoadingButton>
                     </span>
-            }
+            } */}
             <span className='DelButton'>
                 <IconButton aria-label='delete' color='primary' onClick={clearHandler}>
                     <Delete/>
                 </IconButton>
             </span>
-            <span className='Button'>
+            {/* <span className='Button'>
                 <Button variant='contained' onClick={() => {
                     (window as any).pywebview.api.fullscreen()
                 }}>全屏</Button>
-            </span>
+            </span> */}
         </div>
     )
 }

@@ -42,10 +42,10 @@ function CanvasFrame(props: IProps) {
     }
     
     const canvasStyle = {
-        marginRight: '2rem',
-        marginLeft: '2rem',
-        // width: '1024px',
-        // height: '768px',
+        // marginRight: '2rem',
+        // marginLeft: '2rem',
+        // width: `${videoRef.current.videoWidth}px`,
+        // height: `${videoRef.current.videoHeight}px`,
     }
 
     const testHandler = () => {
@@ -65,35 +65,37 @@ function CanvasFrame(props: IProps) {
             height: rawData.height,
             width: rawData.width,
         }
-        console.log(data.data)
+        console.log(`origin: [${data.width}, ${data.height}]`);
         props.uploadFrame(data)
         .then((res) => {
             // alert(res);
             const retData = matrixDecode(res);
             const newData = new ImageData(retData, data.width, data.height);
+            console.log(`ret: [${newData.width}, ${newData.height}]`);
             if(contextAfter !== null && processedCanvasRef.current !== null) {
                 const frameWidth = processedCanvasRef.current.width;
                 const frameHeight = processedCanvasRef.current.height;
                 if (containerCanvasRef.current !== null) {
                     const ctx = containerCanvasRef.current.getContext('2d');
                     ctx!.putImageData(newData, 0, 0);
-                    contextAfter.drawImage(containerCanvasRef.current, 0, 0, 800, 450)
+                    contextAfter.drawImage(containerCanvasRef.current, 0, 0, frameWidth, frameHeight)
                 }        
             }
             videoRef.current?.play();
+            setTimeout(() => {testHandler()}, 0);
         });
     }
     
     return (
         <div>
-            <Box>
+            <Box className='canvas-frame'>
                 <VideoPlyaer src={props.videoSrc} ref={videoRef} frameCatch={captureFrame} />
-                <Box>
+                <Box className='hidden-container'>
                     <canvas hidden width="1920px" height="1080px" style={canvasStyle} ref={originCanvasRef}></canvas>
                     <canvas hidden width="1920px" height="1080px" style={canvasStyle} ref={containerCanvasRef}></canvas>
                 </Box>
-                <Box>
-                    <canvas width="800px" height="450px" style={canvasStyle} ref={processedCanvasRef}></canvas>
+                <Box className='quickview-container'>
+                    <canvas id='canvas-quickview-container' width="800px" height="450px" style={canvasStyle} ref={processedCanvasRef}></canvas>
                 </Box>
             </Box>
             <Box sx={{display: 'flex', justifyContent: 'center', mt: '1rem'}}>
