@@ -36,11 +36,8 @@ def detect_to_pandas(img):
 # we need to rearrange the result.
 # some attributes are neccessary for us.
 # the result contain [x, y(top left), x, y(bottom right), class_no, percent_in_img*1000]
-def detect_for_fxevs(img, model_type=0, draw_bbox=False):
-    if model_type == 0:
-        results = total_model(img)
-    else:
-        results = license_model(img)
+def detect_for_fxevs(img, model, model_type=0, draw_bbox=False):
+    results = model(img)
     # results.save()
     x = results.pandas().xyxy[0]
     # print(x.head())

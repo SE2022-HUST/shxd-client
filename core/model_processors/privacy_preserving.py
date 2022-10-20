@@ -186,7 +186,7 @@ class Protector:
 
 
 
-    def process_frame(self, frame, frame_id = 0):
+    def process_frame(self, total_model, liscence_model, frame, frame_id = 0):
 
         # print(detect_res.get_objects())
         # print("DEBUG at process frame, objects are", detect_res.get_objects())
@@ -214,8 +214,8 @@ class Protector:
             # print("Use detect cache at frame", frame_id)
         else:
             # we need to optimize the detect model, because we are confident that detect once is sufficient.
-            detect_res = detect_for_fxevs(frame)
-            detect_res.append(detect_for_fxevs(frame, 1))
+            detect_res = detect_for_fxevs(total_model, frame)
+            detect_res.append(detect_for_fxevs(liscence_model, frame, model_type=1))
             detect_res.append(detect_face_facenet(frame))
         
         
@@ -236,13 +236,7 @@ class Protector:
         # save the detect_res into cache
         if self.cache and self.target_detect_cache != None and frame_id not in self.target_detect_cache:
             self.target_detect_cache[frame_id] = detect_res
-            # print("save detect result at frame", frame_id)
-
         
-
-        # return cartoon_img
-        # cartoon_img = frame
-        # return cartoon_img
         # in the section, we only consider **OJBECTS**
         # when we have all the bbox of current frame, we should select the bbox we are interested.
         protect_bbox, expose_bbox = [], []
@@ -278,53 +272,47 @@ class Protector:
             # Now we should use our privacy preserving methods to protect video contents.
             # For simplicity, we just do the protect with blurring
             protect_bbox = np.array(protect_bbox)
-            # print("Protect_bbox", protect_bbox)
             sigma_values = scenesize2sigma(protect_bbox[:, RES_PERCENT_IDX])
-            # print("Sigma values")
-            # print(sigma_values)
-
             bbox_and_sigma = np.hstack((protect_bbox[:, 0:4], sigma_values)).astype(np.int32)
             
             new_img = model_rects(new_img, bbox_and_sigma, effect_type=self.effect_type, enable=False)
 
-        
-    
         # Finally, return the protected frame.
         if self.debug:
             draw_bboxes(new_img, detect_res.get_objects())
         return new_img
     
-    def get_obj(self, frame, frame_id = 0):
+    # def get_obj(self, frame, frame_id = 0):
 
-        if self.cache and self.target_detect_cache != None and frame_id in self.target_detect_cache:
-                detect_res = self.target_detect_cache[frame_id]
-                # print("Use detect cache at frame", frame_id)
-        else:
-            # we need to optimize the detect model, because we are confident that detect once is sufficient.
-            detect_res = detect_for_fxevs(frame)
-            detect_res.append(detect_for_fxevs(frame, 1))
-            detect_res.append(detect_face_facenet(frame))
+    #     if self.cache and self.target_detect_cache != None and frame_id in self.target_detect_cache:
+    #             detect_res = self.target_detect_cache[frame_id]
+    #             # print("Use detect cache at frame", frame_id)
+    #     else:
+    #         # we need to optimize the detect model, because we are confident that detect once is sufficient.
+    #         detect_res = detect_for_fxevs(frame)
+    #         detect_res.append(detect_for_fxevs(frame, 1))
+    #         detect_res.append(detect_face_facenet(frame))
         
         
-        if self.tracking:
-            # print("Before Tracking {} objects are found.".format(detect_res.get_objects().shape[0]))
-            # do tracking
-            ## one problem last: the accumulate error should be aware.
-            # 
-            if frame_id - self.last_frame_id <= self.MAX_FRAME_DIFF:
-                do_tracking(self.last_frame, self.last_det_res, frame, detect_res, self.tracker_type)
-            else:
-                self.last_frame_id = frame_id
-            # print("After Tracking {} objects are found.".format(detect_res.get_objects().shape[0]))
-            self.last_frame = frame
-            self.last_det_res = detect_res
+    #     if self.tracking:
+    #         # print("Before Tracking {} objects are found.".format(detect_res.get_objects().shape[0]))
+    #         # do tracking
+    #         ## one problem last: the accumulate error should be aware.
+    #         # 
+    #         if frame_id - self.last_frame_id <= self.MAX_FRAME_DIFF:
+    #             do_tracking(self.last_frame, self.last_det_res, frame, detect_res, self.tracker_type)
+    #         else:
+    #             self.last_frame_id = frame_id
+    #         # print("After Tracking {} objects are found.".format(detect_res.get_objects().shape[0]))
+    #         self.last_frame = frame
+    #         self.last_det_res = detect_res
             
             
-        # save the detect_res into cache
-        if self.cache and self.target_detect_cache != None and frame_id not in self.target_detect_cache:
-            self.target_detect_cache[frame_id] = detect_res
-            # print("save detect result at frame", frame_id)
-        return detect_res.get_objects()
+    #     # save the detect_res into cache
+    #     if self.cache and self.target_detect_cache != None and frame_id not in self.target_detect_cache:
+    #         self.target_detect_cache[frame_id] = detect_res
+    #         # print("save detect result at frame", frame_id)
+    #     return detect_res.get_objects()
 
 
 loss_last_raw_frame = None

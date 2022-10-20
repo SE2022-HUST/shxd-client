@@ -6,12 +6,12 @@ import pickle
 from concurrent.futures import ThreadPoolExecutor
 import multiprocessing as mp
 import blosc
+import numpy as np
+import config
 
 class LoadBlancer(mp.Process):
-    def __init__(self, model_name, model_index,server_port, maxsize, SERVER_IP = '192.168.1.36'):
+    def __init__(self, server_port, maxsize, SERVER_IP = '192.168.1.36'):
         super().__init__()
-        self.model_name = model_name
-        self.model_index = model_index
         self.server_port = server_port
         self.server_ip = SERVER_IP
         self.queue = mp.Manager().Queue(round(maxsize))
@@ -20,12 +20,16 @@ class LoadBlancer(mp.Process):
         self.stop_event = mp.Event()
         self.transfer = ThreadPoolExecutor(max_workers=10)
 
+    def register_instance(self, instance_signal):
+        self.register_ins.append(instance_signal)
+
     def enqueue_data(self,conn):
         try:
             request = self.socket_tool.recv_data_bytes(conn)
             conn.close()
             request = pickle.loads(blosc.decompress(request))
-            content = {'data': request['data'], 'id': request['id'], 'port': request['port']}
+            content = {'data': np.array(request['data']), 'protect_item': request['protect_item'], \
+                'expose_item': request['expose_item'], 'ip': request['ip'], 'port': request['port']}
             try:
                 self.queue.put(content, block=False)
             except Exception as e:
@@ -38,7 +42,7 @@ class LoadBlancer(mp.Process):
         recv_socket = None
         while True:
             ins_num =len(self.register_ins)
-            if ins_num>0:
+            if ins_num == len(config.cuda_devices):
                 break
         while True:
             sum = 0
