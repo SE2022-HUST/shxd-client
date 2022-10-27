@@ -14,7 +14,7 @@ from sampler import VideoSampler, frame_to_video
 from privacy_preserving import Protector
 import os
 import socket
-from socks import SocketCommunication
+from sock import SocketCommunication
 import multiprocessing as mp
 
 
