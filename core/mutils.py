@@ -1,4 +1,4 @@
-from model_processors.constant import *
+from constant import *
 import numpy as np
 import cv2
 import collections
@@ -156,7 +156,7 @@ def get_distance(c1, c2):
 
 ########## test code #################
 def test_img_color():
-    import model_processors.detect as detect
+    import core.detect as detect
     input = 'output/'
     image_name = 'frame_skip10_1.png'
     img = cv2.imread(input + image_name)
@@ -175,7 +175,7 @@ def test_img_color():
         print()
 
 def test_img_is_color():
-    import model_processors.detect as detect
+    import core.detect as detect
     input = 'images/'
     image_name = '000000000632.jpg'
     img = cv2.imread(input + image_name)

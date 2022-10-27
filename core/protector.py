@@ -3,9 +3,9 @@
 In this field, we just consider to protect a single dimension of video privacy,
 e.g, object protection, person or motion information.
 '''
-import model_processors.mutils as mutils
-from model_processors.constant import *
-from model_processors.blurring import blurring_rects
+import mutils as mutils
+from constant import *
+from blurring import blurring_rects
 import numpy as np
 
 # We use blurring to protect the object
@@ -36,8 +36,8 @@ def protect_face():
     return
 
 def output_video(video_path, protect_list, expose_list=None):
-    from model_processors.sampler import VideoSampler
-    from model_processors.detect import detect_for_fxevs
+    from core.sampler import VideoSampler
+    from core.detect import detect_for_fxevs
     fps = 10
     video_sampler = VideoSampler(video_path, fps-1)
     if not video_sampler.is_opened():
@@ -58,7 +58,7 @@ def output_video(video_path, protect_list, expose_list=None):
 
         frames.append(protected_frame)
 
-    from model_processors.sampler import frame_to_video
+    from core.sampler import frame_to_video
     frame_to_video(frames, 'output/', 'test.avi', int(25 / fps))
     
 
@@ -75,12 +75,12 @@ if __name__ == '__main__':
 
 
     import cv2
-    from model_processors.sampler import VideoSampler
-    from model_processors.cartooner import cartoonize
-    from model_processors.privacy_preserving import calculate_info_loss
-    from model_processors.privacy_preserving import Protector
-    from model_processors.protector import protect_object
-    from model_processors.detect import detect_for_fxevs
+    from core.sampler import VideoSampler
+    from core.cartooner import cartoonize
+    from core.privacy_preserving import calculate_info_loss
+    from core.privacy_preserving import Protector
+    from core.protector import protect_object
+    from core.detect import detect_for_fxevs
 
 
     debug = True
