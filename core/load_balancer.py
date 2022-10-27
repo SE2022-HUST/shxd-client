@@ -20,6 +20,7 @@ class LoadBalancer(mp.Process):
         self.stop_event = mp.Event()
         self.transfer = ThreadPoolExecutor(max_workers=10)
 
+    #register corresponding instances
     def register_instance(self, instance_signal):
         self.register_ins.append(instance_signal)
         return
@@ -31,10 +32,13 @@ class LoadBalancer(mp.Process):
         try:
             request = self.socket_tool.recv_data_bytes(conn)
             conn.close()
+            #deserialize
             request = pickle.loads(blosc.decompress(request))
+            #data format
             content = {'data': np.array(request['data']), 'protect_item': request['protect_item'], \
                 'expose_item': request['expose_item'], 'ip': request['ip'], 'port': request['port']}
             try:
+                #put into queue
                 self.queue.put(content, block=False)
             except Exception as e:
                 print("put input data errors", e,content)
@@ -44,6 +48,7 @@ class LoadBalancer(mp.Process):
         
     def run(self):
         recv_socket = None
+        # wait until all instances are initialized
         while True:
             ins_num = len(self.register_ins)
             if ins_num == len(config.cuda_devices * config.num_per_gpu):
@@ -59,7 +64,7 @@ class LoadBalancer(mp.Process):
             else:
                 print("model initializition has not finished")
                 time.sleep(2)
-        
+        #get requests from clients
         while True:
             try:
                 recv_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -75,18 +80,19 @@ class LoadBalancer(mp.Process):
         while True:
             try:
                 if self.stop_event.is_set():
-                     self.transfer.shutdown(wait=False)
-                     recv_socket.close()
-                     print("===========close the load balancer=====================",)
-                     break
+                    self.transfer.shutdown(wait=False)
+                    recv_socket.close()
+                    print("===========close the load balancer=====================",)
+                    break
                 if flag:
                     self.queue.put(None)
                     flag = False
                 conn, client_addr = recv_socket.accept()
+                #put requests into queue
                 self.transfer.submit(self.enqueue_data, conn)
             except Exception as e:
-                print("===LoadBlancer===error happens while receving data",e,(self.server_ip, self.server_port))
+                print("===LoadBlancer===error happens while receving data", e, (self.server_ip, self.server_port))
     
     def stop(self):
         self.stop_event.set()
-        print("closing LoadBlancer ",self.model_index)
+        print("closing LoadBlancer ")

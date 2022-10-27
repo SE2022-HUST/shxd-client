@@ -9,7 +9,6 @@ from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 from sampler import VideoSampler, frame_to_video
 from privacy_preserving import Protector
 import os
-from PIL import Image
 import socket
 from socks import SocketCommunication
 import multiprocessing as mp
@@ -101,29 +100,28 @@ class Video_Processing(mp.Process):
             break
         return result, request_info, protect_items, expose_items
 
+    #send data to sender process
     def socket_to_sender(self, record):
         try:
             client = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
             client.connect(self.sender_socket_path)
-            upload_json = pickle.dumps(record)
-            self.sock_tools.send_data_bytes(client, upload_json)
+            upload_pickle = pickle.dumps(record)
+            self.sock_tools.send_data_bytes(client, upload_pickle)
         except Exception as e:
             print("socket send errors",e)
 
     def initialize_model(self, type_model):
         model = None
         try:
+            torch.cuda.set_device(torch.device('cuda:' + str(self.cuda_index)))
             if type_model == 'total':
                 model = torch.hub.load(('./yolov5'), 'custom', path='./weights/yolov5s.pt', source='local')
-                #torch.cuda.set_device(torch.device('cuda:' + str(self.cuda_index)))
-                #model.to("cuda:" + str(self.cuda_index))
+                model.to(torch.device('cuda:' + str(self.cuda_index)))
             elif type_model == 'liscence':
                 model = torch.hub.load(('./yolov5'), 'custom', path='./weights/license_best.pt', source='local')
-                #torch.cuda.set_device(torch.device('cuda:' + str(self.cuda_index)))
-                #model.to("cuda:" + str(self.cuda_index))
+                model.to(torch.device('cuda:' + str(self.cuda_index)))
             else:
-                #torch.cuda.set_device(torch.device('cuda:' + str(self.cuda_index)))
-                model = MTCNN(keep_all=True, device=torch.device('cpu'))
+                model = MTCNN(keep_all=True, device=torch.device('cuda:' + str(self.cuda_index)))
         except Exception as e:
             print("error happens when creating the object of DNNs", e)
         print("create model instance")
@@ -134,31 +132,31 @@ class Video_Processing(mp.Process):
         warm_up = True
         input_data = torch.rand(1, 3, 320, 320)
         while warm_up:
-            #try:
-            start = time.time()
-            result = model(input_data)
-            end = time.time()
-            delay = end - start
-            if abs(round(delay) - 100) <= 3 or warm_up_counts > 30:
-                if is_last:
-                    self.init_end_event.value = 1
-                    self.load_balancer_signal.value = 1
-                warm_up = False
-                break
-            warm_up_counts = warm_up_counts + 1
-            #except Exception as e:
-            #    print("-----warm up the instance fails------", e)
+            try:
+                start = time.time()
+                result = model(input_data)
+                end = time.time()
+                delay = end - start
+                if abs(round(delay) - 100) <= 3 or warm_up_counts > 30:
+                    if is_last:
+                        self.init_end_event.value = 1
+                        self.load_balancer_signal.value = 1
+                    warm_up = False
+                    break
+                warm_up_counts = warm_up_counts + 1
+            except Exception as e:
+                print("-----warm up the instance fails------", e)
         return warm_up
 
     def run(self):
-        
+        #initialize models
         total_model = self.initialize_model('total')
         liscence_model = self.initialize_model('liscence')
         mtcnn = self.initialize_model('mtcnn')
         if total_model is None or liscence_model is None:
             return
         warm_up = True
-
+        #warm up models
         while True:
             if self.stop_event.is_set():
                 break
@@ -167,10 +165,12 @@ class Video_Processing(mp.Process):
                 warm_up = self.warm_up_model(liscence_model, 1)
                 #warm_up = self.warm_up_model(mtcnn, 1)
 
+            #get request
             input_batch, batch_info, protect_item, expose_item = self.get_req_from_loadbalancer()
             if input_batch is None:
                 continue
             try:
+                #process image
                 self.pro.protect_conditions = [protect_item]
                 self.pro.expose_conditions = [expose_item]
                 pro_frame = self.pro.process_frame(total_model, liscence_model, mtcnn, input_batch)
@@ -181,6 +181,7 @@ class Video_Processing(mp.Process):
             result = pro_frame.clone()
             data = result.cpu()
             batch_info['output'] = data
+            #prepare to send back to clients
             try:
                 self.transfer.submit(self.socket_to_sender, batch_info)
             except Exception as e:
@@ -197,22 +198,22 @@ class ResultSender(mp.Process):
         super().__init__()
         self.unix_socket_path = unix_socket_path
         self.socket_tool = SocketCommunication()
-        self.CLIENT_PORT = 20005
-        self.socket_tool = SocketCommunication()
         self.stop_event = mp.Event()
         self.transfer = ThreadPoolExecutor(max_workers=10)
 
     def send_results(self, record):
+        #send results to client
         try:
             if record == None:
                 return
             CLIENT_IP = record['ip']
+            CLIENT_PORT = record['port']
             if len(CLIENT_IP) == 0:
                 return
             client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             client.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
             client.settimeout(0.01)
-            client.connect((CLIENT_IP, self.CLIENT_PORT))
+            client.connect((CLIENT_IP, CLIENT_PORT))
             self.socket_tool.send_data(client, pickle.dumps(record))
         except Exception as e:
             print("error occured when sending results",e)

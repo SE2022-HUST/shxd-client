@@ -14,7 +14,6 @@ class SocketCommunication:
     def send_data_bytes(self, conn, content):
         msg = struct.pack('>I', len(content)) + content
         size = conn.send(msg)
-        # print("=============send size",size)
         return sys.getsizeof(msg)
 
     def send_data(self, conn, content):
