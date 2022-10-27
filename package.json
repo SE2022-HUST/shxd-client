@@ -2,7 +2,7 @@
   "name": "shxd-client-ui",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "index.tsx",
   "scripts": {
     "dev": "webpack server --open --config ./config/webpack.dev.config.js",
     "dev-server": "webpack server --config ./config/webpack.dev.config.js",
@@ -17,9 +17,21 @@
     "@babel/preset-env": "^7.19.3",
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.18.6",
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@types/react": "^18.0.21",
+    "@types/react-dom": "^18.0.6",
+    "@typescript-eslint/eslint-plugin": "^5.41.0",
     "babel-loader": "^8.2.5",
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.7.1",
+    "eslint": "^8.26.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-standard-with-typescript": "^23.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.3.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.31.10",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.6.1",
     "npm-run-all": "^4.1.5",
@@ -28,17 +40,17 @@
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.11.1",
-    "webpack-merge": "^5.8.0",
-    "@emotion/react": "^11.10.4",
-    "@emotion/styled": "^11.10.4",
-    "@types/react": "^18.0.21",
-    "@types/react-dom": "^18.0.6"
+    "webpack-merge": "^5.8.0"
   },
   "dependencies": {
     "@mui/icons-material": "^5.10.6",
     "@mui/lab": "^5.0.0-alpha.101",
     "@mui/material": "^5.10.7",
+    "localforage": "^1.10.0",
+    "match-sorter": "^6.3.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.2",
+    "sort-by": "^1.2.0"
   }
 }
