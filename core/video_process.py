@@ -1,3 +1,7 @@
+from pathlib import Path
+CUR_PATH = Path(__file__).parent
+import sys
+sys.path.append(CUR_PATH.as_posix())
 import torch
 import cv2
 import numpy as np

@@ -19,13 +19,16 @@ function ControlPanel(props: IProps) {
     const loadingStatus = props.loading === undefined ? false : props.loading;
     const file = props.file;
     const openHandler = props.openHandler;
-    const uploadHandler = props.uploadHandler;
+    const uploadHandler = () => {
+        console.log("打开文件");
+        (window as any).pywebview.api.open_file_fialog();
+    };
     const clearHandler = props.clearHandler;
     return (
         <div className='ManuButtons'>
             <DisplayBox file={file} />
             <span className='Button'>
-                <Button variant='contained' onClick={openHandler}>打开</Button>
+                <Button variant='contained' onClick={uploadHandler}>打开</Button>
             </span>
             {/* {
                 file === undefined ?

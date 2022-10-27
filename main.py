@@ -37,6 +37,14 @@ class Api:
         cv2.imwrite('./after.png', ret_frame)
         print(time.time()-s)
         return ret_frame.tolist()
+    
+    def open_file_fialog(self):
+        file_types = ('Video Files (*.mp4)', 'All File (*.mp4)')
+        res = webview.windows[0].create_file_dialog(
+            dialog_type=webview.OPEN_DIALOG,
+            file_types=file_types
+        )
+        print(res)
 
 def get_entrypoint(debug: bool):
     def exists(path: string):
