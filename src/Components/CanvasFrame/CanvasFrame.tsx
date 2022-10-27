@@ -102,7 +102,7 @@ function CanvasFrame(props: IProps) {
                 </Box>
             </Box>
             <Box sx={{display: 'flex', justifyContent: 'center', mt: '1rem'}}>
-                <Button onClick={testHandler}>测试</Button>
+                <Button onClick={testHandler}>开始</Button>
 
             </Box>
         </div>

@@ -8,6 +8,7 @@ import getopt
 import numpy as np
 import cv2
 from core.video_process import videoProcessing_byframe
+import time
 # from core.video_process import Video_Processing
 
 def verify_debug():
@@ -28,10 +29,13 @@ class Api:
         webview.windows[0].toggle_fullscreen()
     
     def send_file(self, data: dict):
+        s = time.time()
         mat = np.array(data['data'])
-        mat = mat.astype(np.uint8)          # for item1 in data['data']:
+        mat = mat.astype(np.uint8)
         ret_frame = videoProcessing_byframe(mat, ['license'], ['car'])
+        print(time.time()-s)
         cv2.imwrite('./after.png', ret_frame)
+        print(time.time()-s)
         return ret_frame.tolist()
 
 def get_entrypoint(debug: bool):
