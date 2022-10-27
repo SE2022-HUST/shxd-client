@@ -45,6 +45,7 @@ class Api:
             file_types=file_types
         )
         print(res)
+        return res
 
 def get_entrypoint(debug: bool):
     def exists(path: string):

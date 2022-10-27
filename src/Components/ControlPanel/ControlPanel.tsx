@@ -21,7 +21,10 @@ function ControlPanel(props: IProps) {
     const openHandler = props.openHandler;
     const uploadHandler = () => {
         console.log("打开文件");
-        (window as any).pywebview.api.open_file_fialog();
+        (window as any).pywebview.api.open_file_fialog()
+            .then((res) => {
+                console.log(res);
+        })
     };
     const clearHandler = props.clearHandler;
     return (
