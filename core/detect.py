@@ -2,20 +2,13 @@ import sys
 from pathlib import Path
 
 from wandb import Video
-FILE = Path(__file__).resolve()
-ROOT = FILE.parents[0]  # YOLOv5 root directory
-if str(ROOT) not in sys.path:
-    sys.path.append(str(ROOT))  # add ROOT to PATH
-
 from numpy.core.shape_base import hstack
 import torch
 import cv2
 import numpy as np
-from model_processors.constant import *
-from model_processors.mutils import X, classno2name, name2classno
-from model_processors.mutils import *
 import os
 
+'''
 total_model = torch.hub.load((ROOT/ 'yolov5').as_posix(), 'custom', path=ROOT / 'weights/yolov5s.pt', source='local')
 license_model = torch.hub.load((ROOT / 'yolov5').as_posix(), 'custom', path=ROOT / 'weights/license_best.pt', source='local')
 
@@ -31,7 +24,7 @@ def detect(img, model_type = 0):
 def detect_to_pandas(img):
     results = total_model(img)
     return results.pandas().xyxy[0]
-
+'''
 
 # we need to rearrange the result.
 # some attributes are neccessary for us.
@@ -59,6 +52,7 @@ def detect_for_fxevs(img, model, model_type=0, draw_bbox=False):
     # print(res)
     return DetectRes(res)
 
+'''
 import dlib
 detector = dlib.get_frontal_face_detector() 
 
@@ -80,14 +74,12 @@ def detect_face(img):
     res = np.hstack((x, per_in_img)).astype(np.int32)
     # print(res)
     return DetectRes(res)
-        
+   '''     
 
 from facenet_pytorch import MTCNN
 from PIL import Image
 
-device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-mtcnn = MTCNN(keep_all=True, device=device)
-def detect_face_facenet(img):
+def detect_face_facenet(mtcnn, img):
     frame = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
 
     boxes, _ = mtcnn.detect(frame)
@@ -102,7 +94,6 @@ def detect_face_facenet(img):
     # print("In detect_face_facenet")
     # print(res)
     return DetectRes(res)
-    
 
 
 def draw_bboxes(img, x):

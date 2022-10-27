@@ -1,7 +1,7 @@
 import time
 import os
 import socket
-from edge_utils import SocketCommunication
+from socks import SocketCommunication
 import pickle
 from concurrent.futures import ThreadPoolExecutor
 import multiprocessing as mp
@@ -9,7 +9,7 @@ import blosc
 import numpy as np
 import config
 
-class LoadBlancer(mp.Process):
+class LoadBalancer(mp.Process):
     def __init__(self, server_port, maxsize, SERVER_IP = '192.168.1.36'):
         super().__init__()
         self.server_port = server_port
@@ -22,6 +22,10 @@ class LoadBlancer(mp.Process):
 
     def register_instance(self, instance_signal):
         self.register_ins.append(instance_signal)
+        return
+
+    def get_queue(self):
+        return self.queue
 
     def enqueue_data(self,conn):
         try:
@@ -41,8 +45,9 @@ class LoadBlancer(mp.Process):
     def run(self):
         recv_socket = None
         while True:
-            ins_num =len(self.register_ins)
-            if ins_num == len(config.cuda_devices):
+            ins_num = len(self.register_ins)
+            if ins_num == len(config.cuda_devices * config.num_per_gpu):
+                print(ins_num)
                 break
         while True:
             sum = 0

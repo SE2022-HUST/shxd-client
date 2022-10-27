@@ -1,21 +1,17 @@
-from msilib.schema import Error
-import sys
-from pathlib import Path
-CUR_PATH = Path(__file__).parent
-sys.path.append(CUR_PATH.as_posix())
-import cv2
-import time
 import torch
+import cv2
 import numpy as np
+import os
+import time
+from facenet_pytorch import MTCNN
 import pickle
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
-from model_processors.sampler import VideoSampler, frame_to_video
-from model_processors.cartooner import cartoonize
-from model_processors.privacy_preserving import Protector
-from model_processors.detect import get_percent_in_image
+from sampler import VideoSampler, frame_to_video
+from privacy_preserving import Protector
 import os
+from PIL import Image
 import socket
-from utils import SocketCommunication
+from socks import SocketCommunication
 import multiprocessing as mp
 
 
@@ -69,11 +65,10 @@ def videoProcessing(video_name, protect_item, expose_item, skip_frame_cnt=0, deb
 
 class Video_Processing(mp.Process):
 
-    def __init__(self, cuda_index, shared_queue, init_end_event, load_balancer_signal, ins_index):
+    def __init__(self, cuda_index, shared_queue, init_end_event, load_balancer_signal):
+        super().__init__()
         self.pro = Protector()
-        self.pro.protect_conditions = [self.protect_item]
-        self.pro.expose_conditions = [self.expose_item]
-        self.sender_socket_path = "./tmp/send_result/" + ins_index
+        self.sender_socket_path = "./tmp/send_result/" + str(cuda_index)
         self.input_queue = shared_queue
         self.cuda_index = cuda_index
         self.sock_tools = SocketCommunication()
@@ -88,7 +83,7 @@ class Video_Processing(mp.Process):
         get requests from the load balance
         Returns:
         """
-        result = []
+        result = None
         request_info = []
         expose_items = []
         protect_items = []
@@ -99,13 +94,12 @@ class Video_Processing(mp.Process):
                 break
             if temp is None:
                 continue
-            data = np.load(temp['data'])
-            protect_items.append(temp['protect_item'])
-            expose_items.append(temp['expose_item'])
-            result.append(data)
-            request_info.append(temp)
+            result = np.load(temp['data'])
+            protect_items = temp['protect_item']
+            expose_items = temp['expose_item']
+            request_info = temp
             break
-        return result[0], request_info[0], protect_items[0], expose_items[0]
+        return result, request_info, protect_items, expose_items
 
     def socket_to_sender(self, record):
         try:
@@ -116,44 +110,51 @@ class Video_Processing(mp.Process):
         except Exception as e:
             print("socket send errors",e)
 
-    def initialize_model(self, type):
+    def initialize_model(self, type_model):
         model = None
         try:
-            if type == 'total':
-                model = torch.hub.load(('./yolov5').as_posix(), 'custom', path='./weights/yolov5s.pt', source='local')
+            if type_model == 'total':
+                model = torch.hub.load(('./yolov5'), 'custom', path='./weights/yolov5s.pt', source='local')
+                #torch.cuda.set_device(torch.device('cuda:' + str(self.cuda_index)))
+                #model.to("cuda:" + str(self.cuda_index))
+            elif type_model == 'liscence':
+                model = torch.hub.load(('./yolov5'), 'custom', path='./weights/license_best.pt', source='local')
+                #torch.cuda.set_device(torch.device('cuda:' + str(self.cuda_index)))
+                #model.to("cuda:" + str(self.cuda_index))
             else:
-                model = torch.hub.load(('.yolov5').as_posix(), 'custom', path='./weights/license_best.pt', source='local')
-            torch.cuda.set_device(torch.device('cuda:' + str(self.cuda_index)))
-            model.to("cuda:" + str(self.cuda_index))
+                #torch.cuda.set_device(torch.device('cuda:' + str(self.cuda_index)))
+                model = MTCNN(keep_all=True, device=torch.device('cpu'))
         except Exception as e:
-            print("error happens when creating the object of DNNs", self.model_name, e)
+            print("error happens when creating the object of DNNs", e)
         print("create model instance")
         return model
 
-    def warm_up_model(self, model):
+    def warm_up_model(self, model, is_last):
         warm_up_counts = 0
         warm_up = True
-        input_data = torch.rand(3, 244, 244)
+        input_data = torch.rand(1, 3, 320, 320)
         while warm_up:
-            try:
-                start = time.time()
-                result = model(input_data)
-                end = time.time()
-                delay = end - start
-                if abs(round(delay) - self.target_latency) <= 3 or warm_up_counts > 30:
+            #try:
+            start = time.time()
+            result = model(input_data)
+            end = time.time()
+            delay = end - start
+            if abs(round(delay) - 100) <= 3 or warm_up_counts > 30:
+                if is_last:
                     self.init_end_event.value = 1
                     self.load_balancer_signal.value = 1
-                    warm_up = False
-                    break
-                warm_up_counts = warm_up_counts + 1
-            except Exception as e:
-                print("-----warm up the instance fails------", e)
+                warm_up = False
+                break
+            warm_up_counts = warm_up_counts + 1
+            #except Exception as e:
+            #    print("-----warm up the instance fails------", e)
         return warm_up
 
     def run(self):
         
         total_model = self.initialize_model('total')
         liscence_model = self.initialize_model('liscence')
+        mtcnn = self.initialize_model('mtcnn')
         if total_model is None or liscence_model is None:
             return
         warm_up = True
@@ -162,8 +163,9 @@ class Video_Processing(mp.Process):
             if self.stop_event.is_set():
                 break
             if warm_up:
-                warm_up = self.warm_up_model(total_model)
-                warm_up = self.warm_up_model(liscence_model)
+                warm_up = self.warm_up_model(total_model, 0)
+                warm_up = self.warm_up_model(liscence_model, 1)
+                #warm_up = self.warm_up_model(mtcnn, 1)
 
             input_batch, batch_info, protect_item, expose_item = self.get_req_from_loadbalancer()
             if input_batch is None:
@@ -171,7 +173,7 @@ class Video_Processing(mp.Process):
             try:
                 self.pro.protect_conditions = [protect_item]
                 self.pro.expose_conditions = [expose_item]
-                pro_frame = self.pro.process_frame(total_model, liscence_model, input_batch)
+                pro_frame = self.pro.process_frame(total_model, liscence_model, mtcnn, input_batch)
             except Exception as e:
                 print("==== process data errors===", e, self.start_layer, self.end_layer)
                 continue

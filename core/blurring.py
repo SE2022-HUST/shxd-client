@@ -1,10 +1,7 @@
 import cv2
-import detect
 import numpy as np
 import os
 from pathlib import Path
-
-FILE = Path(__file__).resolve().parents[0]
 
 a = 2.086
 b = 0.3269

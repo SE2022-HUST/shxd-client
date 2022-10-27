@@ -1,22 +1,16 @@
-from numpy import product
 from pathlib import Path
-CUR_PATH = Path(__file__).parent
-import sys
-sys.path.append(CUR_PATH.as_posix())
 from sql.messreg import parse_sql
 from pathlib import Path
-from model_processors.sampler import VideoSampler
-from model_processors.sampler import frame_to_video
+from sampler import VideoSampler
+from sampler import frame_to_video
 
-from model_processors.mutils import *
-from model_processors.constant import *
-from model_processors.detect import DetectRes, detect_face_facenet, detect_for_fxevs, draw_bboxes, Tracker, do_tracking
-from model_processors.cartooner import cartoonize
-from model_processors.blurring import model_rects
+from mutils import *
+from constant import *
+from detect import DetectRes, detect_face_facenet, detect_for_fxevs, draw_bboxes, Tracker, do_tracking
+from cartooner import cartoonize
+from blurring import model_rects
 import os
 import time
-
-
 
 
 class Protector:
@@ -186,7 +180,7 @@ class Protector:
 
 
 
-    def process_frame(self, total_model, liscence_model, frame, frame_id = 0):
+    def process_frame(self, total_model, liscence_model, mtcnn, frame, frame_id = 0):
 
         # print(detect_res.get_objects())
         # print("DEBUG at process frame, objects are", detect_res.get_objects())
@@ -216,7 +210,7 @@ class Protector:
             # we need to optimize the detect model, because we are confident that detect once is sufficient.
             detect_res = detect_for_fxevs(total_model, frame)
             detect_res.append(detect_for_fxevs(liscence_model, frame, model_type=1))
-            detect_res.append(detect_face_facenet(frame))
+            detect_res.append(detect_face_facenet(mtcnn, frame))
         
         
         if self.tracking:
@@ -314,7 +308,7 @@ class Protector:
     #         # print("save detect result at frame", frame_id)
     #     return detect_res.get_objects()
 
-
+'''
 loss_last_raw_frame = None
 loss_last_protected_frame = None
 loss_last_raw_det = None
@@ -517,3 +511,4 @@ if __name__ == '__main__':
 
 
     #exit(1)
+'''

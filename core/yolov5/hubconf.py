@@ -9,6 +9,7 @@ Usage:
 """
 
 import torch
+import sys
 
 
 def _create(name, pretrained=True, channels=3, classes=80, autoshape=True, verbose=True, device=None):
@@ -27,7 +28,6 @@ def _create(name, pretrained=True, channels=3, classes=80, autoshape=True, verbo
         YOLOv5 model
     """
     from pathlib import Path
-
     from models.common import AutoShape, DetectMultiBackend
     from models.yolo import Model
     from utils.downloads import attempt_download
@@ -40,8 +40,7 @@ def _create(name, pretrained=True, channels=3, classes=80, autoshape=True, verbo
     name = Path(name)
     path = name.with_suffix('.pt') if name.suffix == '' else name  # checkpoint path
     try:
-        device = select_device(('0' if torch.cuda.is_available() else 'cpu') if device is None else device)
-
+        device = select_device('cpu')
         if pretrained and channels == 3 and classes == 80:
             model = DetectMultiBackend(path, device=device)  # download/load FP32 model
             # model = models.experimental.attempt_load(path, map_location=device)  # download/load FP32 model
@@ -57,7 +56,7 @@ def _create(name, pretrained=True, channels=3, classes=80, autoshape=True, verbo
                     model.names = ckpt['model'].names  # set class names attribute
         if autoshape:
             model = AutoShape(model)  # for file/URI/PIL/cv2/np inputs and NMS
-        return model.to(device)
+        return model
 
     except Exception as e:
         help_url = 'https://github.com/ultralytics/yolov5/issues/36'
