@@ -11,19 +11,6 @@ from core.video_process import videoProcessing_byframe
 import time
 # from core.video_process import Video_Processing
 
-def verify_debug():
-    argv = sys.argv[1:]
-    try:
-        opts, args = getopt.getopt(argv, "m:",  ["mode="])  # 长选项模式
-        for opt, arg in opts:
-            if opt in ['-m', '--mode']:
-                if(arg == 'debug'):
-                    print("Debug Mode On")
-                    return True
-        return False
-    except:
-        return False
-
 class Api:
     def fullscreen(self):
         webview.windows[0].toggle_fullscreen()
@@ -56,7 +43,20 @@ def get_entrypoint(debug: bool):
         return './gui/index.html'
     raise Exception('No index.html found')
 
-if __name__ == '__main__':
+def verify_debug():
+    argv = sys.argv[1:]
+    try:
+        opts, args = getopt.getopt(argv, "m:",  ["mode="])  # 长选项模式
+        for opt, arg in opts:
+            if opt in ['-m', '--mode']:
+                if(arg == 'debug'):
+                    print("Debug Mode On")
+                    return True
+        return False
+    except:
+        return False
+
+def main():
     debug = verify_debug()
     webview.create_window('Video Processor', 
 		url=get_entrypoint(debug),
@@ -66,3 +66,6 @@ if __name__ == '__main__':
         js_api=Api()
     )
     webview.start(http_server=True, gui="edgechromium", debug=debug)  #必须使用server模式打开，否则Webview会报错
+
+if __name__ == '__main__':
+    main()

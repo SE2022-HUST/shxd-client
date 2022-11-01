@@ -1,0 +1,10 @@
+.error-page {
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10rem;
+  height: 100%;
+  width: auto;
+}
