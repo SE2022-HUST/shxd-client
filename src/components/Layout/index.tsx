@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import MenuButton from "./MenuButton";
-
 import DrawerMenu from "./DrawerMenu";
 import { Outlet } from "react-router-dom";
+import "./style.css";
 
 const Layout = (props: { children?: React.ReactNode }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -10,10 +10,9 @@ const Layout = (props: { children?: React.ReactNode }) => {
     setDrawerOpen(s);
   };
   return (
-    <div>
+    <div className="layout-container">
       <MenuButton setOpen={stateChanger} />
       <DrawerMenu open={drawerOpen} setOpen={stateChanger} />
-      <div>{props.children}</div>
       <Outlet />
     </div>
   );

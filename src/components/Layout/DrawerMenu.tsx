@@ -20,9 +20,13 @@ const DrawerMenu = ({ open, setOpen }: IProp) => {
       setOpen(open);
     };
   return (
-    <div>
+    <div className="drawer-menu">
       <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
-        <MenuList />
+        <MenuList
+          closeHandler={() => {
+            setOpen(false);
+          }}
+        />
       </Drawer>
     </div>
   );

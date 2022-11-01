@@ -2,7 +2,7 @@ import spys from "../assets/1.png";
 import fgh from "../assets/2.png";
 import zddm from "../assets/3.png";
 
-interface EntryNode {
+export interface EntryNode {
   name: string;
   pic?: any;
   url: string;
@@ -22,6 +22,6 @@ export const entries: EntryNode[] = [
   {
     name: "自动打码",
     pic: zddm,
-    url: "mossaic",
+    url: "mosaic",
   },
 ];
