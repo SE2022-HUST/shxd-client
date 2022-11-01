@@ -180,7 +180,7 @@ class Protector:
 
 
 
-    def process_frame(self, total_model, liscence_model, mtcnn, frame, frame_id = 0):
+    def process_frame(self, total_model, liscence_model, frame, mtcnn=None, frame_id = 0):
 
         # print(detect_res.get_objects())
         # print("DEBUG at process frame, objects are", detect_res.get_objects())
@@ -208,9 +208,9 @@ class Protector:
             # print("Use detect cache at frame", frame_id)
         else:
             # we need to optimize the detect model, because we are confident that detect once is sufficient.
-            detect_res = detect_for_fxevs(total_model, frame)
-            detect_res.append(detect_for_fxevs(liscence_model, frame, model_type=1))
-            detect_res.append(detect_face_facenet(mtcnn, frame))
+            detect_res = detect_for_fxevs(frame, total_model)
+            detect_res.append(detect_for_fxevs(frame, liscence_model, model_type=1))
+            # detect_res.append(detect_face_facenet(mtcnn, frame))
         
         
         if self.tracking:

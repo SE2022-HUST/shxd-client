@@ -26,8 +26,9 @@ class VideoSampler:
         
         self.frame_idx += 1
         ret, frame = self.cap.read()
-        print('#####', type(frame), frame.shape)
+
         if not ret:
+            print('error, none')
             return -1, None
         return self.frame_idx - 1, frame
         

@@ -7,6 +7,9 @@ import torch
 import cv2
 import numpy as np
 import os
+from constant import *
+from mutils import X, classno2name, name2classno
+from mutils import *
 
 '''
 total_model = torch.hub.load((ROOT/ 'yolov5').as_posix(), 'custom', path=ROOT / 'weights/yolov5s.pt', source='local')
@@ -30,6 +33,7 @@ def detect_to_pandas(img):
 # some attributes are neccessary for us.
 # the result contain [x, y(top left), x, y(bottom right), class_no, percent_in_img*1000]
 def detect_for_fxevs(img, model, model_type=0, draw_bbox=False):
+    print(type(img))
     results = model(img)
     # results.save()
     x = results.pandas().xyxy[0]
