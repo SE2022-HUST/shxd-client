@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./components/Layout";
 import Compress from "./pages/Compress";
@@ -35,6 +35,11 @@ const router = createBrowserRouter([
 ]);
 
 export default function App() {
+  useEffect(() => {
+    document.oncontextmenu = () => false; // 屏蔽右键菜单
+    return () => {};
+  });
+
   return (
     <React.StrictMode>
       <RouterProvider router={router} />
