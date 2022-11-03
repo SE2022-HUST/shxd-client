@@ -17,58 +17,61 @@ import socket
 from sock import SocketCommunication
 import multiprocessing as mp
 
+# frame_total_num = 0
+frame_cur_num = 0
+
 total_model = torch.hub.load(('./core/yolov5'), 'custom', path='./core/weights/yolov5s.pt', source='local')
 license_model = torch.hub.load(('./core/yolov5'), 'custom', path='./core/weights/license_best.pt', source='local')
 
-def videoProcessing_byframe(frame, protect_item, expose_item):
-    pro = Protector()
-    pro.protect_conditions = [protect_item]
-    pro.expose_conditions = [expose_item]
-    pro_frame = pro.process_frame(frame)
-    return pro_frame
 
-def videoProcessing(video_path, protect_item, expose_item, skip_frame_cnt=0, debug=False, inputdir=os.path.abspath('./core/dataset/car/')):
-    fps = 10
-    # input_dir = inputdir + '\\'
-    # print(video_name, input_dir)
-
-    video_name = video_path.split('\\')[-1]
-    # vs = VideoSampler(input_dir + video_name, skip_frame_cnt=skip_frame_cnt)
+def video_open(video_path, skip_frame_cnt):
     vs = VideoSampler(video_path, skip_frame_cnt=skip_frame_cnt)
+    return vs
+
+
+# 获得视频的第一帧原始数据，输入是视频文件，输出是numpy_array
+def get_first_frame(vs):
+    first_frame = vs.get_next_frame()
+    return first_frame
+
+# 获得每一帧，加入到list里
+def get_every_frame(vs):
     if not vs.is_opened:
         print('Video is not existed!')
         return
-    pro = Protector()
-    pro.protect_conditions = [protect_item]
-    pro.expose_conditions = [expose_item]
-
-    pro_frame_list = []
-
-    if not os.path.exists(f'./core/output/{video_name}'):
-        os.makedirs(f'./core/output/{video_name}')
-
-    tt = 1
+    ori_frame_list = []
     while True:
         ret, frame = vs.get_next_frame()
         if ret == -1:
             break
-        frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
+        height = frame.shape[0]
+        width = frame.shape[1]
+        if height > width:
+            frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
+        ori_frame_list.append(frame)
+    return ori_frame_list
 
+
+# 整个视频处理
+def videoProcess(ori_frame_list, protect_item, expose_item):
+    pro = Protector()
+    pro.protect_conditions = [protect_item]
+    pro.expose_conditions = [expose_item]
+
+    frame_cur_num = 0
+    pro_frame_list = []
+
+    for frame in ori_frame_list:
+        frame_cur_num += 1
+        print(frame_cur_num)
         pro_frame = pro.process_frame(total_model, license_model, frame)
-
         pro_frame_list.append(pro_frame)
+        get_process_percent(ori_frame_list, frame_cur_num)
+    return pro_frame_list
 
-        if debug:
-            if not os.path.exists(f'./core/debug/{video_name}'):
-                os.makedirs(f'./core/debug/{video_name}/')
-            if not os.path.exists(f'./core/debug/{video_name}/{protect_item}_{expose_item}'):
-                os.makedirs(f'./core/debug/{video_name}/{protect_item}_{expose_item}')
-            # cv2.imwrite(f'./core/debug/{video_name}/{protect_item}_{expose_item}/frame_{tt}.jpg', frame)
-            cv2.imwrite(f'./core/debug/{video_name}/{protect_item}_{expose_item}/pro_frame_{tt}.jpg', pro_frame)
-            print(f'{tt} is done')
-        tt += 1
-
-    frame_to_video(pro_frame_list, f'./{video_name[:-4]}.avi', int(25 / fps))
+# 获取进度
+def get_process_percent(ori_frame_list, frame_cur_num):
+    print(float(frame_cur_num/len(ori_frame_list)))
 
 class Video_Processing(mp.Process):
 
@@ -264,4 +267,7 @@ class ResultSender(mp.Process):
             print("close sender errors",e)
 
 if __name__ == '__main__':
-    videoProcessing('E:\Codefield\shxd-client\car_license_2.mov', ['license'], ['car'], skip_frame_cnt=80)
+    # videoProcessing('E:\Codefield\shxd-client\car_license_2.mov', ['license'], ['car'], skip_frame_cnt=80)
+    vs = video_open('E:\Codefield\shxd-client\car_license_2.mov', skip_frame_cnt=80)
+    ori_frame_list = get_every_frame(vs)
+    pro_frame_list = videoProcess(ori_frame_list, ['license'], ['car'])

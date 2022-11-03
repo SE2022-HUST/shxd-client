@@ -7,9 +7,9 @@ import sys
 import getopt
 import numpy as np
 import cv2
+import torch
 from core.video_process import videoProcessing_byframe, videoProcessing
 import time
-# from core.video_process import Video_Processing
 
 class Api:
     def fullscreen(self):
@@ -24,17 +24,22 @@ class Api:
         cv2.imwrite('./after.png', ret_frame)
         print(time.time()-s)
         return ret_frame.tolist()
-    
+
+
+    # 从本地选择视频上传并获得视频所在路径
     def open_file_fialog(self):
         file_types = ('Video Files (*.mov)', 'All File (*.mp4)')
         res = webview.windows[0].create_file_dialog(
             dialog_type=webview.OPEN_DIALOG,
             file_types=file_types
         )
+        frame_total_num = 0
         print(res[0])
-        # video_name = res[0].split('\\')[-1]
-        # print(video_name)
-        videoProcessing(res[0], ['license'], ['car'], skip_frame_cnt=50)
+        video_name = res[0].split('\\')[-1]
+
+
+    # 根据路径打开视频
+    
 
 def get_entrypoint(debug: bool):
     def exists(path: string):
@@ -44,6 +49,7 @@ def get_entrypoint(debug: bool):
     elif exists('./gui/index.html'):
         return './gui/index.html'
     raise Exception('No index.html found')
+
 
 def verify_debug():
     argv = sys.argv[1:]
@@ -58,6 +64,7 @@ def verify_debug():
     except:
         return False
 
+
 def main():
     debug = verify_debug()
     webview.create_window('Video Processor', 
@@ -68,6 +75,7 @@ def main():
         js_api=Api()
     )
     webview.start(http_server=True, gui="edgechromium", debug=debug)  #必须使用server模式打开，否则Webview会报错
+
 
 if __name__ == '__main__':
     main()
