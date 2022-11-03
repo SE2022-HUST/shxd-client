@@ -8,7 +8,7 @@ import getopt
 import numpy as np
 import cv2
 import torch
-from core.video_process import videoProcessing_byframe, videoProcessing
+from core.video_process import video_open, get_first_frame
 import time
 
 class Api:
@@ -19,7 +19,8 @@ class Api:
         s = time.time()
         mat = np.array(data['data'])
         mat = mat.astype(np.uint8)
-        ret_frame = videoProcessing_byframe(mat, ['license'], ['car'])
+        # ret_frame = 
+        ret_frame = mat
         print(time.time()-s)
         cv2.imwrite('./after.png', ret_frame)
         print(time.time()-s)
@@ -27,18 +28,18 @@ class Api:
 
 
     # 从本地选择视频上传并获得视频所在路径
-    def open_file_fialog(self):
-        file_types = ('Video Files (*.mov)', 'All File (*.mp4)')
+    def open_file_dialog(self):
+        file_types = ('Video Files (*.mov)', 'All File (*.*)')
         res = webview.windows[0].create_file_dialog(
             dialog_type=webview.OPEN_DIALOG,
             file_types=file_types
         )
-        frame_total_num = 0
-        print(res[0])
-        video_name = res[0].split('\\')[-1]
-
-
-    # 根据路径打开视频
+        video_path = res[0].replace("\\", "\\\\")
+        print(video_path)
+        vs = video_open(video_path, 80)
+        first_frame = get_first_frame(vs)
+        cv2.imwrite('./test.png', first_frame)
+        return first_frame.tolist()
     
 
 def get_entrypoint(debug: bool):
@@ -70,8 +71,8 @@ def main():
     webview.create_window('Video Processor', 
 		url=get_entrypoint(debug),
 		# resizable=False,
-		width=1000,
-		height=800,
+		width=1500,
+		height=1000,
         js_api=Api()
     )
     webview.start(http_server=True, gui="edgechromium", debug=debug)  #必须使用server模式打开，否则Webview会报错

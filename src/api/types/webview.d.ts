@@ -3,7 +3,7 @@ interface Window {
     api: {
       fullscreen: () => void;
       send_file: (data: number[][][]) => Promise<number[][][]>;
-      open_file_dialog: () => Promise<string[]>;
+      open_file_dialog: () => Promise<number[][][]>;
     };
   };
 }

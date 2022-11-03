@@ -31,7 +31,11 @@ def video_open(video_path, skip_frame_cnt):
 
 # 获得视频的第一帧原始数据，输入是视频文件，输出是numpy_array
 def get_first_frame(vs):
-    first_frame = vs.get_next_frame()
+    ret, first_frame = vs.get_next_frame()
+    height = first_frame.shape[0]
+    width = first_frame.shape[1]
+    if height > width:
+        first_frame = cv2.rotate(first_frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
     return first_frame
 
 # 获得每一帧，加入到list里
@@ -268,6 +272,8 @@ class ResultSender(mp.Process):
 
 if __name__ == '__main__':
     # videoProcessing('E:\Codefield\shxd-client\car_license_2.mov', ['license'], ['car'], skip_frame_cnt=80)
-    vs = video_open('E:\Codefield\shxd-client\car_license_2.mov', skip_frame_cnt=80)
-    ori_frame_list = get_every_frame(vs)
-    pro_frame_list = videoProcess(ori_frame_list, ['license'], ['car'])
+    vs = video_open('C:\\Users\\kirito\\Videos\\car_license_2.mov', skip_frame_cnt=80)
+    frame = get_first_frame(vs)
+    print(type(frame))
+    # ori_frame_list = get_every_frame(vs)
+    # pro_frame_list = videoProcess(ori_frame_list, ['license'], ['car'])

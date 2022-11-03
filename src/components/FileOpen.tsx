@@ -7,16 +7,39 @@ import Button from "@mui/material/Button";
 const FileOpen = () => {
   const [canvasWidth, setCanvasWidth] = useState(800);
   const [canvasHeight, setCanvasHeight] = useState(450);
+  const [loading, setLoading] = useState(false);
+  const [frame, setFrame] = useState<number[][][] | undefined>(undefined);
   const openHandler = () => {
-    void window.pywebview.api.open_file_dialog();
+    setLoading(true);
+    const syncFn = window.pywebview.api.open_file_dialog();
+    syncFn
+      .then((res) => {
+        setFrame(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
   return (
     <div className={cn("util-wrapper")}>
       <CanvasFrame
+        data={frame}
+        frameSize={
+          frame === undefined
+            ? undefined
+            : { width: frame[0].length, height: frame.length }
+        }
         containerSize={{ width: canvasWidth, height: canvasHeight }}
       />
       <div className={cn("button-pannel", "file-open-bar")}>
-        <LoadingButton variant="contained" onClick={openHandler}>
+        <LoadingButton
+          variant="contained"
+          loading={loading}
+          onClick={openHandler}
+        >
           打开
         </LoadingButton>
         <Button variant="contained">下一步</Button>
