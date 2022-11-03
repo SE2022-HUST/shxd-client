@@ -8,9 +8,12 @@ const Menu = () => {
     <div className="menu-page">
       <h1>功能</h1>
       <div className="menu-container">
-        {entries.map((entry, index) => (
-          <MenuItem key={index} data={entry} />
-        ))}
+        {entries.map((entry, index) => {
+          if (entry.name === "主页") {
+            return <></>;
+          }
+          return <MenuItem key={index} data={entry} />;
+        })}
       </div>
     </div>
   );

@@ -7,16 +7,15 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 
 interface IProp {
   content: string;
+  icon?: JSX.Element;
   onClick: () => void;
 }
 
-const MyListItem = ({ content, onClick }: IProp) => {
+const MyListItem = ({ content, onClick, icon }: IProp) => {
   return (
     <ListItem disablePadding>
       <ListItemButton onClick={onClick}>
-        <ListItemIcon>
-          <InboxIcon />
-        </ListItemIcon>
+        <ListItemIcon>{icon === undefined ? <InboxIcon /> : icon}</ListItemIcon>
         <ListItemText primary={content} />
       </ListItemButton>
     </ListItem>

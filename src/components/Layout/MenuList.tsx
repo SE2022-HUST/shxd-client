@@ -9,14 +9,6 @@ const MenuList = ({ closeHandler }: { closeHandler: () => void }) => {
   return (
     <Box sx={{ width: 250 }} role="presentation">
       <List>
-        <MyListItem
-          key="home"
-          content="主页"
-          onClick={() => {
-            closeHandler();
-            nav("/");
-          }}
-        />
         {entries.map((entry) => {
           const clickHandler = () => {
             closeHandler();
@@ -27,6 +19,7 @@ const MenuList = ({ closeHandler }: { closeHandler: () => void }) => {
               key={entry.name}
               content={entry.name}
               onClick={clickHandler}
+              icon={entry.icon}
             />
           );
         })}

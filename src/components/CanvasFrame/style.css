@@ -1,15 +1,14 @@
 .canvas-frame {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .quickview-container {
-    text-align: center;
-    background-color: #bdb8bf;
+  text-align: center;
+  background-color: #bdb8bf;
 }
 
 canvas {
-    background-color: #bdb8bf;   
+  background-color: black;
 }
-

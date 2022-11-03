@@ -1,6 +1,6 @@
 import React from "react";
 import HeaderFrame from "../components/HeaderFrame";
-import "../styles/index.css";
+import "../styles/util.css";
 
 const Mosaic = () => {
   return (
