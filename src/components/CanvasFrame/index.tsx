@@ -9,7 +9,7 @@ interface ViewSize {
 }
 
 interface IProp {
-  data?: number[][][];
+  data?: Uint8ClampedArray;
   frameSize?: ViewSize;
   containerSize: ViewSize;
 }
@@ -30,7 +30,7 @@ export default function CanvasFrame({ data, frameSize, containerSize }: IProp) {
       <div className="quickview-canvas">
         {data !== undefined && frameSize !== undefined ? (
           <Receiver
-            rawData={data}
+            data={data}
             frameSize={frameSize}
             onUpdate={updateHandler}
           />

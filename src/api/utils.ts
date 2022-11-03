@@ -40,6 +40,7 @@ export function matrixEncode(data: ImageData): number[][][] {
 }
 
 export function matrixDecode(mat: number[][][]): Uint8ClampedArray {
+  console.log("received");
   const begin = performance.now();
   const data = new Array<number>();
   for (const row of mat) {

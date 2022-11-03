@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useMemo } from "react";
 import useCanvas from "../../api/hooks/useCanvas";
 import { matrixDecode } from "../../api/utils";
 
@@ -8,22 +8,22 @@ interface ViewSize {
 }
 
 interface IProp {
-  rawData: number[][][];
+  data: Uint8ClampedArray;
   frameSize: ViewSize;
   onUpdate: (canvas: HTMLCanvasElement) => void;
 }
 
 const Receiver = ({
-  rawData,
+  data,
   frameSize: frame,
   onUpdate: updateHandler,
 }: IProp) => {
   const ref = useRef<HTMLCanvasElement>(null);
   const ctx = useCanvas(ref);
-  const imgData = new ImageData(
-    matrixDecode(rawData),
-    frame.width,
-    frame.height
+
+  const imgData = useMemo(
+    () => new ImageData(data, frame.width, frame.height),
+    [data, frame]
   );
   if (ctx !== null && ref.current !== null) {
     ctx.putImageData(imgData, 0, 0);

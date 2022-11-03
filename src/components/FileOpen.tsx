@@ -1,21 +1,29 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import cn from "classnames";
 import CanvasFrame from "./CanvasFrame";
 import { LoadingButton } from "@mui/lab";
 import Button from "@mui/material/Button";
+import { matrixDecode } from "../api/utils";
+import useGlobalState, { StateUnit } from "../api/hooks/useGlobalState";
 
 const FileOpen = () => {
   const [canvasWidth, setCanvasWidth] = useState(800);
   const [canvasHeight, setCanvasHeight] = useState(450);
   const [loading, setLoading] = useState(false);
-  const [frame, setFrame] = useState<number[][][] | undefined>(undefined);
+  const [frame, setFrame] = useState<Uint8ClampedArray | undefined>(undefined);
+  const [frameWidth, setFrameWidth] = useState<number | undefined>(undefined);
+  const [frameHeight, setFrameHeight] = useState<number | undefined>(undefined);
   const openHandler = () => {
     setLoading(true);
     const syncFn = window.pywebview.api.open_file_dialog();
+    console.log("call func");
     syncFn
       .then((res) => {
-        setFrame(res);
+        setFrame(matrixDecode(res));
+        setFrameHeight(res.length);
+        setFrameWidth(res[0].length);
+        console.log("decode finished");
       })
       .catch((err) => {
         console.log(err);
@@ -24,14 +32,15 @@ const FileOpen = () => {
         setLoading(false);
       });
   };
+
   return (
     <div className={cn("util-wrapper")}>
       <CanvasFrame
         data={frame}
         frameSize={
-          frame === undefined
-            ? undefined
-            : { width: frame[0].length, height: frame.length }
+          frameWidth !== undefined && frameHeight !== undefined
+            ? { width: frameWidth, height: frameHeight }
+            : undefined
         }
         containerSize={{ width: canvasWidth, height: canvasHeight }}
       />

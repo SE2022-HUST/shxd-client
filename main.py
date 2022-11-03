@@ -26,7 +26,6 @@ class Api:
         print(time.time()-s)
         return ret_frame.tolist()
 
-
     # 从本地选择视频上传并获得视频所在路径
     def open_file_dialog(self):
         file_types = ('Video Files (*.mov)', 'All File (*.*)')
@@ -40,6 +39,9 @@ class Api:
         first_frame = get_first_frame(vs)
         print('sample finished')
         return first_frame.tolist()
+    
+    def test(self):
+        webview.windows[0].evaluate_js('window.pywebview.state.setTest(window.pywebview.state.test + 1)')
     
 
 def get_entrypoint(debug: bool):
