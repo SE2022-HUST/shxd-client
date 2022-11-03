@@ -1,4 +1,4 @@
-export async function uploadFunc(
+export async function uploadVideo(
   url: string,
   file: File | undefined
 ): Promise<boolean> {
