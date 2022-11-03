@@ -19,7 +19,7 @@ const ImageButton = (props: IProp) => {
         <Typography
           component="span"
           variant="subtitle1"
-          sx={{ position: "relative", p: 4, pt: 2, pb: 2 }}
+          sx={{ position: "relative", p: 4, pt: 2, pb: 2, color: "white" }}
         >
           {props.name}
         </Typography>
