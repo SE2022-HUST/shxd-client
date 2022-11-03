@@ -14,9 +14,11 @@ from sampler import VideoSampler, frame_to_video
 from privacy_preserving import Protector
 import os
 import socket
-from socks import SocketCommunication
+from sock import SocketCommunication
 import multiprocessing as mp
 
+total_model = torch.hub.load(('./core/yolov5'), 'custom', path='./core/weights/yolov5s.pt', source='local')
+license_model = torch.hub.load(('./core/yolov5'), 'custom', path='./core/weights/license_best.pt', source='local')
 
 def videoProcessing_byframe(frame, protect_item, expose_item):
     pro = Protector()
@@ -25,16 +27,17 @@ def videoProcessing_byframe(frame, protect_item, expose_item):
     pro_frame = pro.process_frame(frame)
     return pro_frame
 
-def videoProcessing(video_name, protect_item, expose_item, skip_frame_cnt=0, debug=False, inputdir=os.path.abspath('./core/dataset/car/')):
-
+def videoProcessing(video_path, protect_item, expose_item, skip_frame_cnt=0, debug=False, inputdir=os.path.abspath('./core/dataset/car/')):
     fps = 10
-    input_dir = inputdir + '\\'
-    print(video_name, input_dir)
+    # input_dir = inputdir + '\\'
+    # print(video_name, input_dir)
 
-    vs = VideoSampler(input_dir + video_name, skip_frame_cnt=skip_frame_cnt)
+    video_name = video_path.split('\\')[-1]
+    # vs = VideoSampler(input_dir + video_name, skip_frame_cnt=skip_frame_cnt)
+    vs = VideoSampler(video_path, skip_frame_cnt=skip_frame_cnt)
     if not vs.is_opened:
+        print('Video is not existed!')
         return
-    
     pro = Protector()
     pro.protect_conditions = [protect_item]
     pro.expose_conditions = [expose_item]
@@ -51,7 +54,8 @@ def videoProcessing(video_name, protect_item, expose_item, skip_frame_cnt=0, deb
             break
         frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
 
-        pro_frame = pro.process_frame(frame)
+        pro_frame = pro.process_frame(total_model, license_model, frame)
+
         pro_frame_list.append(pro_frame)
 
         if debug:
@@ -258,3 +262,6 @@ class ResultSender(mp.Process):
             print("closing Sender")
         except Exception as e:
             print("close sender errors",e)
+
+if __name__ == '__main__':
+    videoProcessing('E:\Codefield\shxd-client\car_license_2.mov', ['license'], ['car'], skip_frame_cnt=80)

@@ -7,7 +7,7 @@ import sys
 import getopt
 import numpy as np
 import cv2
-from core.video_process import videoProcessing_byframe
+from core.video_process import videoProcessing_byframe, videoProcessing
 import time
 # from core.video_process import Video_Processing
 
@@ -26,13 +26,15 @@ class Api:
         return ret_frame.tolist()
     
     def open_file_fialog(self):
-        file_types = ('Video Files (*.mp4)', 'All File (*.mp4)')
+        file_types = ('Video Files (*.mov)', 'All File (*.mp4)')
         res = webview.windows[0].create_file_dialog(
             dialog_type=webview.OPEN_DIALOG,
             file_types=file_types
         )
-        print(res)
-        return res
+        print(res[0])
+        # video_name = res[0].split('\\')[-1]
+        # print(video_name)
+        videoProcessing(res[0], ['license'], ['car'], skip_frame_cnt=50)
 
 def get_entrypoint(debug: bool):
     def exists(path: string):
