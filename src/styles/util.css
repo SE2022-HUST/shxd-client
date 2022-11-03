@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition-duration: 600ms;
   background-image: radial-gradient(
       circle at 71.4697265625% 10.475260416666666%,
       #ffe1de 0%,

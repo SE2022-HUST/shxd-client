@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef } from "react";
 import useCanvas from "../../api/hooks/useCanvas";
 import { matrixDecode } from "../../api/utils";
 

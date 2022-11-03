@@ -1,5 +1,4 @@
 import React from "react";
-import CanvasFrame from "../components/CanvasFrame";
 import FileOpen from "../components/FileOpen";
 import HeaderFrame from "../components/HeaderFrame";
 import "../styles/util.css";

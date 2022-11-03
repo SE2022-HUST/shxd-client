@@ -35,10 +35,9 @@ export default function CanvasFrame({ data, frameSize, containerSize }: IProp) {
             onUpdate={updateHandler}
           />
         ) : (
-          <div>没有返回数据</div>
+          <></>
         )}
         <canvas
-          id="canvas-quickview-container"
           width={`${containerSize.width}px`}
           height={`${containerSize.height}px`}
           ref={ref}

@@ -64,8 +64,8 @@ def main():
     webview.create_window('Video Processor', 
 		url=get_entrypoint(debug),
 		# resizable=False,
-		width=1000,
-		height=800,
+		width=1200,
+		height=850,
         js_api=Api()
     )
     webview.start(http_server=True, gui="edgechromium", debug=debug)  #必须使用server模式打开，否则Webview会报错
