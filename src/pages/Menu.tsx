@@ -5,10 +5,13 @@ import "../styles/menu.css";
 
 const Menu = () => {
   return (
-    <div className="menu-container">
-      {entries.map((entry, index) => (
-        <MenuItem key={index} data={entry} />
-      ))}
+    <div className="menu-page">
+      <h1>功能</h1>
+      <div className="menu-container">
+        {entries.map((entry, index) => (
+          <MenuItem key={index} data={entry} />
+        ))}
+      </div>
     </div>
   );
 };
