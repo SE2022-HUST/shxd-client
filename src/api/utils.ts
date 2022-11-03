@@ -40,6 +40,7 @@ export function matrixEncode(data: ImageData): number[][][] {
 }
 
 export function matrixDecode(mat: number[][][]): Uint8ClampedArray {
+  const begin = performance.now();
   const data = new Array<number>();
   for (const row of mat) {
     for (const pixel of row) {
@@ -49,5 +50,6 @@ export function matrixDecode(mat: number[][][]): Uint8ClampedArray {
       data.push(255);
     }
   }
+  console.log(`decode costs: ${performance.now() - begin}ms`);
   return new Uint8ClampedArray(data);
 }

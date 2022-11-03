@@ -38,7 +38,7 @@ class Api:
         print(video_path)
         vs = video_open(video_path, 80)
         first_frame = get_first_frame(vs)
-        cv2.imwrite('./test.png', first_frame)
+        print('sample finished')
         return first_frame.tolist()
     
 
