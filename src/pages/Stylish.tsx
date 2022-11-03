@@ -1,6 +1,7 @@
 import React from "react";
+import FileOpen from "../components/FileOpen";
 import HeaderFrame from "../components/HeaderFrame";
-import "../styles/index.css";
+import "../styles/util.css";
 
 const Stylish = () => {
   return (
@@ -8,6 +9,7 @@ const Stylish = () => {
       <HeaderFrame>
         <h1>风格化处理视频</h1>
       </HeaderFrame>
+      <FileOpen />
     </div>
   );
 };

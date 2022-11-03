@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MenuButton from "./MenuButton";
 import DrawerMenu from "./DrawerMenu";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import "./style.css";
 
 const Layout = (props: { children?: React.ReactNode }) => {
@@ -9,10 +9,22 @@ const Layout = (props: { children?: React.ReactNode }) => {
   const stateChanger = (s: boolean) => {
     setDrawerOpen(s);
   };
+  const loc = useLocation();
+  useEffect(() => {
+    console.log(loc.pathname);
+  }, [loc]);
+
   return (
     <div className="layout-container">
-      <MenuButton setOpen={stateChanger} />
-      <DrawerMenu open={drawerOpen} setOpen={stateChanger} />
+      {loc.pathname !== "/" ? (
+        <>
+          <MenuButton setOpen={stateChanger} />
+          <DrawerMenu open={drawerOpen} setOpen={stateChanger} />
+        </>
+      ) : (
+        <></>
+      )}
+
       <Outlet />
     </div>
   );

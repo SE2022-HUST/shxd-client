@@ -1,7 +1,7 @@
 import React from "react";
-import CanvasFrame from "../components/CanvasFrame";
+import FileOpen from "../components/FileOpen";
 import HeaderFrame from "../components/HeaderFrame";
-import "../styles/index.css";
+import "../styles/util.css";
 
 const Compress = () => {
   return (
@@ -9,7 +9,7 @@ const Compress = () => {
       <HeaderFrame>
         <h1>压缩你的视频</h1>
       </HeaderFrame>
-      <CanvasFrame />
+      <FileOpen />
     </div>
   );
 };

@@ -1,0 +1,58 @@
+.util-page {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition-duration: 600ms;
+  background-image: radial-gradient(
+      circle at 71.4697265625% 10.475260416666666%,
+      #ffe1de 0%,
+      15.75%,
+      rgba(255, 225, 222, 0) 35%
+    ),
+    radial-gradient(
+      circle at 88.9599609375% 81.34114583333333%,
+      #ffffff 0%,
+      32.5%,
+      rgba(255, 255, 255, 0) 65%
+    ),
+    radial-gradient(
+      circle at 58.8232421875% 11.051432291666668%,
+      #ffffff 0%,
+      41.99999999999999%,
+      rgba(255, 255, 255, 0) 60%
+    ),
+    radial-gradient(
+      circle at 38.7548828125% 96.91080729166667%,
+      #ffe1de 0%,
+      25%,
+      rgba(255, 225, 222, 0) 50%
+    ),
+    radial-gradient(
+      circle at 17.003580729166668% 58.362630208333336%,
+      #ffe1de 0%,
+      35%,
+      rgba(255, 225, 222, 0) 50%
+    ),
+    radial-gradient(
+      circle at 48.9013671875% 49.521484375%,
+      #ffffff 0%,
+      100%,
+      rgba(255, 255, 255, 0) 100%
+    );
+}
+
+.util-wrapper {
+  padding-top: 3rem;
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+}
+
+.button-pannel.file-open-bar {
+  padding-top: 1rem;
+  display: flex;
+  justify-content: space-around;
+}
