@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./components/Layout";
 import Compress from "./pages/Compress";
 import Error from "./pages/Error";
+import ImageCase from "./pages/ImageCase";
 import Menu from "./pages/Menu";
 import Mosaic from "./pages/Mosaic";
 import Stylish from "./pages/Stylish";
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "mosaic",
         element: <Mosaic />,
+      },
+      {
+        path: "images",
+        element: <ImageCase />,
       },
     ],
   },

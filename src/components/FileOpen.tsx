@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import { matrixDecode } from "../api/utils";
 import useGlobalState, { StateUnit } from "../api/hooks/useGlobalState";
 
-const FileOpen = () => {
+const FileOpen = ({ next }: { next?: () => void }) => {
   const [canvasWidth, setCanvasWidth] = useState(800);
   const [canvasHeight, setCanvasHeight] = useState(450);
   const [loading, setLoading] = useState(false);
@@ -52,7 +52,9 @@ const FileOpen = () => {
         >
           打开
         </LoadingButton>
-        <Button variant="contained">下一步</Button>
+        <Button variant="contained" onClick={next}>
+          下一步
+        </Button>
       </div>
     </div>
   );

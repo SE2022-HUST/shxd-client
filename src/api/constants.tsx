@@ -14,6 +14,8 @@ export interface EntryNode {
   icon?: JSX.Element;
 }
 
+export const menuBlackList = ["/", "/images"];
+
 export const entries: EntryNode[] = [
   {
     name: "主页",

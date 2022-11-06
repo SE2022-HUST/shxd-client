@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import MenuButton from "./MenuButton";
 import DrawerMenu from "./DrawerMenu";
 import { Outlet, useLocation } from "react-router-dom";
 import "./style.css";
+import { menuBlackList } from "../../api/constants";
 
 const Layout = (props: { children?: React.ReactNode }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -10,13 +11,18 @@ const Layout = (props: { children?: React.ReactNode }) => {
     setDrawerOpen(s);
   };
   const loc = useLocation();
-  useEffect(() => {
-    console.log(loc.pathname);
-  }, [loc]);
+  const checkBlackList: () => boolean = () => {
+    for (const item of menuBlackList) {
+      if (loc.pathname === item) {
+        return true;
+      }
+    }
+    return false;
+  };
 
   return (
     <div className="layout-container">
-      {loc.pathname !== "/" ? (
+      {!checkBlackList() ? (
         <>
           <MenuButton setOpen={stateChanger} />
           <DrawerMenu open={drawerOpen} setOpen={stateChanger} />
@@ -24,7 +30,6 @@ const Layout = (props: { children?: React.ReactNode }) => {
       ) : (
         <></>
       )}
-
       <Outlet />
     </div>
   );
