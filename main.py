@@ -14,7 +14,7 @@ class Api:
         self.first_frame = None
         self.ori_frame_list = []
         self.video_path = ''
-        self.all_frame_objects = {}
+        self.all_frame_objects = []
 
     # 从前端接收一帧
     def send_frame(self, data: dict):
