@@ -15,6 +15,7 @@ export interface EntryNode {
 }
 
 export const menuBlackList = ["/", "/images"];
+export const menuWhiteList = ["/compress", "/stylish", "/mosaic"];
 
 export const entries: EntryNode[] = [
   {

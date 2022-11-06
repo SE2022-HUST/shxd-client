@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import { matrixDecode } from "../../api/utils";
 import "../../styles/util.css";
 import ControlPanel from "./ControlPanel";
-import { FrameData } from "../../api/types/backend";
+import { FrameData } from "../../api/types/types";
 
 const scale = 40;
 

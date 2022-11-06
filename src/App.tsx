@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { MODE } from "./api/types/types";
 import Layout from "./components/Layout";
 import Compress from "./pages/Compress";
 import Error from "./pages/Error";
@@ -12,7 +13,7 @@ import "./styles/index.css";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: <Layout mode={MODE.WHITE_LIST} />,
     errorElement: <Error />,
     children: [
       {

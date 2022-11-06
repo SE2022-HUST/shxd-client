@@ -3,3 +3,8 @@ export interface FrameData {
   width: number;
   height: number;
 }
+
+export enum MODE {
+  WHITE_LIST,
+  BLACK_LIST,
+}

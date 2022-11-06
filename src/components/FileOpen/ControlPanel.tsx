@@ -1,8 +1,7 @@
 import { LoadingButton } from "@mui/lab";
 import { Button } from "@mui/material";
 import React, { FC, useEffect, useRef, useState } from "react";
-import cn from "classnames";
-import { FrameData } from "../../api/types/backend";
+import { FrameData } from "../../api/types/types";
 import { matrixDecode } from "../../api/utils";
 import TipText from "./TipText";
 
@@ -86,7 +85,7 @@ const ControlPanel: FC<IProps> = ({ next, setFrame }) => {
         </LoadingButton>
       </div>
       <div className="process-step">
-        <TipText>第三步：一切就绪后，在下一步中选择需要隐藏的对象</TipText>
+        <TipText>第三步：一切就绪后，点击下一步</TipText>
         <Button variant="contained" disabled={!ready} onClick={next}>
           下一步
         </Button>
