@@ -16,6 +16,9 @@ const Progress = () => {
       },
     }
   );
+  const test = () => {
+    window.pywebview.api.test();
+  };
   return (
     <div className="progress-show-case">
       <div>
@@ -28,7 +31,7 @@ const Progress = () => {
       </div>
       <h2>{`${progress}%`}</h2>
       <div>
-        <button onClick={window.pywebview.api.test}>测试</button>
+        <button onClick={test}>测试</button>
       </div>
     </div>
   );
