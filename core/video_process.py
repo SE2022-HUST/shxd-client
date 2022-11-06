@@ -60,14 +60,14 @@ def get_objects_by_frame(ori_frame_list, protect_item, expose_item, debug=False)
     pro.expose_conditions = [expose_item]
 
     frame_cur_num = 0
-    pro_frames_objects = []
+    pro_frames_objects = {}
 
     for frame in ori_frame_list:
         frame_cur_num += 1
         print(frame_cur_num)
         pro_objects_list = pro.get_objects(total_model, license_model, frame)
         # print(pro_objects_list)
-        pro_frames_objects.append(pro_objects_list)
+        pro_frames_objects[str(frame_cur_num)] = (pro_objects_list)
 
         get_process_percent(ori_frame_list, frame_cur_num)
         if debug == True:
@@ -89,4 +89,4 @@ if __name__ == '__main__':
 
     ori_frame_list = get_every_frame(vs)
     pro_frame_list = get_objects_by_frame(ori_frame_list, ['license'], ['car'])
-    # print(pro_frame_list)
+    print(len(pro_frame_list))
