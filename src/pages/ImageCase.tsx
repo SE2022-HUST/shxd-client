@@ -5,9 +5,11 @@ import MyImageList from "../components/ImageList";
 
 const ImageCase = () => {
   const nav = useNavigate();
-  const [chosenList, setChoseList] = useState<boolean[]>(
-    new Array<boolean>(itemData.length)
-  );
+  const init = new Array<boolean>(itemData.length);
+  for (let i = 0; i < init.length; i++) {
+    init[i] = false;
+  }
+  const [chosenList, setChoseList] = useState<boolean[]>(init);
   const setChosen = (index: number) => {
     const copy = chosenList.slice();
     copy[index] = !copy[index];
