@@ -12,6 +12,7 @@ const ImageCase = () => {
     const copy = chosenList.slice();
     copy[index] = !copy[index];
     setChoseList(copy);
+    console.log(chosenList);
   };
   return (
     <div className="image-show-case">
