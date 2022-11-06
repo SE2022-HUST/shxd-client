@@ -1,5 +1,5 @@
 export interface FrameData {
-  data: any;
+  data: Uint8ClampedArray;
   width: number;
   height: number;
 }

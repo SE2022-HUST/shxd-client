@@ -10,7 +10,7 @@ const Menu = () => {
       <div className="menu-container">
         {entries.map((entry, index) => {
           if (entry.name === "主页") {
-            return <></>;
+            return <React.Fragment key={index}></React.Fragment>;
           }
           return <MenuItem key={index} data={entry} />;
         })}
