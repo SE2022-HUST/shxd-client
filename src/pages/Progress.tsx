@@ -22,7 +22,7 @@ const Progress = () => {
   return (
     <div className="progress-show-case">
       <div>
-        <Link to="/">Back to Index</Link>
+        <Link to="/menu">Back to Index</Link>
       </div>
       <h1 className="progress-title">处理中...</h1>
       <CanvasFrame containerSize={{ width: 800, height: 450 }} />

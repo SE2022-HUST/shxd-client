@@ -23,6 +23,7 @@ class Api:
         return frame.tolist()
 
     def send_chosen_entities(self, data: list):
+        self.set_progress(10)
         print(data)
 
     # 从本地选择视频上传并获得视频所在路径 返回前端第一帧
@@ -56,11 +57,14 @@ class Api:
         )
         print(res)
         return res
-    # 预留的测试接口
+
+    def set_progress(self, p):
+        self.progress = p
+        webview.windows[0].evaluate_js(
+            'window.pywebview.state.setProgress(%d)' % (self.progress))
 
     def test(self):
-        webview.windows[0].evaluate_js(
-            'window.pywebview.state.setProgress(window.pywebview.state.progress + 10)')
+        self.set_progress(60)
 
 
 # 根据运行模式选择入口

@@ -20,8 +20,9 @@ const router = createBrowserRouter([
     errorElement: <Error />,
     children: [
       {
+        // path: "menu",
         element: <Menu />,
-        // index: true,
+        index: true,
       },
       {
         path: "compress",
@@ -40,9 +41,9 @@ const router = createBrowserRouter([
         element: <ImageCase />,
       },
       {
-        // path: "progress",
+        path: "progress",
         element: <Progress />,
-        index: true,
+        // index: true,
       },
     ],
   },
