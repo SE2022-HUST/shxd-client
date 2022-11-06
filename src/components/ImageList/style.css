@@ -9,3 +9,7 @@
   width: 99%;
   transform: "translateZ(0)";
 }
+
+.image-item:hover {
+  cursor: pointer;
+}
