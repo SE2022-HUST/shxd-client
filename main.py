@@ -9,14 +9,12 @@ from core.video_process import video_open, get_first_frame, get_objects_by_frame
 
 
 class Api:
-
     def __init__(self):
         self.vs = None
         self.first_frame = None
         self.ori_frame_list = []
         self.video_path = ''
         self.all_frame_objects = {}
-
 
     # 从前端接收一帧
     def send_frame(self, data: dict):
@@ -28,7 +26,7 @@ class Api:
         print(data)
 
     # 从本地选择视频上传并获得视频所在路径 返回前端第一帧
-    def open_video(self):
+    def get_video(self):
         file_types = ('MOV Files (*.mov)',
                       'MP4 Files (*.mp4)')
         res = webview.windows[0].create_file_dialog(
@@ -47,6 +45,16 @@ class Api:
         self.all_frame_objects = get_objects_by_frame(self.ori_frame_list, ['license'], ['car'])
         return self.all_frame_objects
 
+    def get_save_path(self):
+        file_types = ('MOV Files (*.mov)',
+                      'MP4 Files (*.mp4)', 'All Files (*.*)')
+        res = webview.windows[0].create_file_dialog(
+            dialog_type=webview.SAVE_DIALOG,
+            file_types=file_types,
+            save_filename='output'
+        )
+        print(res)
+        return res
     # 预留的测试接口
 
     def test(self):

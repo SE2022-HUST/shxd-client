@@ -45,14 +45,27 @@
 
 .util-wrapper {
   padding-top: 3rem;
-  width: fit-content;
-  height: fit-content;
+  width: 100%;
+  height: auto;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.path-choose-bar {
+  text-align: center;
 }
 
-.button-pannel.file-open-bar {
-  padding-top: 1rem;
-  display: flex;
-  justify-content: space-around;
+.save-path-input {
+  height: 2rem;
+  width: 20rem;
+  margin-right: 1rem;
+}
+
+.process-step {
+  margin-bottom: 3rem;
+}
+
+.tip-text {
+  color: #757575;
+  margin-bottom: 0.8rem;
 }
