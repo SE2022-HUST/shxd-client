@@ -60,22 +60,24 @@ def get_objects_by_frame(ori_frame_list, protect_item, expose_item, debug=False)
     pro.expose_conditions = [expose_item]
 
     frame_cur_num = 0
-    pro_frame_list = []
+    pro_frames_objects = []
 
     for frame in ori_frame_list:
         frame_cur_num += 1
         print(frame_cur_num)
         pro_objects_list = pro.get_objects(total_model, license_model, frame)
+        # print(pro_objects_list)
+        pro_frames_objects.append(pro_objects_list)
+
         get_process_percent(ori_frame_list, frame_cur_num)
-        pro_frame_list.append(pro_objects_list)
-        tt = 0
-        for box in pro_objects_list:
-            if debug == True:
-                if not os.path.exists(f'./core/debug'):
-                    os.makedirs(f'./core/debug/')
+        if debug == True:
+            if not os.path.exists(f'./core/debug'):
+                os.makedirs(f'./core/debug/')
+            tt = 0
+            for box in pro_objects_list:
                 cv2.imwrite(f'./core/debug/{frame_cur_num}_{tt}.jpg', box)
-            tt += 1
-    return pro_frame_list
+                tt += 1
+    return pro_frames_objects
 
 # 获取进度
 def get_process_percent(ori_frame_list, frame_cur_num):
@@ -86,4 +88,5 @@ if __name__ == '__main__':
     vs = video_open('./car_license_2.mov', skip_frame_cnt=80)
 
     ori_frame_list = get_every_frame(vs)
-    pro_frame_list = videoProcess(ori_frame_list, ['license'], ['car'])
+    pro_frame_list = get_objects_by_frame(ori_frame_list, ['license'], ['car'])
+    # print(pro_frame_list)
