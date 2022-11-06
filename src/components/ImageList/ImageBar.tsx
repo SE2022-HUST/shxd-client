@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 import { ImageListItemBar, IconButton } from "@mui/material";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import StarIcon from "@mui/icons-material/Star";
 
 interface IProps {
   onClick: () => void;
@@ -15,11 +14,7 @@ const ImageBar: FC<IProps> = ({ onClick, chosen }) => {
       position="top"
       actionIcon={
         <IconButton sx={{ color: "white" }} onClick={onClick}>
-          {chosen ? (
-            <StarIcon fontSize="large" />
-          ) : (
-            <StarBorderIcon fontSize="large" />
-          )}
+          {chosen ? <></> : <StarBorderIcon fontSize="large" />}
         </IconButton>
       }
       actionPosition="left"

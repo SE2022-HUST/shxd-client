@@ -11,15 +11,18 @@ from core.video_process import video_open, get_first_frame
 class Api:
 
     # 从前端接收一帧
-    def trans_frame(self, data: dict):
+    def send_frame(self, data: dict):
         frame = np.array(data['data'])
         frame = frame.astype(np.uint8)
         return frame.tolist()
 
+    def send_chosen_entities(self, data: list):
+        print(data)
+
     # 从本地选择视频上传并获得视频所在路径 返回前端第一帧
-    def open_file_dialog(self):
+    def open_video(self):
         file_types = ('MOV Files (*.mov)',
-                      'MP4 Files (*.mp4)', 'All File (*.*)')
+                      'MP4 Files (*.mp4)')
         res = webview.windows[0].create_file_dialog(
             dialog_type=webview.OPEN_DIALOG,
             file_types=file_types
@@ -31,7 +34,11 @@ class Api:
         print('sample finished')
         return first_frame.tolist()
 
+    def get_entities(self):
+        return []
+
     # 预留的测试接口
+
     def test(self):
         webview.windows[0].evaluate_js(
             'window.pywebview.state.setTest(window.pywebview.state.test + 1)')

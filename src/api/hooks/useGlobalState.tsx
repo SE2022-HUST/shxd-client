@@ -1,7 +1,5 @@
 import { useEffect } from "react";
 
-// 这个hook用于注册pywebview可以调用的state
-
 export function appendState(name: string, data: any) {
   if (window.pywebview.state === undefined) {
     throw new Error("未初始化全局State");
@@ -14,6 +12,7 @@ export interface StateUnit {
   data: any;
 }
 
+// 这个hook用于注册pywebview可以调用的state
 export default function useGlobalState(...toAppend: StateUnit[]) {
   useEffect(() => {
     if (window.pywebview.state === undefined) {

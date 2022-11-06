@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import cn from "classnames";
 import { ImageListItem } from "@mui/material";
 import "./style.css";
-import ImageBar from "./ImageBar";
+import ImageMask from "./ImageMask";
 
 interface IProps {
   key: string;
@@ -22,7 +22,7 @@ const ImageItem: FC<IProps> = ({ key, src, chosen, setChosen }) => {
       key={key}
     >
       <img src={src} loading="lazy" onClick={test} />
-      <ImageBar onClick={test} chosen={chosen} />
+      <ImageMask onClick={test} display={chosen} />
     </ImageListItem>
   );
 };

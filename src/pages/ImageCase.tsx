@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/image.css";
 import MyImageList from "../components/ImageList";
+import HeaderFrame from "../components/HeaderFrame";
+import { Button } from "@mui/material";
 
 const ImageCase = () => {
   const nav = useNavigate();
@@ -16,17 +18,25 @@ const ImageCase = () => {
     setChoseList(copy);
     console.log(chosenList);
   };
+  const backHandler = () => {
+    nav(-1);
+  };
+  const nextHandler = () => {
+    window.pywebview.api.send_chosen_entities(chosenList);
+  };
   return (
     <div className="image-show-case">
-      <div>
-        <button
-          onClick={() => {
-            nav(-1);
-          }}
-        >
-          Back
-        </button>
-      </div>
+      <HeaderFrame>
+        <h2>请点选你需要隐藏的对象</h2>
+        <div className="header-controls">
+          <Button variant="contained" className="but" onClick={backHandler}>
+            返回
+          </Button>
+          <Button variant="contained" className="but" onClick={nextHandler}>
+            下一步
+          </Button>
+        </div>
+      </HeaderFrame>
       <div className="image-show-main">
         <MyImageList
           data={itemData}
@@ -42,15 +52,13 @@ export default ImageCase;
 
 const itemData: Array<{
   img: string;
-  title: string;
-  author: string;
-  featured?: boolean;
+  title?: string;
+  author?: string;
 }> = [
   {
     img: "https://images.unsplash.com/photo-1551963831-b3b1ca40c98e",
     title: "Breakfast",
     author: "@bkristastucchio",
-    featured: true,
   },
   {
     img: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d",
@@ -76,7 +84,6 @@ const itemData: Array<{
     img: "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62",
     title: "Honey",
     author: "@arwinneil",
-    featured: true,
   },
   {
     img: "https://images.unsplash.com/photo-1516802273409-68526ee1bdd6",
@@ -107,5 +114,38 @@ const itemData: Array<{
     img: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
     title: "Bike",
     author: "@southside_customs",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
+  },
+  {
+    img: "https://images.unsplash.com/photo-1589118949245-7d38baf380d6",
   },
 ];

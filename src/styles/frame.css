@@ -1,5 +1,6 @@
 .util-header {
   height: 30%;
+  min-height: 10rem;
   width: 100%;
   background-color: #18133e;
   display: flex;

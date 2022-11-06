@@ -16,7 +16,7 @@ const FileOpen = ({ next }: { next?: () => void }) => {
   const [frameHeight, setFrameHeight] = useState<number | undefined>(undefined);
   const openHandler = () => {
     setLoading(true);
-    const syncFn = window.pywebview.api.open_file_dialog();
+    const syncFn = window.pywebview.api.open_video();
     console.log("call func");
     syncFn
       .then((res) => {
