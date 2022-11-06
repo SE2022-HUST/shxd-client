@@ -5,10 +5,17 @@ import getopt
 import string
 import webview
 import numpy as np
-from core.video_process import video_open, get_first_frame
+from core.video_process import video_open, get_first_frame, get_objects_by_frame, get_every_frame
 
 
 class Api:
+    def __init__(self):
+        self.vs = None
+        self.first_frame = None
+        self.ori_frame_list = []
+        self.video_path = ''
+        self.all_frame_objects = {}
+
     # 从前端接收一帧
     def send_frame(self, data: dict):
         frame = np.array(data['data'])
@@ -26,20 +33,21 @@ class Api:
             dialog_type=webview.OPEN_DIALOG,
             file_types=file_types
         )
-        video_path = res[0].replace("\\", "\\\\")
-        print(video_path)
-        vs = video_open(video_path, 80)
-        first_frame = get_first_frame(vs)
+        self.video_path = res[0].replace("\\", "\\\\")
+        print(self.video_path)
+        self.vs = video_open(self.video_path, 80)
+        self.first_frame = get_first_frame(self.vs)
         print('sample finished')
-        return first_frame.tolist()
+        return self.first_frame.tolist()
 
     def get_entities(self):
-        return []
+        self.ori_frame_list = get_every_frame(self.vs)
+        self.all_frame_objects = get_objects_by_frame(self.ori_frame_list, ['license'], ['car'])
+        return self.all_frame_objects
 
     def get_save_path(self):
         file_types = ('MOV Files (*.mov)',
                       'MP4 Files (*.mp4)', 'All Files (*.*)')
-
         res = webview.windows[0].create_file_dialog(
             dialog_type=webview.SAVE_DIALOG,
             file_types=file_types,
@@ -47,7 +55,6 @@ class Api:
         )
         print(res)
         return res
-
     # 预留的测试接口
 
     def test(self):
