@@ -60,7 +60,7 @@ class Api:
 
     def test(self):
         webview.windows[0].evaluate_js(
-            'window.pywebview.state.setTest(window.pywebview.state.test + 1)')
+            'window.pywebview.state.setProgress(10)')
 
 
 # 根据运行模式选择入口

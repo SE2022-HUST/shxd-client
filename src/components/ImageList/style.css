@@ -6,8 +6,10 @@
 }
 
 .image-list {
+  margin: 0;
   width: 99%;
   transform: "translateZ(0)";
+  overflow-x: hidden;
 }
 
 .image-item:hover {

@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
+import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { store } from "./api/redux/store";
 import { MODE } from "./api/types/types";
 import Layout from "./components/Layout";
 import Compress from "./pages/Compress";
@@ -19,7 +21,7 @@ const router = createBrowserRouter([
     children: [
       {
         element: <Menu />,
-        index: true,
+        // index: true,
       },
       {
         path: "compress",
@@ -38,8 +40,9 @@ const router = createBrowserRouter([
         element: <ImageCase />,
       },
       {
-        path: "progress",
+        // path: "progress",
         element: <Progress />,
+        index: true,
       },
     ],
   },
@@ -53,7 +56,9 @@ export default function App() {
 
   return (
     <React.StrictMode>
-      <RouterProvider router={router} />
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
     </React.StrictMode>
   );
 }

@@ -4,9 +4,13 @@ import "../styles/image.css";
 import MyImageList from "../components/ImageList";
 import HeaderFrame from "../components/HeaderFrame";
 import { Button } from "@mui/material";
+import { useAppSelector } from "../api/redux/store";
+import { selectImageReady } from "../api/redux/ImageSlice";
 
 const ImageCase = () => {
   const nav = useNavigate();
+  const ready = useAppSelector(selectImageReady);
+
   const init = new Array<boolean>(itemData.length);
   for (let i = 0; i < init.length; i++) {
     init[i] = false;
@@ -43,6 +47,7 @@ const ImageCase = () => {
           data={itemData}
           setChosen={setChosen}
           chosen={chosenList}
+          ready={ready}
         />
       </div>
     </div>

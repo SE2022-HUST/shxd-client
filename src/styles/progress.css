@@ -1,0 +1,19 @@
+.progress-show-case {
+  width: 100vw;
+  height: 100vh;
+  background-color: #221964;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.progress-title {
+  margin-top: 5rem;
+  margin-bottom: 8rem;
+}
+
+.progress-wrapper {
+  width: 60%;
+  margin-top: 5rem;
+}

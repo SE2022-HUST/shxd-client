@@ -21,5 +21,6 @@ export default function useGlobalState(...toAppend: StateUnit[]) {
     for (const item of toAppend) {
       appendState(item.name, item.data);
     }
+    console.log("registered:", window.pywebview.state);
   });
 }
