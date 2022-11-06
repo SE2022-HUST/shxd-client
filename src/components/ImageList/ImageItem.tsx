@@ -5,7 +5,7 @@ import "./style.css";
 import ImageMask from "./ImageMask";
 
 interface IProps {
-  key: string;
+  key: any;
   src: string;
   chosen: boolean;
   setChosen: () => void;
@@ -14,7 +14,7 @@ interface IProps {
 const ImageItem: FC<IProps> = ({ key, src, chosen, setChosen }) => {
   const test = () => {
     setChosen();
-    console.log(`${key} clicked! now: ${String(chosen)}`);
+    console.log(`${key as string} clicked! now: ${String(chosen)}`);
   };
   return (
     <ImageListItem

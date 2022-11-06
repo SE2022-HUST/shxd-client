@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import cn from "classnames";
 import CanvasFrame from "../CanvasFrame";
 import "../../styles/util.css";
@@ -8,7 +8,11 @@ import { FrameData } from "../../api/types/types";
 
 const scale = 40;
 
-const FileOpen = ({ next }: { next?: () => void }) => {
+interface IProps {
+  next?: () => void;
+}
+
+const FileOpen: FC<IProps> = ({ next }) => {
   const [canvasWidth, setCanvasWidth] = useState(16 * scale);
   const [canvasHeight, setCanvasHeight] = useState(9 * scale);
   const [frame, setFrame] = useState<Uint8ClampedArray>();

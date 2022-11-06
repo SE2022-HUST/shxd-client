@@ -39,7 +39,7 @@ const MyImageList: FC<IProps> = ({ data, chosen, setChosen }) => {
       <ImageList className="image-list" cols={col} gap={4}>
         {data.map((item, index) => (
           <ImageItem
-            key={String(index)}
+            key={index}
             src={getSrc(item.img, 300, 250)}
             chosen={chosen[index]}
             setChosen={() => {

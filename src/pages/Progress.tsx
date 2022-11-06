@@ -1,7 +1,7 @@
 import React from "react";
 
 const Progress = () => {
-  return <div>Progress</div>;
+  return <div className="progress-show-case">Progress</div>;
 };
 
 export default Progress;
