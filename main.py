@@ -42,7 +42,8 @@ class Api:
 
     def get_entities(self):
         self.ori_frame_list = get_every_frame(self.vs)
-        self.all_frame_objects = get_objects_by_frame(self.ori_frame_list, ['license'], ['car'])
+        self.all_frame_objects = get_objects_by_frame(
+            self.ori_frame_list, ['license'], ['car'])
         return self.all_frame_objects
 
     def get_save_path(self):

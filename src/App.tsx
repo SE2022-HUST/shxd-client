@@ -7,6 +7,7 @@ import Error from "./pages/Error";
 import ImageCase from "./pages/ImageCase";
 import Menu from "./pages/Menu";
 import Mosaic from "./pages/Mosaic";
+import Progress from "./pages/Progress";
 import Stylish from "./pages/Stylish";
 import "./styles/index.css";
 
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "images",
         element: <ImageCase />,
+      },
+      {
+        path: "progress",
+        element: <Progress />,
       },
     ],
   },

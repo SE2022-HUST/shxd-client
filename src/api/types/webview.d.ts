@@ -7,6 +7,7 @@ interface Window {
       // 前端调用后端功能
       get_video: () => Promise<number[][][]>;
       get_save_path: () => Promise<string>;
+      get_entities: () => Promise<any>;
 
       test: () => void;
     };

@@ -23,6 +23,7 @@ const ImageCase = () => {
   };
   const nextHandler = () => {
     window.pywebview.api.send_chosen_entities(chosenList);
+    nav("/progress");
   };
   return (
     <div className="image-show-case">
