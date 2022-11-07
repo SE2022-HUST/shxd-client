@@ -38,7 +38,7 @@ const Progress = () => {
   });
   const fn = async () => {
     const raw = await window.pywebview.api.get_cur_frame();
-    if (raw !== undefined) {
+    if (raw?.[0] !== undefined) {
       const frame: FrameData = {
         data: matrixDecode(raw),
         height: raw.length,
