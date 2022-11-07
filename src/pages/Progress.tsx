@@ -3,10 +3,20 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useGlobalState from "../api/hooks/useGlobalState";
 import CanvasFrame from "../components/CanvasFrame";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import "../styles/progress.css";
+import { useAppSelector } from "../api/redux/store";
+import { selectSavePath } from "../api/redux/ImageSlice";
 
 const Progress = () => {
   const [progress, setProgress] = useState(0.0);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const savePath = useAppSelector(selectSavePath);
   const nav = useNavigate();
   useGlobalState(
     { name: "progress", data: progress },
@@ -17,15 +27,16 @@ const Progress = () => {
       },
     }
   );
-  const test = () => {
-    window.pywebview.api.test();
-  };
   const finishHandler = () => {
     console.log("process finish!");
-    setTimeout(() => {
-      nav("/");
-    }, 1000);
+    setDialogOpen(true);
   };
+  const backHandler = () => {
+    setDialogOpen(false);
+    nav("/");
+  };
+  const openDirHandler = () => {};
+  const openFileHandler = () => {};
   useEffect(() => {
     if (progress >= 100) {
       setProgress(100);
@@ -39,10 +50,25 @@ const Progress = () => {
       <div className="progress-wrapper">
         <LinearProgress variant="determinate" value={progress} />
       </div>
+      <Dialog open={dialogOpen}>
+        <DialogTitle>处理完成！</DialogTitle>
+        <DialogContent>
+          <DialogContentText>{`视频已保存到 ${savePath}`}</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={openFileHandler}>打开视频</Button>
+          <Button onClick={openDirHandler}>打开目录</Button>
+          <Button onClick={backHandler}>回到主页</Button>
+        </DialogActions>
+      </Dialog>
       <h2>{`${progress}%`}</h2>
-      <div>
-        <button onClick={test}>完成</button>
-      </div>
+      <Button
+        variant="contained"
+        onClick={backHandler}
+        hidden={progress !== 100}
+      >
+        回到主页
+      </Button>
     </div>
   );
 };
