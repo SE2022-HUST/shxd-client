@@ -60,6 +60,9 @@ class Protector:
         self.processed_frame_count = 0
         self.processed_duration = 0
 
+        self.bboxes_list = []
+        self.new_imgs_list = []
+
     def sql(self, sql_str):
         start_time = time.time()
         # do sql parse
@@ -345,7 +348,11 @@ class Protector:
         # bboxes = detect_res.get_objects()
         # return bboxes
 
+        self.new_imgs_list.append(new_img)
+
         new_img_list = []
+        bbox_and_sigma = 0
+
         if len(protect_bbox) > 0:
             # Now we should use our privacy preserving methods to protect video contents.
             # For simplicity, we just do the protect with blurring
@@ -361,6 +368,8 @@ class Protector:
                 x, y, w, h = int(rect[0]), int(rect[1]), int(rect[2] - rect[0]), int(rect[3] - rect[1])
                 img = img[y:y+h, x:x+w]
                 new_img_list.append(img)
+
+        self.bboxes_list.append(bbox_and_sigma)
         # Finally, return the protected frame.
         if self.debug:
             draw_bboxes(new_img, detect_res.get_objects())
