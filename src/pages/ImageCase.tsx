@@ -21,10 +21,11 @@ const ImageCase = () => {
     nav(-1);
   };
   const nextHandler = () => {
+    console.log("next clicked!");
     if (chosenList !== undefined) {
       window.pywebview.api.send_chosen_entities(chosenList);
-      nav("/progress");
     }
+    nav("/progress");
   };
   return (
     <div className="image-show-case">
@@ -38,7 +39,7 @@ const ImageCase = () => {
             variant="contained"
             className="but"
             onClick={nextHandler}
-            disabled={chosenList === undefined}
+            // disabled={chosenList === undefined}
           >
             下一步
           </Button>

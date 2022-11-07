@@ -1,5 +1,5 @@
 import { LinearProgress } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useGlobalState from "../api/hooks/useGlobalState";
 import CanvasFrame from "../components/CanvasFrame";
@@ -19,10 +19,19 @@ const Progress = () => {
   );
   const test = () => {
     window.pywebview.api.test();
+  };
+  const finishHandler = () => {
+    console.log("process finish!");
     setTimeout(() => {
       nav("/");
     }, 1000);
   };
+  useEffect(() => {
+    if (progress >= 100) {
+      setProgress(100);
+      finishHandler();
+    }
+  }, [progress]);
   return (
     <div className="progress-show-case">
       <h1 className="progress-title">处理中...</h1>
