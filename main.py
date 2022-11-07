@@ -3,6 +3,7 @@ import sys
 import getopt
 
 import string
+import time
 import webview
 import numpy as np
 from core.video_process import video_open, get_first_frame, get_objects_by_frame, get_every_frame
@@ -24,7 +25,7 @@ class Api:
         return frame.tolist()
 
     def send_chosen_entities(self, data: list):
-        self.set_progress(0) # 在上传实体的时候清零进度
+        self.set_progress(0)  # 在上传实体的时候清零进度
         print(data)
 
     # 从本地选择视频上传并获得视频所在路径 返回前端第一帧
@@ -52,11 +53,12 @@ class Api:
     def get_save_path(self):
         file_types = ('MOV Files (*.mov)',
                       'MP4 Files (*.mp4)', 'All Files (*.*)')
+        now = int(round(time.time()*1000))
         res = webview.windows[0].create_file_dialog(
             dialog_type=webview.SAVE_DIALOG,
             file_types=file_types,
-            save_filename='output'
-        )
+            save_filename=time.strftime(
+                '%Y-%m-%d-%H-%M-%S', time.localtime(now/1000)))
         print(res)
         self.save_path = res
         return res
@@ -67,7 +69,7 @@ class Api:
             'window.pywebview.state.setProgress(%d)' % (self.progress))
 
     def test(self):
-        self.set_progress(60)
+        self.set_progress(100)
 
 
 # 根据运行模式选择入口
