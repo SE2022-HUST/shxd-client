@@ -3,7 +3,7 @@
   margin: 0;
   width: 100vw;
   height: 100vh;
-  background-image: radial-gradient(
+  /* background-image: radial-gradient(
       circle at 71.4697265625% 10.475260416666666%,
       #867cd7 0%,
       15.75%,
@@ -38,7 +38,7 @@
       #ffffff 0%,
       100%,
       rgba(255, 255, 255, 0) 100%
-    );
+    ); */
 }
 
 .layout-headbar.menu-button {

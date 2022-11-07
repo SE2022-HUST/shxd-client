@@ -163,8 +163,8 @@ def main():
     webview.create_window('Video Processor',
                           url=get_entrypoint(debug),
                           # resizable=False,
-                          width=1500,
-                          height=1000,
+                          width=1000,
+                          height=650,
                           js_api=Api()
                           )
     webview.start(http_server=True, gui="edgechromium",
