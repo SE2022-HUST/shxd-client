@@ -27,6 +27,7 @@ const Pagination: FC<IProps> = ({
         percentage !== undefined ? (
           <div className="progress-container">
             <LinearProgress variant="determinate" value={percentage} />
+            <h2>{`${percentage}%`}</h2>
           </div>
         ) : (
           <div className="progress-container">
@@ -39,7 +40,11 @@ const Pagination: FC<IProps> = ({
             <ArrowBackIosIcon />
           </IconButton>
           <h1>{`${now + 1}/${total}`}</h1>
-          <IconButton className="pag-but" onClick={next} disabled={now === total - 1}>
+          <IconButton
+            className="pag-but"
+            onClick={next}
+            disabled={now === total - 1}
+          >
             <ArrowForwardIosIcon />
           </IconButton>
         </div>

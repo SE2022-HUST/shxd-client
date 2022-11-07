@@ -1,4 +1,4 @@
-import { ImageList, Skeleton } from "@mui/material";
+import { ImageList } from "@mui/material";
 import React, { FC, useState } from "react";
 import useGlobalState from "../../api/hooks/useGlobalState";
 import { selectMark, setMarkByPage } from "../../api/redux/ImageSlice";
@@ -49,26 +49,20 @@ const ImagePage: FC<IProps> = ({
         percentage={loadProcess}
       />
       <ImageList className="image-list" cols={col} gap={4}>
-        {ready && imgs !== undefined && chosenList !== undefined
-          ? imgs[nowPage].map((src, index) => (
-              <ImageItem
-                key={index}
-                src={src}
-                chosen={chosenList[nowPage][index]}
-                setChosen={() => {
-                  dispatch(setMarkByPage({ page: nowPage, index }));
-                }}
-              />
-            ))
-          : sktNum.map((val, index) => (
-              <Skeleton
-                key={index}
-                variant="rectangular"
-                animation="wave"
-                width={300}
-                height={250}
-              />
-            ))}
+        {ready && imgs !== undefined && chosenList !== undefined ? (
+          imgs[nowPage].map((src, index) => (
+            <ImageItem
+              key={index}
+              src={src}
+              chosen={chosenList[nowPage][index]}
+              setChosen={() => {
+                dispatch(setMarkByPage({ page: nowPage, index }));
+              }}
+            />
+          ))
+        ) : (
+          <></>
+        )}
       </ImageList>
     </div>
   );
