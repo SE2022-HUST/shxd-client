@@ -11,7 +11,7 @@ def fx(x):
     return a * pow(x, b) + bias
 
 # effect type: 0 -> black out, 1 -> blurring, 2 -> pixelating
-def model_rects(img, bbox_and_sigmas, effect_type=1, param=30, enable=False):
+def model_rects(img, bbox_and_sigmas, effect_type=1, param=30, judgement=[], enable=False):
     new_img = img.copy()
     w = h = 0
     for rect in bbox_and_sigmas:

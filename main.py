@@ -6,7 +6,7 @@ import string
 import time
 import webview
 import numpy as np
-from core.video_process import video_open, get_first_frame, get_objects_by_frame, get_every_frame
+from core.video_process import video_open, get_first_frame, get_objects_by_frame, get_every_frame, video_process_by_frame
 
 
 class Api:
@@ -17,6 +17,8 @@ class Api:
         self.video_path = ''
         self.all_frame_objects = []
         self.save_path = ''
+        self.pro_model = None
+
 
     # 从前端接收一帧
     def send_frame(self, data: dict):
@@ -24,9 +26,11 @@ class Api:
         frame = frame.astype(np.uint8)
         return frame.tolist()
 
+
     def send_chosen_entities(self, data: list):
         self.set_progress(0)  # 在上传实体的时候清零进度
         print(data)
+
 
     # 从本地选择视频上传并获得视频所在路径 返回前端第一帧
     def get_video(self):
@@ -43,12 +47,14 @@ class Api:
         print('sample finished')
         return self.first_frame.tolist()
 
+
     def get_entities(self):
         self.ori_frame_list = get_every_frame(self.vs)
-        self.all_frame_objects = get_objects_by_frame(self.ori_frame_list, ['license'], ['car'])
+        self.all_frame_objects, self.pro_model = get_objects_by_frame(self.ori_frame_list, ['license'], ['car'])
         print('done')
         print(type(self.all_frame_objects))
         return self.all_frame_objects
+
 
     def get_save_path(self):
         file_types = ('MOV Files (*.mov)',
@@ -63,13 +69,27 @@ class Api:
         self.save_path = res
         return res
 
+
     def set_progress(self, p):
         self.progress = p
         webview.windows[0].evaluate_js(
             'window.pywebview.state.setProgress(%d)' % (self.progress))
 
+
+    def video_process(self, boolean_list):
+        if len(self.pro_model.bboxes_list) != len(self.pro_model.new_imgs_list):
+            print('Length is not equal! Maybe something is wrong!')
+            return
+        pro_new_images = []
+        for i in range(len(self.pro_model.new_imgs_list)):
+            new_img = video_process_by_frame(self.pro_model.new_imgs_list[i], self.pro_model.bboxes_list[i], boolean_list[i])
+            pro_new_images.append(new_img)
+        return
+
+
     def test(self):
         self.set_progress(100)
+
 
 
 # 根据运行模式选择入口
