@@ -25,7 +25,7 @@ const Mosaic = () => {
   return (
     <div className="util-page">
       <HeaderFrame>
-        <h1>敏感信息自动打码</h1>
+        <h1>自动马赛克处理</h1>
       </HeaderFrame>
       <FileOpen next={nextHandler} />
     </div>

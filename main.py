@@ -115,7 +115,7 @@ class Api:
         return
 
 
-    def open_video(self, path):
+    def open_fp(self, path):
         fp = path
         systemType: str = platform.platform()
         if 'mac' in systemType:

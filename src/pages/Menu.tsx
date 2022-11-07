@@ -2,6 +2,7 @@ import React from "react";
 import { entries } from "../api/constants";
 import MenuItem from "../components/MenuItem";
 import "../styles/menu.css";
+import poster from "../assets/poster.png";
 
 const Menu = () => {
   return (
@@ -14,7 +15,7 @@ const Menu = () => {
           }
           return <MenuItem key={index} data={entry} />;
         })}
-        <video autoPlay loop className="bg-video">
+        <video autoPlay loop className="bg-video" poster={poster}>
           <source src="http://cdn.moji.com/websrc/video/video621.mp4" type="video/mp4" />
         </video>
       </div>
