@@ -1,7 +1,7 @@
 import os
 import sys
 import getopt
-
+import cv2
 import string
 import time
 import webview
@@ -18,6 +18,7 @@ class Api:
         self.all_frame_objects = []
         self.save_path = ''
         self.pro_model = None
+        self.judge_data = []
 
 
     # 从前端接收一帧
@@ -29,6 +30,9 @@ class Api:
 
     def send_chosen_entities(self, data: list):
         self.set_progress(0)  # 在上传实体的时候清零进度
+        self.judge_data = data
+        print('start!')
+        self.video_process()
         print(data)
 
 
@@ -76,14 +80,18 @@ class Api:
             'window.pywebview.state.setProgress(%d)' % (self.progress))
 
 
-    def video_process(self, boolean_list):
+    def video_process(self):
         if len(self.pro_model.bboxes_list) != len(self.pro_model.new_imgs_list):
             print('Length is not equal! Maybe something is wrong!')
             return
+        print('Begin!')
         pro_new_images = []
         for i in range(len(self.pro_model.new_imgs_list)):
-            new_img = video_process_by_frame(self.pro_model.new_imgs_list[i], self.pro_model.bboxes_list[i], boolean_list[i])
+            print(i)
+            new_img = video_process_by_frame(self.pro_model.new_imgs_list[i], self.pro_model.bboxes_list[i], self.judge_data[i])
+            cv2.imwrite(f'./debug_{i}.jpg', new_img)
             pro_new_images.append(new_img)
+        self.set_progress(100)
         return
 
 
