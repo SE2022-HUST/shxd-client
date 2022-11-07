@@ -89,8 +89,10 @@ def get_process_percent(ori_frame_list, frame_cur_num):
     print(float(frame_cur_num/len(ori_frame_list)))
 
 
-def video_process_by_frame(pro):
-    return 
+def video_process_by_frame(img, bbox_and_sigma, judgement):
+    new_img = model_rects(img, bbox_and_sigma,
+            effect_type=pro.effect_type, judgement=judgement, enable=False)
+    return new_img
 
 
 if __name__ == '__main__':
