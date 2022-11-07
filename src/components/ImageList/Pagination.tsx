@@ -35,11 +35,11 @@ const Pagination: FC<IProps> = ({
         )
       ) : (
         <div className="pagination-container">
-          <IconButton onClick={back} disabled={now === 0}>
+          <IconButton className="pag-but" onClick={back} disabled={now === 0}>
             <ArrowBackIosIcon />
           </IconButton>
           <h1>{`${now + 1}/${total}`}</h1>
-          <IconButton onClick={next}>
+          <IconButton className="pag-but" onClick={next} disabled={now === total - 1}>
             <ArrowForwardIosIcon />
           </IconButton>
         </div>

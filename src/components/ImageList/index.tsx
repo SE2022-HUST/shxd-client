@@ -10,11 +10,17 @@ interface IProps {
   data?: RawImage[][];
   ready: boolean;
   onFinish: () => void;
+  onEnd: (v: boolean) => void;
 }
 
 const skeletonNum = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
-const MyImageList: FC<IProps> = ({ data, ready, onFinish: finishHandler }) => {
+const MyImageList: FC<IProps> = ({
+  data,
+  ready,
+  onFinish: finishHandler,
+  onEnd,
+}) => {
   // States
   const [width, setWidth] = useState(window.innerWidth);
   const [srces, setSrces] = useState<string[][]>();
@@ -39,6 +45,14 @@ const MyImageList: FC<IProps> = ({ data, ready, onFinish: finishHandler }) => {
       getColNum();
     };
   });
+
+  useEffect(() => {
+    if (nowPage === allPage - 1) {
+      onEnd(true);
+    } else {
+      onEnd(false);
+    }
+  }, [nowPage]);
 
   useEffect(() => {
     if (ready && data !== undefined) {
