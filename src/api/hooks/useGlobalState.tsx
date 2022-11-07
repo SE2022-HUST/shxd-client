@@ -14,6 +14,8 @@ export interface StateUnit {
 
 // 这个hook用于注册pywebview可以调用的state
 export default function useGlobalState(...toAppend: StateUnit[]) {
+  if (window.pywebview === undefined) return;
+
   useEffect(() => {
     if (window.pywebview.state === undefined) {
       window.pywebview.state = {};

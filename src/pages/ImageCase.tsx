@@ -21,6 +21,8 @@ const ImageCase = () => {
 
   const backHandler = () => {
     nav(-1);
+    console.log("back");
+    dispatch(clearImage());
   };
   const nextHandler = () => {
     if (chosenList !== undefined) {
@@ -34,8 +36,8 @@ const ImageCase = () => {
       <HeaderFrame>
         <h2>请点选你需要隐藏的对象</h2>
         <div className="header-controls">
-          <Button variant="contained" className="but" onClick={backHandler}>
-            返回
+          <Button variant="contained" onClick={nextHandler}>
+            下一步
           </Button>
         </div>
       </HeaderFrame>
