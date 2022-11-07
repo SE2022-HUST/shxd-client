@@ -8,7 +8,7 @@ import webview
 import numpy as np
 from core.sampler import frame_to_video
 from core.video_process import video_open, get_first_frame, get_objects_by_frame, get_every_frame, video_process_by_frame
-
+from core.privacy_preserving import Protector
 
 class Api:
     def __init__(self):
@@ -23,11 +23,11 @@ class Api:
         self.cur_frame = []
 
     # 从前端接收一帧
-
     def send_frame(self, data: dict):
         frame = np.array(data['data'])
         frame = frame.astype(np.uint8)
         return frame.tolist()
+
 
     def send_chosen_entities(self, data: list):
         self.set_progress(0)  # 在上传实体的时候清零进度
@@ -36,8 +36,8 @@ class Api:
         self.video_process()
         print(data)
 
-    # 从本地选择视频上传并获得视频所在路径 返回前端第一帧
 
+    # 从本地选择视频上传并获得视频所在路径 返回前端第一帧
     def get_video(self):
         file_types = ('MOV Files (*.mov)',
                       'MP4 Files (*.mp4)')
@@ -52,13 +52,33 @@ class Api:
         print('sample finished')
         return self.first_frame.tolist()
 
+
     def get_entities(self):
+        protect_item = ['license']
+        expose_item = ['car']
         self.ori_frame_list = get_every_frame(self.vs)
-        self.all_frame_objects, self.pro_model = get_objects_by_frame(
-            self.ori_frame_list, ['license'], ['car'])
-        print('done')
-        print(type(self.all_frame_objects))
+        # self.all_frame_objects, self.pro_model = get_objects_by_frame(
+        #     self.ori_frame_list, ['license'], ['car'])
+        self.pro_model = Protector()
+        self.pro_model.protect_conditions = [protect_item]
+        self.pro_model.expose_conditions = [expose_item]
+        frame_cur_num = 0
+        length = len(self.ori_frame_list)
+
+        for frame in self.ori_frame_list:
+            frame_cur_num += 1
+            print(frame_cur_num)
+            pro_objects_list, self.pro_model = get_objects_by_frame(frame, self.pro_model)
+            self.set_loading_progress(float(frame_cur_num/length)*100)
+            # print('##########', float(frame_cur_num/length)*100)
+            self.all_frame_objects.append(pro_objects_list)
+
         return self.all_frame_objects
+
+
+    def get_cur_frame(self):
+        return self.cur_frame
+
 
     def get_save_path(self):
         file_types = ('AVI Files (*.avi)', 'All Files (*.*)')
@@ -72,14 +92,17 @@ class Api:
         self.save_path = res
         return res
 
+
     def set_progress(self, p: int):
         self.progress = p
         webview.windows[0].evaluate_js(
             'window.pywebview.state.setProgress(%d)' % (self.progress))
 
+
     def set_loading_progress(self, p: int):
         webview.windows[0].evaluate_js(
             'window.pywebview.state.setLoadProcess(%d)' % (p))
+
 
     def video_process(self):
         if len(self.pro_model.bboxes_list) != len(self.pro_model.new_imgs_list):
@@ -97,6 +120,7 @@ class Api:
         frame_to_video(pro_new_images, self.save_path, length/25)
         self.set_progress(100)
         return
+
 
     def test(self):
         self.set_progress(100)
