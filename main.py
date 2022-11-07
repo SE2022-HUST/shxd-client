@@ -123,12 +123,19 @@ class Api:
         self.set_progress(100)
         return
 
+    # path：1.视频路径self.save_path 2.文件夹路径
+    def open_fp(self, path):
+        fp = path
+        systemType: str = platform.platform()
+        if 'mac' in systemType:
+            fp: str = fp.replace("\\", "/")
+            subprocess.call(["open", fp])
+        else:
+            fp: str = fp.replace("\\", "\\\\")
+            os.startfile(fp)
 
     def test(self):
         self.set_progress(100)
-
-    def get_cur_frame(self):
-        return self.cur_frame
 
 
 # 根据运行模式选择入口
