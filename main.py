@@ -86,10 +86,11 @@ class Api:
             return
         print('Begin!')
         pro_new_images = []
-        for i in range(len(self.pro_model.new_imgs_list)):
-            print(i)
+        length = len(self.pro_model.new_imgs_list)
+        for i in range(length):
+            self.set_progress(float(i/length)*100)
             new_img = video_process_by_frame(self.pro_model.new_imgs_list[i], self.pro_model.bboxes_list[i], self.judge_data[i])
-            cv2.imwrite(f'./debug_{i}.jpg', new_img)
+            # cv2.imwrite(f'./debug_{i}.jpg', new_img)
             pro_new_images.append(new_img)
         self.set_progress(100)
         return
