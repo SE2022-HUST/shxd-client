@@ -12,6 +12,7 @@ import pickle
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 from sampler import VideoSampler, frame_to_video
 from privacy_preserving import Protector
+from blurring import model_rects
 import os
 
 # frame_total_num = 0
@@ -80,7 +81,7 @@ def get_objects_by_frame(ori_frame_list, protect_item, expose_item, debug=False)
             for box in pro_objects_list:
                 cv2.imwrite(f'./core/debug/{frame_cur_num}_{tt}.jpg', box)
                 tt += 1
-    return pro_frames_objects
+    return pro_frames_objects, pro
 
 
 # 获取进度
@@ -88,14 +89,13 @@ def get_process_percent(ori_frame_list, frame_cur_num):
     print(float(frame_cur_num/len(ori_frame_list)))
 
 
-def video_process_by_frame():
-    
+def video_process_by_frame(pro):
     return 
 
 
 if __name__ == '__main__':
-    vs = video_open('./car_license_2.mov', skip_frame_cnt=80)
+    vs = video_open('./car_license_2.mov', skip_frame_cnt=150)
 
     ori_frame_list = get_every_frame(vs)
-    pro_frame_list = get_objects_by_frame(ori_frame_list, ['license'], ['car'])
-    print(len(pro_frame_list))
+    pro_frame_list, pro = get_objects_by_frame(ori_frame_list, ['license'], ['car'])
+    video_process_by_frame(pro)
