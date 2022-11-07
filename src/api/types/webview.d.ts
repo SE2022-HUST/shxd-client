@@ -8,6 +8,7 @@ interface Window {
       get_cur_frame: () => Promise<RawImage>; // 返回当前正在处理的帧
       get_save_path: () => Promise<string>;
       get_entities: () => Promise<RawImage[][]>;
+      open_fp: (path: string) => void;
 
       test: () => void;
     };

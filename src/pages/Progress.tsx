@@ -46,16 +46,13 @@ const Progress = () => {
       };
       setFrameData(frame);
     }
-    if (progress !== 100) {
-      void fn();
-    }
   };
   const memo = useCallback(() => {
     void fn();
   }, []);
   useEffect(() => {
     memo();
-  }, [memo]);
+  }, [progress]);
 
   const closeHandler = () => {
     setDialogOpen(false);
@@ -73,9 +70,14 @@ const Progress = () => {
     nav("/");
   };
 
-  const openDirHandler = () => {};
+  const openDirHandler = () => {
+    const dir = savePath.slice(0, savePath.lastIndexOf("\\"));
+    window.pywebview.api.open_fp(dir);
+  };
 
-  const openFileHandler = () => {};
+  const openFileHandler = () => {
+    window.pywebview.api.open_fp(savePath);
+  };
 
   useEffect(() => {
     if (progress >= 100) {
