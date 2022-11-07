@@ -15,6 +15,7 @@ class Api:
         self.ori_frame_list = []
         self.video_path = ''
         self.all_frame_objects = []
+        self.save_path = ''
 
     # 从前端接收一帧
     def send_frame(self, data: dict):
@@ -23,7 +24,7 @@ class Api:
         return frame.tolist()
 
     def send_chosen_entities(self, data: list):
-        self.set_progress(10)
+        self.set_progress(0) # 在上传实体的时候清零进度
         print(data)
 
     # 从本地选择视频上传并获得视频所在路径 返回前端第一帧
@@ -56,6 +57,7 @@ class Api:
             save_filename='output'
         )
         print(res)
+        self.save_path = res
         return res
 
     def set_progress(self, p):

@@ -1,33 +1,30 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/image.css";
 import MyImageList from "../components/ImageList";
 import HeaderFrame from "../components/HeaderFrame";
 import { Button } from "@mui/material";
 import { useAppSelector } from "../api/redux/store";
-import { selectImageReady } from "../api/redux/ImageSlice";
+import {
+  selectImage,
+  selectImageReady,
+  selectMark,
+} from "../api/redux/ImageSlice";
 
 const ImageCase = () => {
   const nav = useNavigate();
   const ready = useAppSelector(selectImageReady);
+  const imgs = useAppSelector(selectImage);
+  const chosenList = useAppSelector(selectMark);
 
-  const init = new Array<boolean>(itemData.length);
-  for (let i = 0; i < init.length; i++) {
-    init[i] = false;
-  }
-  const [chosenList, setChoseList] = useState<boolean[]>(init);
-  const setChosen = (index: number) => {
-    const copy = chosenList.slice();
-    copy[index] = !copy[index];
-    setChoseList(copy);
-    console.log(chosenList);
-  };
   const backHandler = () => {
     nav(-1);
   };
   const nextHandler = () => {
-    window.pywebview.api.send_chosen_entities(chosenList);
-    nav("/progress");
+    if (chosenList !== undefined) {
+      window.pywebview.api.send_chosen_entities(chosenList);
+      nav("/progress");
+    }
   };
   return (
     <div className="image-show-case">
@@ -37,18 +34,18 @@ const ImageCase = () => {
           <Button variant="contained" className="but" onClick={backHandler}>
             返回
           </Button>
-          <Button variant="contained" className="but" onClick={nextHandler}>
+          <Button
+            variant="contained"
+            className="but"
+            onClick={nextHandler}
+            disabled={chosenList === undefined}
+          >
             下一步
           </Button>
         </div>
       </HeaderFrame>
       <div className="image-show-main">
-        <MyImageList
-          data={itemData}
-          setChosen={setChosen}
-          chosen={chosenList}
-          ready={ready}
-        />
+        <MyImageList data={imgs} ready={ready} />
       </div>
     </div>
   );

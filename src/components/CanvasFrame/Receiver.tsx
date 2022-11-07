@@ -1,6 +1,5 @@
 import React, { useRef, useMemo } from "react";
 import useCanvas from "../../api/hooks/useCanvas";
-import { matrixDecode } from "../../api/utils";
 
 interface ViewSize {
   width: number;
@@ -8,7 +7,7 @@ interface ViewSize {
 }
 
 interface IProp {
-  data: Uint8ClampedArray;
+  data?: Uint8ClampedArray;
   frameSize: ViewSize;
   onUpdate: (canvas: HTMLCanvasElement) => void;
 }
@@ -18,6 +17,9 @@ const Receiver = ({
   frameSize: frame,
   onUpdate: updateHandler,
 }: IProp) => {
+  if (data === undefined) {
+    return <></>;
+  }
   const ref = useRef<HTMLCanvasElement>(null);
   const ctx = useCanvas(ref);
 

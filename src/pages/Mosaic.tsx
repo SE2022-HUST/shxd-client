@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { setReady } from "../api/redux/ImageSlice";
+import { setImages, setReady } from "../api/redux/ImageSlice";
 import { useAppDispatch } from "../api/redux/store";
 import FileOpen from "../components/FileOpen";
 import HeaderFrame from "../components/HeaderFrame";
@@ -11,13 +11,16 @@ const Mosaic = () => {
   const dispatch = useAppDispatch();
   const nextHandler = () => {
     nav("/images");
-    const f = window.pywebview.api.get_entities();
-    f.then((res) => {
-      console.log(res);
-    }).catch((err) => {
-      console.error(err);
-      dispatch(setReady());
-    });
+    const asyncFn = window.pywebview.api.get_entities();
+    asyncFn
+      .then((res) => {
+        console.log(res);
+        dispatch(setImages(res));
+        dispatch(setReady());
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
   return (
     <div className="util-page">
