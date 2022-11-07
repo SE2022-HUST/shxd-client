@@ -36,10 +36,15 @@ export const imageSlice = createSlice({
         state.mark[page][index] = !state.mark[page][index];
       }
     },
+    clearImage: (state) => {
+      state.value = undefined;
+      state.ready = false;
+      state.mark = undefined;
+    },
   },
 });
 
-export const { setImages, setReady, setMark, setMarkByPage } =
+export const { setImages, setReady, setMark, setMarkByPage, clearImage } =
   imageSlice.actions;
 export const selectImage = (state: RootState) => state.images.value;
 export const selectImageReady = (state: RootState) => state.images.ready;
