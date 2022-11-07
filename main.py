@@ -2,6 +2,8 @@ import os
 import sys
 import getopt
 import cv2
+import platform
+import subprocess
 import string
 import time
 import webview
@@ -114,7 +116,7 @@ class Api:
         for i in range(length):
             self.set_progress(float(i/length)*100)
             new_img = video_process_by_frame(self.pro_model.new_imgs_list[i], self.pro_model.bboxes_list[i], self.judge_data[i])
-            self.set_cur_frame(new_img)
+            self.cur_frame = new_img.tolist()
             # cv2.imwrite(f'./debug_{i}.jpg', new_img)
             pro_new_images.append(new_img)
         frame_to_video(pro_new_images, self.save_path, length/25)
@@ -125,8 +127,8 @@ class Api:
     def test(self):
         self.set_progress(100)
 
-    def set_cur_frame(self, frame):
-        self.cur_frame = frame.tolist()
+    def get_cur_frame(self):
+        return self.cur_frame
 
 
 # 根据运行模式选择入口
