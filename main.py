@@ -90,7 +90,8 @@ class Api:
         length = len(self.pro_model.new_imgs_list)
         for i in range(length):
             self.set_progress(float(i/length)*100)
-            new_img = video_process_by_frame(self.pro_model.new_imgs_list[i], self.pro_model.bboxes_list[i], self.judge_data[i])
+            new_img = video_process_by_frame(
+                self.pro_model.new_imgs_list[i], self.pro_model.bboxes_list[i], self.judge_data[i])
             self.set_cur_frame(new_img)
             # cv2.imwrite(f'./debug_{i}.jpg', new_img)
             pro_new_images.append(new_img)
@@ -137,8 +138,8 @@ def main():
     webview.create_window('Video Processor',
                           url=get_entrypoint(debug),
                           # resizable=False,
-                          width=1500,
-                          height=1000,
+                          width=1000,
+                          height=650,
                           js_api=Api()
                           )
     webview.start(http_server=True, gui="edgechromium",
