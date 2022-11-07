@@ -9,11 +9,12 @@ import { setMark } from "../../api/redux/ImageSlice";
 interface IProps {
   data?: RawImage[][];
   ready: boolean;
+  onFinish: () => void;
 }
 
 const skeletonNum = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
-const MyImageList: FC<IProps> = ({ data, ready, ...props }) => {
+const MyImageList: FC<IProps> = ({ data, ready, onFinish: finishHandler }) => {
   // States
   const [width, setWidth] = useState(window.innerWidth);
   const [srces, setSrces] = useState<string[][]>();
@@ -41,7 +42,7 @@ const MyImageList: FC<IProps> = ({ data, ready, ...props }) => {
 
   useEffect(() => {
     if (ready && data !== undefined) {
-      localStorage.setItem("data", JSON.stringify(data));
+      // localStorage.setItem("data", JSON.stringify(data));
       setAllPage(data.length);
       console.log(data.length);
       const srTtemp: string[][] = [];
@@ -80,6 +81,8 @@ const MyImageList: FC<IProps> = ({ data, ready, ...props }) => {
   const nextPageHandler = () => {
     if (nowPage < allPage - 1) {
       setNowPage(nowPage + 1);
+    } else {
+      finishHandler();
     }
   };
   const backPageHandler = () => {
@@ -100,7 +103,6 @@ const MyImageList: FC<IProps> = ({ data, ready, ...props }) => {
         ready={imgReady}
         nextPage={nextPageHandler}
         backPage={backPageHandler}
-        {...props}
       />
     </div>
   );
