@@ -14,11 +14,14 @@ interface IProps {
 const skeletonNum = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
 const MyImageList: FC<IProps> = ({ data, ready, ...props }) => {
+  // States
   const [width, setWidth] = useState(window.innerWidth);
   const [srces, setSrces] = useState<string[][]>();
   const [col, setCol] = useState(width < 1000 ? 4 : 5);
   const [nowPage, setNowPage] = useState(0);
   const [allPage, setAllPage] = useState(0);
+  const [imgReady, setImgReady] = useState(false);
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ctx = useCanvas(canvasRef);
   const dispatch = useAppDispatch();
@@ -38,18 +41,20 @@ const MyImageList: FC<IProps> = ({ data, ready, ...props }) => {
 
   useEffect(() => {
     if (ready && data !== undefined) {
+      localStorage.setItem("data", JSON.stringify(data));
       setAllPage(data.length);
-      const temp: string[][] = [];
+      console.log(data.length);
+      const srTtemp: string[][] = [];
       const listTemp: boolean[][] = [];
       for (let i = 0; i < data.length; i++) {
-        temp.push([]);
+        srTtemp.push([]);
         listTemp.push([]);
-        console.log(i,temp);
-        console.log(temp[i]);
+        console.log(i, srTtemp);
+        console.log(srTtemp[i]);
         console.log(listTemp);
         console.log(listTemp[i]);
 
-        for (let j = 0; j < data[i].length; i++) {
+        for (let j = 0; j < data[i].length; j++) {
           listTemp[i].push(false);
           const raw = matrixDecode(data[i][j]);
           const imgData = new ImageData(
@@ -58,27 +63,30 @@ const MyImageList: FC<IProps> = ({ data, ready, ...props }) => {
             data[i][j].length
           );
           if (ctx !== null && canvasRef.current !== null) {
+            canvasRef.current.width = data[i][j][0].length;
+            canvasRef.current.height = data[i][j].length;
             ctx.putImageData(imgData, 0, 0);
             const src = canvasRef.current.toDataURL("image/png");
-            temp[i].push(src);
+            srTtemp[i].push(src);
           }
         }
       }
-      setSrces(temp);
+      setSrces(srTtemp);
       dispatch(setMark(listTemp));
+      setImgReady(true);
     }
   }, [ready]);
 
   return (
     <div className="img-list-container">
-      <canvas hidden width="300px" height="250" ref={canvasRef} />
+      <canvas hidden ref={canvasRef} />
       <ImagePage
         nowPage={nowPage}
         allPage={allPage}
         sktNum={skeletonNum}
         col={col}
         imgs={srces}
-        ready={ready}
+        ready={imgReady}
         {...props}
       />
     </div>
