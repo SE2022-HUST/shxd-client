@@ -1,0 +1,43 @@
+.util-wrapper {
+  padding-top: 5%;
+  margin-left: 10%;
+  marigin-right: 10%;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.canvas-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-open-bar {
+  margin-left: 5%;
+  width: 100%;
+}
+
+.process-step {
+  margin-bottom: 3rem;
+  width: 100%;
+}
+
+.tip-text {
+  color: #757575;
+  margin-bottom: 0.8rem;
+}
+
+.path-choose-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.save-path-input {
+  margin-right: 0.7rem;
+  height: 2rem;
+  width: 60%;
+}

@@ -9,8 +9,6 @@ interface Window {
       get_save_path: () => Promise<string>;
       get_entities: () => Promise<RawImage[][]>;
       open_fp: (path: string) => void;
-
-      test: () => void;
     };
     state: any;
   };

@@ -5,6 +5,7 @@ import useCanvas from "../../api/hooks/useCanvas";
 import ImagePage from "./ImagePage";
 import { useAppDispatch } from "../../api/redux/store";
 import { setMark } from "../../api/redux/ImageSlice";
+import useWindowSize from "../../api/hooks/useWindowSize";
 
 interface IProps {
   data?: RawImage[][];
@@ -21,30 +22,15 @@ const MyImageList: FC<IProps> = ({
   onFinish: finishHandler,
   onEnd,
 }) => {
+  const col = 4;
   // States
-  const [width, setWidth] = useState(window.innerWidth);
   const [srces, setSrces] = useState<string[][]>();
-  const [col, setCol] = useState(width < 1000 ? 4 : 5);
   const [nowPage, setNowPage] = useState(0);
   const [allPage, setAllPage] = useState(0);
   const [imgReady, setImgReady] = useState(false);
-
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ctx = useCanvas(canvasRef);
   const dispatch = useAppDispatch();
-  const getColNum = () => {
-    if (width < 1000) {
-      setCol(4);
-    } else {
-      setCol(5);
-    }
-  };
-  useEffect(() => {
-    window.onresize = () => {
-      setWidth(window.innerWidth);
-      getColNum();
-    };
-  });
 
   useEffect(() => {
     if (nowPage === allPage - 1) {

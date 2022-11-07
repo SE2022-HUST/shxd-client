@@ -12,6 +12,7 @@ from core.sampler import frame_to_video
 from core.video_process import video_open, get_first_frame, get_objects_by_frame, get_every_frame, video_process_by_frame
 from core.privacy_preserving import Protector
 
+
 class Api:
     def __init__(self):
         self.vs = None
@@ -31,8 +32,8 @@ class Api:
         self.video_process()
         print(data)
 
-
     # 从本地选择视频上传并获得视频所在路径 返回前端第一帧
+
     def get_video(self):
         file_types = ('MOV Files (*.mov)',
                       'MP4 Files (*.mp4)')
@@ -46,7 +47,6 @@ class Api:
         self.first_frame = get_first_frame(self.vs)
         print('sample finished')
         return self.first_frame.tolist()
-
 
     def get_entities(self):
         protect_item = ['license']
@@ -63,17 +63,16 @@ class Api:
         for frame in self.ori_frame_list:
             frame_cur_num += 1
             print(frame_cur_num)
-            pro_objects_list, self.pro_model = get_objects_by_frame(frame, self.pro_model)
+            pro_objects_list, self.pro_model = get_objects_by_frame(
+                frame, self.pro_model)
             self.set_loading_progress(float(frame_cur_num/length)*100)
             # print('##########', float(frame_cur_num/length)*100)
             self.all_frame_objects.append(pro_objects_list)
 
         return self.all_frame_objects
 
-
     def get_cur_frame(self):
         return self.cur_frame
-
 
     def get_save_path(self):
         file_types = ('AVI Files (*.avi)', 'All Files (*.*)')
@@ -87,17 +86,14 @@ class Api:
         self.save_path = res
         return res
 
-
     def set_progress(self, p: int):
         self.progress = p
         webview.windows[0].evaluate_js(
             'window.pywebview.state.setProgress(%d)' % (self.progress))
 
-
     def set_loading_progress(self, p: int):
         webview.windows[0].evaluate_js(
             'window.pywebview.state.setLoadProcess(%d)' % (p))
-
 
     def video_process(self):
         if len(self.pro_model.bboxes_list) != len(self.pro_model.new_imgs_list):
@@ -108,7 +104,8 @@ class Api:
         length = len(self.pro_model.new_imgs_list)
         for i in range(length):
             self.set_progress(float(i/length)*100)
-            new_img = video_process_by_frame(self.pro_model.new_imgs_list[i], self.pro_model.bboxes_list[i], self.judge_data[i])
+            new_img = video_process_by_frame(
+                self.pro_model.new_imgs_list[i], self.pro_model.bboxes_list[i], self.judge_data[i])
             self.cur_frame = new_img.tolist()
             # cv2.imwrite(f'./debug_{i}.jpg', new_img)
             pro_new_images.append(new_img)
@@ -128,6 +125,8 @@ class Api:
             os.startfile(fp)
 
 # 根据运行模式选择入口
+
+
 def get_entrypoint(debug: bool):
     def exists(path: string):
         return os.path.exists(os.path.join(os.path.dirname(__file__), path))
@@ -160,7 +159,7 @@ def main():
                           url=get_entrypoint(debug),
                           # resizable=False,
                           width=1000,
-                          height=650,
+                          height=700,
                           js_api=Api()
                           )
     webview.start(http_server=True, gui="edgechromium",

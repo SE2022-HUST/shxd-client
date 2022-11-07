@@ -6,6 +6,7 @@ import { useAppDispatch } from "../../api/redux/store";
 import { FrameData } from "../../api/types/types";
 import { matrixDecode } from "../../api/utils";
 import TipText from "./TipText";
+import "./style.css";
 
 interface IProps {
   next?: () => void;
@@ -73,7 +74,7 @@ const ControlPanel: FC<IProps> = ({ next, setFrame }) => {
         <div className="path-choose-bar">
           <input className="save-path-input" ref={inputRef} readOnly />
           <Button variant="contained" onClick={savePathHandler}>
-            选择保存路径
+            打开
           </Button>
         </div>
       </div>
@@ -84,7 +85,7 @@ const ControlPanel: FC<IProps> = ({ next, setFrame }) => {
           loading={loading}
           onClick={openHandler}
         >
-          打开
+          打开视频
         </LoadingButton>
       </div>
       <div className="process-step">

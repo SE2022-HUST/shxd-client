@@ -5,7 +5,7 @@
   flex-direction: column;
   align-items: center;
   transition-duration: 600ms;
-  background-image: radial-gradient(
+  /* background-image: radial-gradient(
       circle at 71.4697265625% 10.475260416666666%,
       #ffe1de 0%,
       15.75%,
@@ -40,32 +40,6 @@
       #ffffff 0%,
       100%,
       rgba(255, 255, 255, 0) 100%
-    );
+    ); */
 }
 
-.util-wrapper {
-  padding-top: 3rem;
-  width: 100%;
-  height: auto;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-}
-.path-choose-bar {
-  text-align: center;
-}
-
-.save-path-input {
-  height: 2rem;
-  width: 20rem;
-  margin-right: 1rem;
-}
-
-.process-step {
-  margin-bottom: 3rem;
-}
-
-.tip-text {
-  color: #757575;
-  margin-bottom: 0.8rem;
-}
