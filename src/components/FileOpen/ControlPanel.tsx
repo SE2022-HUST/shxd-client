@@ -1,6 +1,8 @@
 import { LoadingButton } from "@mui/lab";
 import { Button } from "@mui/material";
 import React, { FC, useEffect, useRef, useState } from "react";
+import { setSavePath } from "../../api/redux/ImageSlice";
+import { useAppDispatch } from "../../api/redux/store";
 import { FrameData } from "../../api/types/types";
 import { matrixDecode } from "../../api/utils";
 import TipText from "./TipText";
@@ -16,6 +18,7 @@ const ControlPanel: FC<IProps> = ({ next, setFrame }) => {
   const [saveReady, setSaveReady] = useState(false);
   const [ready, setReady] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (videoReady && saveReady) {
@@ -52,6 +55,7 @@ const ControlPanel: FC<IProps> = ({ next, setFrame }) => {
     asyncFn
       .then((res) => {
         console.log(res);
+        dispatch(setSavePath(res));
         if (inputRef.current !== null) {
           inputRef.current.value = res;
           setSaveReady(true);

@@ -6,12 +6,14 @@ export interface ImageState {
   value: RawImage[][] | undefined;
   ready: boolean;
   mark: boolean[][] | undefined;
+  savePath: string;
 }
 
 const initialState: ImageState = {
   value: undefined,
   ready: false,
   mark: undefined,
+  savePath: "",
 };
 
 export const imageSlice = createSlice({
@@ -41,13 +43,23 @@ export const imageSlice = createSlice({
       state.ready = false;
       state.mark = undefined;
     },
+    setSavePath: (state, action: PayloadAction<string>) => {
+      state.savePath = action.payload;
+    },
   },
 });
 
-export const { setImages, setReady, setMark, setMarkByPage, clearImage } =
-  imageSlice.actions;
+export const {
+  setImages,
+  setReady,
+  setMark,
+  setMarkByPage,
+  clearImage,
+  setSavePath,
+} = imageSlice.actions;
 export const selectImage = (state: RootState) => state.images.value;
 export const selectImageReady = (state: RootState) => state.images.ready;
 export const selectMark = (state: RootState) => state.images.mark;
+export const selectSavePath = (state: RootState) => state.images.savePath;
 
 export default imageSlice.reducer;
