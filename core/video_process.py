@@ -54,34 +54,11 @@ def get_every_frame(vs):
     return ori_frame_list
 
 
-# 整个视频处理
-def get_objects_by_frame(ori_frame_list, protect_item, expose_item, debug=False):
-    pro = Protector()
-    pro.protect_conditions = [protect_item]
-    pro.expose_conditions = [expose_item]
-
-    frame_cur_num = 0
-    pro_frames_objects = []
-
-    for frame in ori_frame_list:
-        frame_cur_num += 1
-        print(frame_cur_num)
-        pro_objects_list = pro.get_objects(total_model, license_model, frame)
-
-        for i in range(len(pro_objects_list)):
-            pro_objects_list[i] = pro_objects_list[i].tolist()
-
-        pro_frames_objects.append(pro_objects_list)
-
-        get_process_percent(ori_frame_list, frame_cur_num)
-        if debug == True:
-            if not os.path.exists(f'./core/debug'):
-                os.makedirs(f'./core/debug/')
-            tt = 0
-            for box in pro_objects_list:
-                cv2.imwrite(f'./core/debug/{frame_cur_num}_{tt}.jpg', box)
-                tt += 1
-    return pro_frames_objects, pro
+def get_objects_by_frame(frame, pro):
+    pro_objects_list = pro.get_objects(total_model, license_model, frame)
+    for i in range(len(pro_objects_list)):
+        pro_objects_list[i] = pro_objects_list[i].tolist()
+    return  pro_objects_list, pro
 
 
 # 获取进度
