@@ -17,3 +17,5 @@ wandb
 flask
 flask-cors
 pywebview
+opencv-contrib-python
+openpyxl
