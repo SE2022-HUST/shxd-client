@@ -12,9 +12,11 @@ import DialogTitle from "@mui/material/DialogTitle";
 import "../styles/progress.css";
 import { useAppSelector } from "../api/redux/store";
 import { selectSavePath } from "../api/redux/ImageSlice";
+import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 
 const Progress = () => {
   const [progress, setProgress] = useState(0.0);
+  const [finished, setFinished] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const savePath = useAppSelector(selectSavePath);
   const nav = useNavigate();
@@ -27,12 +29,17 @@ const Progress = () => {
       },
     }
   );
+  const closeHandler = () => {
+    setDialogOpen(false);
+  };
   const finishHandler = () => {
     console.log("process finish!");
     setDialogOpen(true);
+    setFinished(true);
   };
   const backHandler = () => {
     setDialogOpen(false);
+    setFinished(false);
     nav("/");
   };
   const openDirHandler = () => {};
@@ -50,25 +57,27 @@ const Progress = () => {
       <div className="progress-wrapper">
         <LinearProgress variant="determinate" value={progress} />
       </div>
-      <Dialog open={dialogOpen}>
-        <DialogTitle>处理完成！</DialogTitle>
+      <Dialog open={dialogOpen} onClose={closeHandler}>
+        <DialogTitle>
+          <DoneOutlineIcon sx={{ pt: 1 }} fontSize="small" /> 处理完成
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>{`视频已保存到 ${savePath}`}</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={openFileHandler}>打开视频</Button>
           <Button onClick={openDirHandler}>打开目录</Button>
-          <Button onClick={backHandler}>回到主页</Button>
+          <Button onClick={closeHandler}>关闭</Button>
         </DialogActions>
       </Dialog>
       <h2>{`${progress}%`}</h2>
-      <Button
-        variant="contained"
-        onClick={backHandler}
-        hidden={progress !== 100}
-      >
-        回到主页
-      </Button>
+      {finished ? (
+        <Button variant="contained" onClick={backHandler}>
+          回到主页
+        </Button>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
