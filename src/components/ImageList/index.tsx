@@ -82,6 +82,11 @@ const MyImageList: FC<IProps> = ({ data, ready, ...props }) => {
       setNowPage(nowPage + 1);
     }
   };
+  const backPageHandler = () => {
+    if (nowPage > 0) {
+      setNowPage(nowPage - 1);
+    }
+  };
 
   return (
     <div className="img-list-container">
@@ -94,6 +99,7 @@ const MyImageList: FC<IProps> = ({ data, ready, ...props }) => {
         imgs={srces}
         ready={imgReady}
         nextPage={nextPageHandler}
+        backPage={backPageHandler}
         {...props}
       />
     </div>
