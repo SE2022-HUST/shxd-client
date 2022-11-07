@@ -20,11 +20,10 @@ const ImageCase = () => {
   const dispatch = useAppDispatch();
   const [allowNext, setAllowNext] = useState(false);
 
-  // const backHandler = () => {
-  //   nav(-1);
-  //   console.log("back");
-  //   dispatch(clearImage());
-  // };
+  const backHandler = () => {
+    dispatch(clearImage());
+    nav(-1);
+  };
 
   const nextHandler = () => {
     if (chosenList !== undefined) {
@@ -43,17 +42,34 @@ const ImageCase = () => {
       <HeaderFrame>
         <h2>请点选你需要隐藏的对象</h2>
         <div className="header-controls">
-          <Button
-            variant="contained"
-            onClick={nextHandler}
-            disabled={!allowNext}
-          >
-            下一步
-          </Button>
+          <span className="header-but">
+            <Button
+              className="header-but"
+              variant="contained"
+              onClick={backHandler}
+              disabled={!ready}
+            >
+              返回
+            </Button>
+          </span>
+          <span className="header-but">
+            <Button
+              variant="contained"
+              onClick={nextHandler}
+              disabled={!allowNext}
+            >
+              下一步
+            </Button>
+          </span>
         </div>
       </HeaderFrame>
       <div className="image-show-main">
-        <MyImageList data={imgs} ready={ready} onFinish={nextHandler} onEnd={endHandler} />
+        <MyImageList
+          data={imgs}
+          ready={ready}
+          onFinish={nextHandler}
+          onEnd={endHandler}
+        />
       </div>
     </div>
   );

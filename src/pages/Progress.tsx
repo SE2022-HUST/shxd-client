@@ -15,8 +15,11 @@ import { selectSavePath } from "../api/redux/ImageSlice";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
 import { FrameData } from "../api/types/types";
 import { matrixDecode } from "../api/utils";
+import useCanvasSize from "../api/hooks/useCanvasSize";
 
 const Progress = () => {
+  const [width, height] = useCanvasSize(0.5);
+
   const [progress, setProgress] = useState(0.0);
   const [finished, setFinished] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -90,7 +93,7 @@ const Progress = () => {
     <div className="progress-show-case">
       <h1 className="progress-title">处理中...</h1>
       <CanvasFrame
-        containerSize={{ width: 800, height: 450 }}
+        containerSize={{ width, height }}
         data={frame}
         frameSize={
           frameWidth !== undefined && frameHeight !== undefined
@@ -116,9 +119,11 @@ const Progress = () => {
       </Dialog>
       <h2>{`${progress}%`}</h2>
       {finished ? (
-        <Button variant="contained" onClick={backHandler}>
-          回到主页
-        </Button>
+        <div className="back-but">
+          <Button variant="contained" onClick={backHandler}>
+            回到主页
+          </Button>
+        </div>
       ) : (
         <></>
       )}

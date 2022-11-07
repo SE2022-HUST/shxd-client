@@ -26,8 +26,9 @@
 }
 
 .tip-text {
-  color: #757575;
+  color: #2e2e2e;
   margin-bottom: 0.8rem;
+  font-weight: 600;
 }
 
 .path-choose-bar {

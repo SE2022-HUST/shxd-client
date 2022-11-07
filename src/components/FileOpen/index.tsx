@@ -5,23 +5,17 @@ import "./style.css";
 import ControlPanel from "./ControlPanel";
 import { FrameData } from "../../api/types/types";
 import useWindowSize from "../../api/hooks/useWindowSize";
+import useCanvasSize from "../../api/hooks/useCanvasSize";
 
 interface IProps {
   next?: () => void;
 }
 
 const FileOpen: FC<IProps> = ({ next }) => {
-  const scale = 0.4;
-  const [windowWidth, windowHeight] = useWindowSize();
-  const [canvasWidth, setCanvasWidth] = useState(windowWidth * scale);
-  const [canvasHeight, setCanvasHeight] = useState((canvasWidth / 16) * 9);
   const [frame, setFrame] = useState<Uint8ClampedArray>();
   const [frameWidth, setFrameWidth] = useState<number>();
   const [frameHeight, setFrameHeight] = useState<number>();
-  useEffect(() => {
-    setCanvasWidth(windowWidth * scale);
-    setCanvasHeight((canvasWidth / 16) * 9);
-  }, [windowWidth, windowHeight]);
+  const [canvasWidth, canvasHeight] = useCanvasSize(0.4);
 
   const setFrameData = (data: FrameData) => {
     setFrame(data.data);
