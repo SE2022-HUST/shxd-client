@@ -14,7 +14,11 @@ def fx(x):
 def model_rects(img, bbox_and_sigmas, effect_type=1, param=30, judgement=[], enable=False):
     new_img = img.copy()
     w = h = 0
+    tt = 0
     for rect in bbox_and_sigmas:
+        if judgement[tt] == False:
+            tt += 1
+            continue
         pixels = int(rect[2] - rect[0]) * int(rect[3] - rect[1])
         sigma = fx(pixels)
         sigma = int(sigma)
@@ -32,7 +36,7 @@ def model_rects(img, bbox_and_sigmas, effect_type=1, param=30, judgement=[], ena
         # directly backout
             new_img[y:y+h, x:x+w] = 0
         elif effect_type == 1:
-            # blur 
+            # blur
             if sigma % 2 == 0:
                 sigma += 1
             # print(f'ROI {x}, {y}, {w}, {h}, sigma = {sigma}')
@@ -54,6 +58,7 @@ def model_rects(img, bbox_and_sigmas, effect_type=1, param=30, judgement=[], ena
             RoI = img[y:y+h, x:x+w]
             blur = cv2.GaussianBlur(RoI, (sigma, sigma), 0)
             new_img[y:y+h, x:x+w] = blur
+        tt += 1
 
 
     return new_img
