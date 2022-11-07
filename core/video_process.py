@@ -66,7 +66,10 @@ def get_objects_by_frame(ori_frame_list, protect_item, expose_item, debug=False)
         frame_cur_num += 1
         print(frame_cur_num)
         pro_objects_list = pro.get_objects(total_model, license_model, frame)
-        # print(pro_objects_list)
+
+        for i in range(len(pro_objects_list)):
+            pro_objects_list[i] = pro_objects_list[i].tolist()
+
         pro_frames_objects.append(pro_objects_list)
 
         get_process_percent(ori_frame_list, frame_cur_num)
