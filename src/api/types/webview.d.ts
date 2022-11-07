@@ -1,3 +1,9 @@
+enum COMPRESS_SHIFT {
+  RAW = 0,
+  LOW,
+  MID,
+  HIGH,
+}
 interface Window {
   pywebview: {
     api: {
@@ -9,6 +15,7 @@ interface Window {
       get_save_path: () => Promise<string>;
       get_entities: () => Promise<RawImage[][]>;
       open_fp: (path: string) => void;
+      video_compress: (shift: COMPRESS_SHIFT) => void;
     };
     state: any;
   };

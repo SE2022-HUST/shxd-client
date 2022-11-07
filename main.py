@@ -114,7 +114,6 @@ class Api:
         self.set_progress(100)
         return
 
-
     def open_fp(self, path):
         fp = path
         systemType: str = platform.platform()
@@ -124,6 +123,9 @@ class Api:
         else:
             fp: str = fp.replace("\\", "\\\\")
             os.startfile(fp)
+
+    def video_compress(self, shift: int):
+        print(shift)
 
 
 # 根据运行模式选择入口
@@ -143,8 +145,9 @@ def get_entrypoint(debug: bool):
 
 def verify_debug():
     argv = sys.argv[1:]
+    print(argv)
     try:
-        opts = getopt.getopt(argv, "m:",  ["mode="])  # 长选项模式
+        opts, args = getopt.getopt(argv, "m:",  ["mode="])  # 长选项模式
         for opt, arg in opts:
             if (opt in ['-m', '--mode']):
                 if (arg == 'debug'):
@@ -156,7 +159,7 @@ def verify_debug():
 
 
 def main():
-    debug = True
+    debug = verify_debug()
     webview.create_window('Video Processor',
                           url=get_entrypoint(debug),
                           # resizable=False,
@@ -165,7 +168,7 @@ def main():
                           js_api=Api()
                           )
     webview.start(http_server=True, gui="edgechromium",
-                  debug=debug)  # 必须使用server模式打开，否则Webview会报错
+                  debug=True)  # 必须使用server模式打开，否则Webview会报错
 
 
 if __name__ == '__main__':

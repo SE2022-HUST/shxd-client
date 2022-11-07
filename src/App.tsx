@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { store } from "./api/redux/store";
@@ -12,6 +12,7 @@ import Mosaic from "./pages/Mosaic";
 import Progress from "./pages/Progress";
 import Stylish from "./pages/Stylish";
 import "./styles/index.css";
+import { CircularProgress } from "@mui/material";
 
 const router = createBrowserRouter([
   {
@@ -52,8 +53,7 @@ const router = createBrowserRouter([
 export default function App() {
   useEffect(() => {
     document.oncontextmenu = () => false; // 屏蔽右键菜单
-    return () => {};
-  });
+  }, []);
 
   return (
     <React.StrictMode>

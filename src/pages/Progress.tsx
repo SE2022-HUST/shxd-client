@@ -70,6 +70,7 @@ const Progress = () => {
   const backHandler = () => {
     setDialogOpen(false);
     setFinished(false);
+    setProgress(0);
     nav("/");
   };
 
