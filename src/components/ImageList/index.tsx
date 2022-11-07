@@ -77,6 +77,12 @@ const MyImageList: FC<IProps> = ({ data, ready, ...props }) => {
     }
   }, [ready]);
 
+  const nextPageHandler = () => {
+    if (nowPage < allPage - 1) {
+      setNowPage(nowPage + 1);
+    }
+  };
+
   return (
     <div className="img-list-container">
       <canvas hidden ref={canvasRef} />
@@ -87,6 +93,7 @@ const MyImageList: FC<IProps> = ({ data, ready, ...props }) => {
         col={col}
         imgs={srces}
         ready={imgReady}
+        nextPage={nextPageHandler}
         {...props}
       />
     </div>
