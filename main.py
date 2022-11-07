@@ -2,6 +2,8 @@ import os
 import sys
 import getopt
 import cv2
+import platform
+import subprocess
 import string
 import time
 import webview
@@ -106,18 +108,24 @@ class Api:
         length = len(self.pro_model.new_imgs_list)
         for i in range(length):
             self.set_progress(float(i/length)*100)
-            new_img = video_process_by_frame(
-                self.pro_model.new_imgs_list[i], self.pro_model.bboxes_list[i], self.judge_data[i])
-            self.set_cur_frame(new_img)
+            new_img = video_process_by_frame(self.pro_model.new_imgs_list[i], self.pro_model.bboxes_list[i], self.judge_data[i])
+            self.cur_frame = new_img.tolist()
             # cv2.imwrite(f'./debug_{i}.jpg', new_img)
             pro_new_images.append(new_img)
         frame_to_video(pro_new_images, self.save_path, length/25)
         self.set_progress(100)
         return
 
-    def set_cur_frame(self, frame):
-        self.cur_frame = frame.tolist()
-
+    # path：1.视频路径self.save_path 2.文件夹路径
+    def open_fp(self, path):
+        fp = path
+        systemType: str = platform.platform()
+        if 'mac' in systemType:
+            fp: str = fp.replace("\\", "/")
+            subprocess.call(["open", fp])
+        else:
+            fp: str = fp.replace("\\", "\\\\")
+            os.startfile(fp)
 
 # 根据运行模式选择入口
 def get_entrypoint(debug: bool):
