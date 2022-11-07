@@ -49,6 +49,7 @@ class Api:
 
 
     def get_entities(self):
+        self.all_frame_objects = []
         protect_item = ['license']
         expose_item = ['car']
         self.ori_frame_list = get_every_frame(self.vs)
@@ -116,8 +117,8 @@ class Api:
         self.set_progress(100)
         return
 
-    # path：1.视频路径self.save_path 2.文件夹路径
-    def open_fp(self, path):
+
+    def open_video(self, path):
         fp = path
         systemType: str = platform.platform()
         if 'mac' in systemType:
@@ -126,6 +127,7 @@ class Api:
         else:
             fp: str = fp.replace("\\", "\\\\")
             os.startfile(fp)
+
 
 # 根据运行模式选择入口
 def get_entrypoint(debug: bool):
