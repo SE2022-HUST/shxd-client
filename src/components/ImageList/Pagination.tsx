@@ -1,6 +1,8 @@
 import { CircularProgress, LinearProgress, IconButton } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import React, { FC } from "react";
+import "./style.css";
 
 interface IProps {
   now: number;
@@ -8,6 +10,7 @@ interface IProps {
   loading?: boolean;
   percentage?: number;
   onNext: () => void;
+  onBack: () => void;
 }
 
 const Pagination: FC<IProps> = ({
@@ -16,6 +19,7 @@ const Pagination: FC<IProps> = ({
   loading,
   percentage,
   onNext: next,
+  onBack: back,
 }) => {
   return (
     <div className="image-pagination">
@@ -31,6 +35,9 @@ const Pagination: FC<IProps> = ({
         )
       ) : (
         <div className="pagination-container">
+          <IconButton onClick={back}>
+            <ArrowBackIosIcon />
+          </IconButton>
           <h1>{`${now + 1}/${total}`}</h1>
           <IconButton onClick={next}>
             <ArrowForwardIosIcon />

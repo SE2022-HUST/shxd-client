@@ -1,5 +1,6 @@
 import { ImageList, Skeleton } from "@mui/material";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
+import useGlobalState from "../../api/hooks/useGlobalState";
 import { selectMark, setMarkByPage } from "../../api/redux/ImageSlice";
 import { useAppDispatch, useAppSelector } from "../../api/redux/store";
 import ImageItem from "./ImageItem";
@@ -14,6 +15,7 @@ interface IProps {
   allPage: number;
   ready: boolean;
   nextPage: () => void;
+  backPage: () => void;
 }
 
 const ImagePage: FC<IProps> = ({
@@ -24,9 +26,17 @@ const ImagePage: FC<IProps> = ({
   allPage,
   ready,
   nextPage,
+  backPage,
 }) => {
   const chosenList = useAppSelector(selectMark);
   const dispatch = useAppDispatch();
+  const [loadProcess, setLoadProcess] = useState<number>();
+  useGlobalState({
+    name: "setLoadProcess",
+    data: (p: number) => {
+      setLoadProcess(p);
+    },
+  });
   return (
     <div className="image-page">
       <Pagination
@@ -34,6 +44,8 @@ const ImagePage: FC<IProps> = ({
         total={allPage}
         loading={!ready}
         onNext={nextPage}
+        onBack={backPage}
+        percentage={loadProcess}
       />
       <ImageList className="image-list" cols={col} gap={4}>
         {ready && imgs !== undefined && chosenList !== undefined
