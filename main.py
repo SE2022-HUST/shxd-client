@@ -6,6 +6,7 @@ import string
 import time
 import webview
 import numpy as np
+from core.sampler import frame_to_video
 from core.video_process import video_open, get_first_frame, get_objects_by_frame, get_every_frame, video_process_by_frame
 
 
@@ -19,6 +20,7 @@ class Api:
         self.save_path = ''
         self.pro_model = None
         self.judge_data = []
+        self.cur_frame = []
 
     # 从前端接收一帧
 
@@ -59,8 +61,7 @@ class Api:
         return self.all_frame_objects
 
     def get_save_path(self):
-        file_types = ('MOV Files (*.mov)',
-                      'MP4 Files (*.mp4)', 'All Files (*.*)')
+        file_types = ('AVI Files (*.avi)', 'All Files (*.*)')
         now = int(round(time.time()*1000))
         res = webview.windows[0].create_file_dialog(
             dialog_type=webview.SAVE_DIALOG,
@@ -90,13 +91,18 @@ class Api:
         for i in range(length):
             self.set_progress(float(i/length)*100)
             new_img = video_process_by_frame(self.pro_model.new_imgs_list[i], self.pro_model.bboxes_list[i], self.judge_data[i])
+            self.set_cur_frame(new_img)
             # cv2.imwrite(f'./debug_{i}.jpg', new_img)
             pro_new_images.append(new_img)
+        frame_to_video(pro_new_images, self.save_path, length/25)
         self.set_progress(100)
         return
 
     def test(self):
         self.set_progress(100)
+
+    def set_cur_frame(self, frame):
+        self.cur_frame = frame.tolist()
 
 
 # 根据运行模式选择入口
