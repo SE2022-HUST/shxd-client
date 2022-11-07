@@ -54,6 +54,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 5rem;
 }
 
 .pagination-container {
@@ -61,10 +62,22 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  height: 100%;
 }
 
 .progress-container {
   width: 70%;
+  height: 100%;
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+
+.pag-but {
+  margin-left: 1.2rem;
+  margin-right: 1.2rem;
+}
+
+.pagination-container h1 {
+  margin-left: 1rem;
+  margin-right: 1rem;
 }
