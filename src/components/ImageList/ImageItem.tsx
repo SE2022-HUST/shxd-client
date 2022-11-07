@@ -17,10 +17,7 @@ const ImageItem: FC<IProps> = ({ key, src, chosen, setChosen }) => {
     console.log(`${key as string} clicked! now: ${String(chosen)}`);
   };
   return (
-    <ImageListItem
-      className={cn("image-item", { "image-chosen": chosen })}
-      key={key}
-    >
+    <ImageListItem className={cn("image-item", { "image-chosen": chosen })}>
       <img src={src} loading="lazy" onClick={test} />
       <ImageMask onClick={test} display={chosen} />
     </ImageListItem>

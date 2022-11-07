@@ -20,11 +20,11 @@ const ImageCase = () => {
   const dispatch = useAppDispatch();
   const [allowNext, setAllowNext] = useState(false);
 
-  const backHandler = () => {
-    nav(-1);
-    console.log("back");
-    dispatch(clearImage());
-  };
+  // const backHandler = () => {
+  //   nav(-1);
+  //   console.log("back");
+  //   dispatch(clearImage());
+  // };
 
   const nextHandler = () => {
     if (chosenList !== undefined) {

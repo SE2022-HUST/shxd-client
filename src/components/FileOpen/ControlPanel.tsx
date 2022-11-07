@@ -29,7 +29,6 @@ const ControlPanel: FC<IProps> = ({ next, setFrame }) => {
   const openHandler = () => {
     setLoading(true);
     const syncFn = window.pywebview.api.get_video();
-    console.log("call func");
     syncFn
       .then((res) => {
         const frame: FrameData = {

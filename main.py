@@ -22,13 +22,6 @@ class Api:
         self.judge_data = []
         self.cur_frame = []
 
-    # 从前端接收一帧
-    def send_frame(self, data: dict):
-        frame = np.array(data['data'])
-        frame = frame.astype(np.uint8)
-        return frame.tolist()
-
-
     def send_chosen_entities(self, data: list):
         self.set_progress(0)  # 在上传实体的时候清零进度
         self.judge_data = data
@@ -121,10 +114,6 @@ class Api:
         frame_to_video(pro_new_images, self.save_path, length/25)
         self.set_progress(100)
         return
-
-
-    def test(self):
-        self.set_progress(100)
 
     def set_cur_frame(self, frame):
         self.cur_frame = frame.tolist()

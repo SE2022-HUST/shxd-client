@@ -31,6 +31,7 @@ const ImagePage: FC<IProps> = ({
   const chosenList = useAppSelector(selectMark);
   const dispatch = useAppDispatch();
   const [loadProcess, setLoadProcess] = useState<number>();
+
   useGlobalState({
     name: "setLoadProcess",
     data: (p: number) => {

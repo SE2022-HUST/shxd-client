@@ -1,5 +1,5 @@
 import { LinearProgress } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useGlobalState from "../api/hooks/useGlobalState";
 import CanvasFrame from "../components/CanvasFrame";
@@ -13,47 +13,89 @@ import "../styles/progress.css";
 import { useAppSelector } from "../api/redux/store";
 import { selectSavePath } from "../api/redux/ImageSlice";
 import DoneOutlineIcon from "@mui/icons-material/DoneOutline";
+import { FrameData } from "../api/types/types";
+import { matrixDecode } from "../api/utils";
 
 const Progress = () => {
   const [progress, setProgress] = useState(0.0);
   const [finished, setFinished] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const savePath = useAppSelector(selectSavePath);
+  const [frame, setFrame] = useState<Uint8ClampedArray>();
+  const [frameWidth, setFrameWidth] = useState<number>();
+  const [frameHeight, setFrameHeight] = useState<number>();
+  const setFrameData = (data: FrameData) => {
+    setFrame(data.data);
+    setFrameHeight(data.height);
+    setFrameWidth(data.width);
+  };
   const nav = useNavigate();
-  useGlobalState(
-    { name: "progress", data: progress },
-    {
-      name: "setProgress",
-      data: (p: number) => {
-        setProgress(p);
-      },
+  useGlobalState({
+    name: "setProgress",
+    data: (p: number) => {
+      setProgress(p);
+    },
+  });
+  const fn = async () => {
+    const raw = await window.pywebview.api.get_cur_frame();
+    if (raw !== undefined) {
+      const frame: FrameData = {
+        data: matrixDecode(raw),
+        height: raw.length,
+        width: raw[0].length,
+      };
+      setFrameData(frame);
     }
-  );
+    if (progress !== 100) {
+      void fn();
+    }
+  };
+  const memo = useCallback(() => {
+    void fn();
+  }, []);
+  useEffect(() => {
+    memo();
+  }, [memo]);
+
   const closeHandler = () => {
     setDialogOpen(false);
   };
+
   const finishHandler = () => {
     console.log("process finish!");
     setDialogOpen(true);
     setFinished(true);
   };
+
   const backHandler = () => {
     setDialogOpen(false);
     setFinished(false);
     nav("/");
   };
+
   const openDirHandler = () => {};
+
   const openFileHandler = () => {};
+
   useEffect(() => {
     if (progress >= 100) {
       setProgress(100);
       finishHandler();
     }
   }, [progress]);
+
   return (
     <div className="progress-show-case">
       <h1 className="progress-title">处理中...</h1>
-      <CanvasFrame containerSize={{ width: 800, height: 450 }} />
+      <CanvasFrame
+        containerSize={{ width: 800, height: 450 }}
+        data={frame}
+        frameSize={
+          frameWidth !== undefined && frameHeight !== undefined
+            ? { width: frameWidth, height: frameHeight }
+            : undefined
+        }
+      />
       <div className="progress-wrapper">
         <LinearProgress variant="determinate" value={progress} />
       </div>
