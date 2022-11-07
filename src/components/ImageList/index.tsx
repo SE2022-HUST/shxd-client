@@ -39,13 +39,18 @@ const MyImageList: FC<IProps> = ({ data, ready, ...props }) => {
   useEffect(() => {
     if (ready && data !== undefined) {
       setAllPage(data.length);
-      const temp = new Array<string[]>(data.length);
-      const listTemp = new Array<boolean[]>(data.length);
+      const temp: string[][] = [];
+      const listTemp: boolean[][] = [];
       for (let i = 0; i < data.length; i++) {
-        temp[i] = new Array<string>(data[i].length);
-        listTemp[i] = new Array<boolean>(data[i].length);
+        temp.push([]);
+        listTemp.push([]);
+        console.log(i,temp);
+        console.log(temp[i]);
+        console.log(listTemp);
+        console.log(listTemp[i]);
+
         for (let j = 0; j < data[i].length; i++) {
-          listTemp[i][j] = false;
+          listTemp[i].push(false);
           const raw = matrixDecode(data[i][j]);
           const imgData = new ImageData(
             raw,
@@ -55,7 +60,7 @@ const MyImageList: FC<IProps> = ({ data, ready, ...props }) => {
           if (ctx !== null && canvasRef.current !== null) {
             ctx.putImageData(imgData, 0, 0);
             const src = canvasRef.current.toDataURL("image/png");
-            temp[i][j] = src;
+            temp[i].push(src);
           }
         }
       }

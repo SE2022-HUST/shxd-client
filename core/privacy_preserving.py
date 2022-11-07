@@ -69,23 +69,6 @@ class Protector:
         self.protect_conditions = sql_res['PROTECT']
         if 'EXPOSE' in sql_res:
             self.expose_conditions = sql_res['EXPOSE']
-
-
-        # print("DEBUG\nwhere", self.time_intervals, "\nsource", self.video_source, \
-        #     "\nprotect", self.protect_conditions, "\nexpose", self.expose_conditions)
-        
-        # ## for detail print the expose list
-        # for i, cond in enumerate(self.expose_conditions):
-        #     s = f'cond {i}: '
-        #     for item in cond:
-        #         s += f'{item.name}, {item.type}; '
-        #     print(s)
-        # ## for detail in print the protect list
-        # for i, cond in enumerate(self.protect_conditions):
-        #     s = f'cond {i}:'
-        #     for item in cond:
-        #         s += f'{item.name}, {item.type};'
-        #     print(s)
         
         if not self.open_video(self.video_source):
             return

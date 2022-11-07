@@ -82,9 +82,15 @@ def get_objects_by_frame(ori_frame_list, protect_item, expose_item, debug=False)
                 tt += 1
     return pro_frames_objects
 
+
 # 获取进度
 def get_process_percent(ori_frame_list, frame_cur_num):
     print(float(frame_cur_num/len(ori_frame_list)))
+
+
+def video_process_by_frame():
+    
+    return 
 
 
 if __name__ == '__main__':

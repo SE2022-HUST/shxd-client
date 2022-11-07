@@ -38,7 +38,7 @@ class Api:
         )
         self.video_path = res[0].replace("\\", "\\\\")
         print(self.video_path)
-        self.vs = video_open(self.video_path, 80)
+        self.vs = video_open(self.video_path, 120)
         self.first_frame = get_first_frame(self.vs)
         print('sample finished')
         return self.first_frame.tolist()
