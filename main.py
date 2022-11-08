@@ -142,18 +142,28 @@ class Api:
         self.set_progress(100)
         return
 
-    def get_stylize_frames(self):
+    def get_stylize_frames(self, mode):
         # self.first_frame
-        self.pro_model = Protector(cartoon=True, only_cartoon=True)
+        self.ori_frame_list = get_every_frame(self.vs)
+        length = len(self.ori_frame_list)
+
+        if mode == 1:
+            self.pro_model = Protector(cartoon=True, only_cartoon=True)
+        elif mode == 0:
+            self.pro_model = Protector()
         self.pro_model.protect_conditions = [[]]
         self.pro_model.expose_conditions = [[]]
-        self.ori_frame_list = get_every_frame(self.vs)
 
-        length = len(self.ori_frame_list)
+        stylish_frames_list = []
+
         for i in range(length):
             self.set_progress(float(i/length)*100)
             stylish_frame = stylish_process(self.ori_frame_list[i], self.pro_model)
-            cv2.imwrite(f'./cartoon_{i}.jpg', stylish_frame)
+            self.cur_frame = stylish_frame
+            stylish_frames_list.append(stylish_frame)
+            # cv2.imwrite(f'./cartoon_{i}.jpg', stylish_frame)
+        self.set_progress(100)
+        frame_to_video(stylish_frames_list, self.save_path, length/25)
         return
 
 
