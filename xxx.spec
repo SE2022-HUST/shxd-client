@@ -5,10 +5,10 @@ block_cipher = None
 
 
 a = Analysis(
-    ['main.py','core/sampler.py','core/privacy_preserving.py','core/video_process.py','core/detect.py','core/blurring.py','core/cartooner.py', 'core/constant.py','core/mutils.py', 'core/protector.py','core/config.py','core/yolov5/detect.py','core/yolov5/export.py','core/yolov5/hubconf.py','core/yolov5/train.py','core/yolov5/val.py'],
+    ['xxx.py'],
     pathex=[],
     binaries=[],
-    datas=[('core/yolov5','core/yolov5'), ('core/weights','core/weights')],
+    datas=[],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -26,7 +26,7 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name='main',
+    name='xxx',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -46,5 +46,5 @@ coll = COLLECT(
     strip=False,
     upx=True,
     upx_exclude=[],
-    name='main',
+    name='xxx',
 )
