@@ -20,9 +20,12 @@ const router = createBrowserRouter([
     errorElement: <Error />,
     children: [
       {
-        // path: "menu",
+        path: "*",
         element: <Menu />,
+      },
+      {
         index: true,
+        element: <Menu />,
       },
       {
         path: "compress",
@@ -43,7 +46,6 @@ const router = createBrowserRouter([
       {
         path: "progress",
         element: <Progress />,
-        // index: true,
       },
     ],
   },
@@ -52,8 +54,7 @@ const router = createBrowserRouter([
 export default function App() {
   useEffect(() => {
     document.oncontextmenu = () => false; // 屏蔽右键菜单
-    return () => {};
-  });
+  }, []);
 
   return (
     <React.StrictMode>

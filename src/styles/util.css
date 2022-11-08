@@ -42,3 +42,9 @@
       rgba(255, 255, 255, 0) 100%
     );
 }
+
+.select-form {
+  width: 20rem;
+  height: auto;
+  padding-top: 0.5rem;
+}
