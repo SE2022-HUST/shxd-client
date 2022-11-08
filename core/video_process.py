@@ -71,9 +71,11 @@ def video_process_by_frame(img, bbox_and_sigma, judgement):
     return new_img
 
 
-def stylish_process(frame,pro):
-    new_img = pro.process_frame(total_model, license_model, frame)
-    return new_img
+def stylish_process(frame, pro):
+    if pro.cartoon == True:
+        new_img = pro.process_frame(total_model, license_model, frame)
+        return new_img
+    else:   return frame
 
 if __name__ == '__main__':
     vs = video_open('./car_license_2.mov', skip_frame_cnt=150)
