@@ -38,12 +38,12 @@ class Api:
         # 默认值
         if shift == None:
             shift = -1
-        skip_frame_cnt = 30
+        skip_frame_cnt = 60
 
         if shift > 0:
-            if shift == 1:  skip_frame_cnt = 30
-            elif shift == 2:    skip_frame_cnt = 60
-            elif shift == 3:    skip_frame_cnt = 90
+            if shift == 1:  skip_frame_cnt = 60
+            elif shift == 2:    skip_frame_cnt = 90
+            elif shift == 3:    skip_frame_cnt = 120
 
         file_types = ('MOV Files (*.mov)',
                       'MP4 Files (*.mp4)')
