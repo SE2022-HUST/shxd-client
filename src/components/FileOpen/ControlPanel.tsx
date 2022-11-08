@@ -91,7 +91,7 @@ const ControlPanel: FC<IProps> = ({ next, setFrame, openApi }) => {
       </div>
       <div className="process-step">
         <TipText>第三步：一切就绪后，点击下一步</TipText>
-        <Button variant="contained" disabled={!ready} onClick={next}>
+        <Button variant="contained" disabled={next === undefined || !ready} onClick={next}>
           下一步
         </Button>
       </div>

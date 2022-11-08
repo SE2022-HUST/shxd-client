@@ -33,7 +33,7 @@ const Compress = () => {
   return (
     <div className="util-page">
       <HeaderFrame>
-        <h1>压缩你的视频</h1>
+        <h1>压缩视频</h1>
       </HeaderFrame>
       <ActionDialog
         open={dialogOpen}

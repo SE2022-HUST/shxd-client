@@ -8,7 +8,9 @@
     "dev-server": "webpack server --config ./config/webpack.dev.config.js",
     "client": "python -u ./main.py --mode debug",
     "start": "npm-run-all --parallel dev-server client",
-    "build": "webpack --config ./config/webpack.prod.config.js"
+    "build-page": "webpack --config ./config/webpack.prod.config.js",
+    "build-client": "pyinstaller ./main.spec",
+    "build": "npm-run-all build-page build-client"
   },
   "author": "shxd@hust",
   "license": "ISC",
