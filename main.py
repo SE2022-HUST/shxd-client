@@ -159,7 +159,7 @@ class Api:
         for i in range(length):
             self.set_progress(float(i/length)*100)
             stylish_frame = stylish_process(self.ori_frame_list[i], self.pro_model)
-            self.cur_frame = stylish_frame
+            self.cur_frame = stylish_frame.tolist()
             stylish_frames_list.append(stylish_frame)
             # cv2.imwrite(f'./cartoon_{i}.jpg', stylish_frame)
         self.set_progress(100)
