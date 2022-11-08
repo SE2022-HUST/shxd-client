@@ -127,6 +127,11 @@ class Api:
 
     def video_compress(self, shift: int):
         print(shift)
+        # 返回skip_frame_cnt
+        if shift == 0:  return 0
+        elif shift == 1:    return 20
+        elif shift == 2:    return 50
+        elif shift == 3:    return 80
 
 
 # 根据运行模式选择入口
