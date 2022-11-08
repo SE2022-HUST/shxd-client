@@ -34,7 +34,7 @@ class Api:
 
     # 从本地选择视频上传并获得视频所在路径 返回前端第一帧
 
-    def get_video(self):
+    def get_video(self, skip_frame_cnt=120):
         file_types = ('MOV Files (*.mov)',
                       'MP4 Files (*.mp4)')
         res = webview.windows[0].create_file_dialog(
@@ -43,10 +43,11 @@ class Api:
         )
         self.video_path = res[0].replace("\\", "\\\\")
         print(self.video_path)
-        self.vs = video_open(self.video_path, 120)
+        self.vs = video_open(self.video_path, skip_frame_cnt=skip_frame_cnt)
         self.first_frame = get_first_frame(self.vs)
         print('sample finished')
         return self.first_frame.tolist()
+
 
     def get_entities(self):
         self.all_frame_objects = []
