@@ -8,12 +8,12 @@ const Error = () => {
   console.log(err);
   return (
     <div className="error-page">
-      <h1>Oops!</h1>
-      <p>Something goes wrong when navigating with react-router...</p>
+      <h1>出错了！</h1>
+      <p>你进入了未知的荒原...</p>
       <p>
-        <i>{err.statusText || err.message}</i>
+        <i>{`${err.statusText as string}: ${err.message as string}`}</i>
       </p>
-      <Link to="/">Back to index page</Link>
+      <Link to="/">返回主页</Link>
     </div>
   );
 };
