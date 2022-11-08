@@ -16,6 +16,7 @@ interface Window {
       get_entities: () => Promise<RawImage[][]>;
       open_fp: (path: string) => void;
       video_compress: () => void;
+      get_stylize_frames: (mode: number) => void;
     };
     state: any;
   };

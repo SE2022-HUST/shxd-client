@@ -24,7 +24,8 @@ const Stylish = () => {
   };
   const nextHandler = () => {
     console.log(styleText[style]);
-    // nav("/progress");
+    window.pywebview.api.get_stylize_frames(style);
+    nav("/progress");
   };
   const changeHandler = (event: SelectChangeEvent) => {
     setStyle(event.target.value as unknown as number);
