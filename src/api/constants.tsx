@@ -24,6 +24,12 @@ export const entries: EntryNode[] = [
     icon: <HomeIcon />,
   },
   {
+    name: "自动打码",
+    pic: zddm,
+    url: "mosaic",
+    icon: <SecurityIcon />,
+  },
+  {
     name: "视频压缩",
     pic: spys,
     url: "compress",
@@ -34,11 +40,5 @@ export const entries: EntryNode[] = [
     pic: fgh,
     url: "stylish",
     icon: <FormatPaintIcon />,
-  },
-  {
-    name: "自动打码",
-    pic: zddm,
-    url: "mosaic",
-    icon: <SecurityIcon />,
   },
 ];
