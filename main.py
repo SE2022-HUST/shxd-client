@@ -9,7 +9,7 @@ import time
 import webview
 import numpy as np
 from core.sampler import frame_to_video
-from core.video_process import video_open, get_first_frame, get_objects_by_frame, get_every_frame, video_process_by_frame
+from core.video_process import video_open, get_first_frame, get_objects_by_frame, get_every_frame, video_process_by_frame, stylish_process
 from core.privacy_preserving import Protector
 
 
@@ -140,6 +140,20 @@ class Api:
         length = len(self.ori_frame_list)
         frame_to_video(self.ori_frame_list, self.save_path, length/25)
         self.set_progress(100)
+        return
+
+    def get_stylize_frames(self):
+        # self.first_frame
+        self.pro_model = Protector(cartoon=True, only_cartoon=True)
+        self.pro_model.protect_conditions = [[]]
+        self.pro_model.expose_conditions = [[]]
+        self.ori_frame_list = get_every_frame(self.vs)
+
+        length = len(self.ori_frame_list)
+        for i in range(length):
+            self.set_progress(float(i/length)*100)
+            stylish_frame = stylish_process(self.ori_frame_list[i], self.pro_model)
+            cv2.imwrite(f'./cartoon_{i}.jpg', stylish_frame)
         return
 
 
