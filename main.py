@@ -108,6 +108,7 @@ class Api:
             'window.pywebview.state.setLoadProcess(%d)' % (p))
 
     def video_process(self):
+        self.cur_frame = []
         if len(self.pro_model.bboxes_list) != len(self.pro_model.new_imgs_list):
             print('Length is not equal! Maybe something is wrong!')
             return
@@ -144,6 +145,7 @@ class Api:
 
     def get_stylize_frames(self, mode):
         # self.first_frame
+        self.cur_frame = []
         self.ori_frame_list = get_every_frame(self.vs)
         length = len(self.ori_frame_list)
 
