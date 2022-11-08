@@ -18,8 +18,8 @@ import os
 # frame_total_num = 0
 frame_cur_num = 0
 
-total_model = torch.hub.load(('./core/yolov5'), 'custom', path='./core/weights/yolov5s.pt', source='local')
-license_model = torch.hub.load(('./core/yolov5'), 'custom', path='./core/weights/license_best.pt', source='local')
+total_model = torch.hub.load(('core/yolov5'), 'custom', path='core/weights/yolov5s.pt', source='local')
+license_model = torch.hub.load(('core/yolov5'), 'custom', path='core/weights/license_best.pt', source='local')
 
 
 def video_open(video_path, skip_frame_cnt):

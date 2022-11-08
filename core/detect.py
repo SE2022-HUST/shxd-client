@@ -1,7 +1,6 @@
 import sys
 from pathlib import Path
 
-from wandb import Video
 from numpy.core.shape_base import hstack
 import torch
 import cv2
