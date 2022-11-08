@@ -38,7 +38,7 @@ class Api:
         # 默认值
         if shift == None:
             shift = -1
-        skip_frame_cnt = 90
+        skip_frame_cnt = 30
 
         if shift > 0:
             if shift == 1:  skip_frame_cnt = 30
