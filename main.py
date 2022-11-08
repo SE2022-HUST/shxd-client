@@ -34,7 +34,12 @@ class Api:
 
     # 从本地选择视频上传并获得视频所在路径 返回前端第一帧
 
-    def get_video(self, shift=-1, skip_frame_cnt=60):
+    def get_video(self, shift=-1):
+        # 默认值
+        if shift == None:
+            shift = -1
+        skip_frame_cnt = 90
+
         if shift > 0:
             if shift == 1:  skip_frame_cnt = 30
             elif shift == 2:    skip_frame_cnt = 60
@@ -129,6 +134,13 @@ class Api:
         else:
             fp: str = fp.replace("\\", "\\\\")
             os.startfile(fp)
+
+    def video_compress(self):
+        self.ori_frame_list = get_every_frame(self.vs)
+        length = len(self.ori_frame_list)
+        frame_to_video(self.ori_frame_list, self.save_path, length/25)
+        self.set_progress(100)
+        return
 
 
 # 根据运行模式选择入口
