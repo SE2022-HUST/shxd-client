@@ -12,7 +12,7 @@ import ActionDialog from "../components/ActionDialog";
 const shiftText = ["原画", "超清", "高清", "标清"];
 
 const Compress = () => {
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(true);
   const [shift, setShift] = useState<COMPRESS_SHIFT>(0);
   const nav = useNavigate();
 
@@ -20,12 +20,9 @@ const Compress = () => {
     setDialogOpen(false);
   };
   const nextHandler = () => {
-    setDialogOpen(true);
-  };
-  const confirmHandler = () => {
-    setDialogOpen(false);
-    window.pywebview.api.video_compress(shift);
-    // nav("/progress");
+    console.log(shift);
+    window.pywebview.api.video_compress();
+    nav("/progress");
   };
   const changeHandler = (event: SelectChangeEvent) => {
     setShift(event.target.value as unknown as number);
@@ -41,10 +38,7 @@ const Compress = () => {
       <ActionDialog
         open={dialogOpen}
         title="选择压缩等级"
-        actions={[
-          { name: "取消", action: closeHandler },
-          { name: "确定", action: confirmHandler },
-        ]}
+        actions={[{ name: "确定", action: closeHandler }]}
       >
         <div className="select-form">
           <FormControl fullWidth>
