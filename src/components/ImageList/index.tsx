@@ -5,7 +5,6 @@ import useCanvas from "../../api/hooks/useCanvas";
 import ImagePage from "./ImagePage";
 import { useAppDispatch } from "../../api/redux/store";
 import { setMark } from "../../api/redux/ImageSlice";
-import useWindowSize from "../../api/hooks/useWindowSize";
 
 interface IProps {
   data?: RawImage[][];
@@ -13,8 +12,6 @@ interface IProps {
   onFinish: () => void;
   onEnd: (v: boolean) => void;
 }
-
-const skeletonNum = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
 const MyImageList: FC<IProps> = ({
   data,
@@ -97,7 +94,6 @@ const MyImageList: FC<IProps> = ({
       <ImagePage
         nowPage={nowPage}
         allPage={allPage}
-        sktNum={skeletonNum}
         col={col}
         imgs={srces}
         ready={imgReady}

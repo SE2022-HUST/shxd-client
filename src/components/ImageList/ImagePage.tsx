@@ -10,7 +10,6 @@ import "./style.css";
 interface IProps {
   col?: number;
   imgs?: string[][];
-  sktNum: number[];
   nowPage: number;
   allPage: number;
   ready: boolean;
@@ -21,7 +20,6 @@ interface IProps {
 const ImagePage: FC<IProps> = ({
   col,
   imgs,
-  sktNum,
   nowPage,
   allPage,
   ready,
