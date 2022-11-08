@@ -1,10 +1,3 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -19,36 +12,33 @@ import ActionDialog from "../components/ActionDialog";
 const shiftText = ["原画", "超清", "高清", "标清"];
 
 const Compress = () => {
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(true);
   const [shift, setShift] = useState<COMPRESS_SHIFT>(0);
   const nav = useNavigate();
+
   const closeHandler = () => {
     setDialogOpen(false);
   };
   const nextHandler = () => {
-    setDialogOpen(true);
-  };
-  const confirmHandler = () => {
-    setDialogOpen(false);
-    window.pywebview.api.video_compress(shift);
-    // nav("/progress");
+    console.log(shift);
+    window.pywebview.api.video_compress();
+    nav("/progress");
   };
   const changeHandler = (event: SelectChangeEvent) => {
     setShift(event.target.value as unknown as number);
   };
 
+  const openHandler = async () => await window.pywebview.api.get_video(shift);
+
   return (
     <div className="util-page">
       <HeaderFrame>
-        <h1>压缩你的视频</h1>
+        <h1>压缩视频</h1>
       </HeaderFrame>
       <ActionDialog
         open={dialogOpen}
         title="选择压缩等级"
-        actions={[
-          { name: "取消", action: closeHandler },
-          { name: "确定", action: confirmHandler },
-        ]}
+        actions={[{ name: "确定", action: closeHandler }]}
       >
         <div className="select-form">
           <FormControl fullWidth>
@@ -68,7 +58,7 @@ const Compress = () => {
           </FormControl>
         </div>
       </ActionDialog>
-      <FileOpen next={nextHandler} />
+      <FileOpen next={nextHandler} open={openHandler} />
     </div>
   );
 };

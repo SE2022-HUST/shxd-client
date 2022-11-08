@@ -9,7 +9,7 @@ import time
 import webview
 import numpy as np
 from core.sampler import frame_to_video
-from core.video_process import video_open, get_first_frame, get_objects_by_frame, get_every_frame, video_process_by_frame
+from core.video_process import video_open, get_first_frame, get_objects_by_frame, get_every_frame, video_process_by_frame, stylish_process
 from core.privacy_preserving import Protector
 
 
@@ -34,11 +34,16 @@ class Api:
 
     # 从本地选择视频上传并获得视频所在路径 返回前端第一帧
 
-    def get_video(self, shift=-1, skip_frame_cnt=60):
+    def get_video(self, shift=-1):
+        # 默认值
+        if shift == None:
+            shift = -1
+        skip_frame_cnt = 60
+
         if shift > 0:
-            if shift == 1:  skip_frame_cnt = 30
-            elif shift == 2:    skip_frame_cnt = 60
-            elif shift == 3:    skip_frame_cnt = 90
+            if shift == 1:  skip_frame_cnt = 60
+            elif shift == 2:    skip_frame_cnt = 90
+            elif shift == 3:    skip_frame_cnt = 120
 
         file_types = ('MOV Files (*.mov)',
                       'MP4 Files (*.mp4)')
@@ -103,6 +108,7 @@ class Api:
             'window.pywebview.state.setLoadProcess(%d)' % (p))
 
     def video_process(self):
+        self.cur_frame = []
         if len(self.pro_model.bboxes_list) != len(self.pro_model.new_imgs_list):
             print('Length is not equal! Maybe something is wrong!')
             return
@@ -129,6 +135,38 @@ class Api:
         else:
             fp: str = fp.replace("\\", "\\\\")
             os.startfile(fp)
+
+    def video_compress(self):
+        self.ori_frame_list = get_every_frame(self.vs)
+        length = len(self.ori_frame_list)
+        frame_to_video(self.ori_frame_list, self.save_path, length/25)
+        self.set_progress(100)
+        return
+
+    def get_stylize_frames(self, mode):
+        # self.first_frame
+        self.cur_frame = []
+        self.ori_frame_list = get_every_frame(self.vs)
+        length = len(self.ori_frame_list)
+
+        if mode == 1:
+            self.pro_model = Protector(cartoon=True, only_cartoon=True)
+        elif mode == 0:
+            self.pro_model = Protector()
+        self.pro_model.protect_conditions = [[]]
+        self.pro_model.expose_conditions = [[]]
+
+        stylish_frames_list = []
+
+        for i in range(length):
+            self.set_progress(float(i/length)*100)
+            stylish_frame = stylish_process(self.ori_frame_list[i], self.pro_model)
+            self.cur_frame = stylish_frame.tolist()
+            stylish_frames_list.append(stylish_frame)
+            # cv2.imwrite(f'./cartoon_{i}.jpg', stylish_frame)
+        self.set_progress(100)
+        frame_to_video(stylish_frames_list, self.save_path, length/25)
+        return
 
 
 # 根据运行模式选择入口
@@ -171,7 +209,7 @@ def main():
                           js_api=Api()
                           )
     webview.start(http_server=True, gui="edgechromium",
-                  debug=True)  # 必须使用server模式打开，否则Webview会报错
+                  debug=debug)  # 必须使用server模式打开，否则Webview会报错
 
 
 if __name__ == '__main__':

@@ -9,6 +9,7 @@ import "../styles/util.css";
 const Mosaic = () => {
   const nav = useNavigate();
   const dispatch = useAppDispatch();
+
   const nextHandler = () => {
     nav("/images");
     const asyncFn = window.pywebview.api.get_entities();
@@ -22,12 +23,15 @@ const Mosaic = () => {
         console.error(err);
       });
   };
+
+  const openHandler = async () => await window.pywebview.api.get_video();
+
   return (
     <div className="util-page">
       <HeaderFrame>
         <h1>自动马赛克处理</h1>
       </HeaderFrame>
-      <FileOpen next={nextHandler} />
+      <FileOpen next={nextHandler} open={openHandler} />
     </div>
   );
 };
