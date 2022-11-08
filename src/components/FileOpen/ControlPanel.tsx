@@ -11,9 +11,10 @@ import "./style.css";
 interface IProps {
   next?: () => void;
   setFrame: (data: FrameData) => void;
+  openApi: () => Promise<RawImage>;
 }
 
-const ControlPanel: FC<IProps> = ({ next, setFrame }) => {
+const ControlPanel: FC<IProps> = ({ next, setFrame, openApi }) => {
   const [loading, setLoading] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
   const [saveReady, setSaveReady] = useState(false);
@@ -29,7 +30,7 @@ const ControlPanel: FC<IProps> = ({ next, setFrame }) => {
 
   const openHandler = () => {
     setLoading(true);
-    const syncFn = window.pywebview.api.get_video();
+    const syncFn = openApi();
     syncFn
       .then((res) => {
         const frame: FrameData = {

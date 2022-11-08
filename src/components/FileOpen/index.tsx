@@ -9,9 +9,10 @@ import useCanvasSize from "../../api/hooks/useCanvasSize";
 
 interface IProps {
   next?: () => void;
+  open: () => Promise<RawImage>;
 }
 
-const FileOpen: FC<IProps> = ({ next }) => {
+const FileOpen: FC<IProps> = ({ next, open }) => {
   const [frame, setFrame] = useState<Uint8ClampedArray>();
   const [frameWidth, setFrameWidth] = useState<number>();
   const [frameHeight, setFrameHeight] = useState<number>();
@@ -35,7 +36,7 @@ const FileOpen: FC<IProps> = ({ next }) => {
           containerSize={{ width: canvasWidth, height: canvasHeight }}
         />
       </div>
-      <ControlPanel next={next} setFrame={setFrameData} />
+      <ControlPanel next={next} setFrame={setFrameData} openApi={open} />
     </div>
   );
 };

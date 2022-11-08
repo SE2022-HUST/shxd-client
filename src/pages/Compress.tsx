@@ -15,6 +15,7 @@ const Compress = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [shift, setShift] = useState<COMPRESS_SHIFT>(0);
   const nav = useNavigate();
+
   const closeHandler = () => {
     setDialogOpen(false);
   };
@@ -29,6 +30,8 @@ const Compress = () => {
   const changeHandler = (event: SelectChangeEvent) => {
     setShift(event.target.value as unknown as number);
   };
+
+  const openHandler = async () => await window.pywebview.api.get_video(shift);
 
   return (
     <div className="util-page">
@@ -61,7 +64,7 @@ const Compress = () => {
           </FormControl>
         </div>
       </ActionDialog>
-      <FileOpen next={nextHandler} />
+      <FileOpen next={nextHandler} open={openHandler} />
     </div>
   );
 };
