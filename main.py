@@ -209,7 +209,7 @@ def main():
                           js_api=Api()
                           )
     webview.start(http_server=True, gui="edgechromium",
-                  debug=True)  # 必须使用server模式打开，否则Webview会报错
+                  debug=debug)  # 必须使用server模式打开，否则Webview会报错
 
 
 if __name__ == '__main__':
