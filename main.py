@@ -34,7 +34,12 @@ class Api:
 
     # 从本地选择视频上传并获得视频所在路径 返回前端第一帧
 
-    def get_video(self, skip_frame_cnt=120):
+    def get_video(self, shift=-1, skip_frame_cnt=60):
+        if shift > 0:
+            if shift == 1:  skip_frame_cnt = 30
+            elif shift == 2:    skip_frame_cnt = 60
+            elif shift == 3:    skip_frame_cnt = 90
+
         file_types = ('MOV Files (*.mov)',
                       'MP4 Files (*.mp4)')
         res = webview.windows[0].create_file_dialog(
@@ -124,14 +129,6 @@ class Api:
         else:
             fp: str = fp.replace("\\", "\\\\")
             os.startfile(fp)
-
-    def video_compress(self, shift: int):
-        print(shift)
-        # 返回skip_frame_cnt
-        if shift == 0:  return 0
-        elif shift == 1:    return 20
-        elif shift == 2:    return 50
-        elif shift == 3:    return 80
 
 
 # 根据运行模式选择入口
