@@ -25,19 +25,21 @@ exe = EXE(
     pyz,
     a.scripts,
     [],
-    exclude_binaries=True,
     name='main',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
     upx=True,
+    exclude_binaries=True,
     console=False,
-    disable_windowed_traceback=False,
+    disable_windowed_traceback=True,
     argv_emulation=False,
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon='static/favicon.icon',
 )
+
 coll = COLLECT(
     exe,
     a.binaries,
