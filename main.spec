@@ -44,7 +44,7 @@ coll = COLLECT(
     a.zipfiles,
     a.datas,
     strip=False,
-    icon='static/favicon.icon',
+    icon='./static/favicon.ico',
     upx=True,
     upx_exclude=[],
     name='main',

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "webpack server --open --config ./config/webpack.dev.config.js",
     "dev-server": "webpack server --config ./config/webpack.dev.config.js",
-    "client": "python -u ./main.py --mode debug",
+    "client": "py -3.8 -u ./main.py --mode debug",
     "start": "npm-run-all --parallel dev-server client",
     "build-page": "webpack --config ./config/webpack.prod.config.js",
     "build-client": "pyinstaller ./main.spec",
