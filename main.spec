@@ -37,7 +37,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='static/favicon.icon',
+    icon='static\\favicon.ico',
 )
 
 coll = COLLECT(
@@ -46,7 +46,6 @@ coll = COLLECT(
     a.zipfiles,
     a.datas,
     strip=False,
-    icon='./static/favicon.ico',
     upx=True,
     upx_exclude=[],
     name='main',
